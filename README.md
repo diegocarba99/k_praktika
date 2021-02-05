@@ -1,0 +1,2 @@
+# konpi
+Konpilazioko ikagaiko Praktika 
