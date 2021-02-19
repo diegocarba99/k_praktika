@@ -1,0 +1,2015 @@
+Estado 82 conflictos: 10 desplazamiento/reducción
+Estado 83 conflictos: 10 desplazamiento/reducción
+Estado 84 conflictos: 10 desplazamiento/reducción
+Estado 85 conflictos: 10 desplazamiento/reducción
+Estado 86 conflictos: 10 desplazamiento/reducción
+Estado 87 conflictos: 10 desplazamiento/reducción
+Estado 88 conflictos: 10 desplazamiento/reducción
+Estado 89 conflictos: 10 desplazamiento/reducción
+Estado 90 conflictos: 10 desplazamiento/reducción
+Estado 91 conflictos: 10 desplazamiento/reducción
+
+
+Gramática
+
+    0 $accept: programa $end
+
+    1 programa: RPROGRAM TID erazagupenak azpiprogramen_erazagupena TLBRACE sententzia_zerrenda TRBRACE
+
+    2 erazagupenak: mota id_zerrenda TSEMIC erazagupenak
+    3             | %empty
+
+    4 id_zerrenda: TID id_zerrendaren_bestea
+
+    5 id_zerrendaren_bestea: TCOMMA TID id_zerrendaren_bestea
+    6                      | %empty
+
+    7 mota: RINT
+    8     | RFLOAT
+
+    9 azpiprogramen_erazagupena: azpiprogramaren_erazagupena azpiprogramen_erazagupena
+   10                          | %empty
+
+   11 azpiprogramaren_erazagupena: RPROC TID argumentuak erazagupenak azpiprogramen_erazagupena TLBRACE sententzia_zerrenda TRBRACE
+
+   12 argumentuak: TLPAREN par_zerrenda TRPAREN
+   13            | %empty
+
+   14 par_zerrenda: mota par_mota id_zerrenda par_zerrendaren_bestea
+
+   15 par_mota: TOUTPARAM
+   16         | TCLE
+   17         | TINOUTPARAM
+
+   18 par_zerrendaren_bestea: TSEMIC mota par_mota id_zerrenda par_zerrendaren_bestea
+   19                       | %empty
+
+   20 sententzia_zerrenda: sententzia_zerrenda sententzia
+   21                    | %empty
+
+   22 sententzia: TID TASSIG adierazpena TSEMIC
+   23           | RIF adierazpena TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+   24           | RWHILE RFOREVER TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+   25           | RDO TLBRACE sententzia_zerrenda TRBRACE RUNTIL adierazpena RELSE TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+   26           | RSKIP RIF adierazpena TSEMIC
+   27           | REXIT TSEMIC
+   28           | RREAD TLPAREN aldagaia TRPAREN TSEMIC
+   29           | RPRINTLN TLPAREN adierazpena TRPAREN TSEMIC
+
+   30 aldagaia: TID
+
+   31 adierazpena: adierazpena TADD adierazpena
+   32            | adierazpena TSUB adierazpena
+   33            | adierazpena TMUL adierazpena
+   34            | adierazpena TDIV adierazpena
+   35            | adierazpena TCEQ adierazpena
+   36            | adierazpena TCGT adierazpena
+   37            | adierazpena TCLT adierazpena
+   38            | adierazpena TCGE adierazpena
+   39            | adierazpena TCLE adierazpena
+   40            | adierazpena TCNE adierazpena
+   41            | aldagaia
+   42            | TINTEGER
+   43            | TFLOAT
+   44            | TLPAREN adierazpena TRPAREN
+
+
+Terminales con las reglas donde aparecen
+
+    $end (0) 0
+    error (256)
+    RPROGRAM (258) 1
+    RIF (259) 23 26
+    RWHILE (260) 24
+    RFOREVER (261) 24
+    RDO (262) 25
+    RPROC (263) 11
+    RUNTIL (264) 25
+    RELSE (265) 25
+    RSKIP (266) 26
+    REXIT (267) 27
+    RPRINTLN (268) 29
+    RREAD (269) 28
+    RINT (270) 7
+    RFLOAT (271) 8
+    TMUL (272) 33
+    TASSIG (273) 22
+    TADD (274) 31
+    TSUB (275) 32
+    TDIV (276) 34
+    TCEQ (277) 35
+    TCGT (278) 36
+    TCLT (279) 37
+    TCGE (280) 38
+    TCLE (281) 16 39
+    TCNE (282) 40
+    TSEMIC (283) 2 18 22 23 24 25 26 27 28 29
+    TCOMMA (284) 5
+    TLPAREN (285) 12 28 29 44
+    TRPAREN (286) 12 28 29 44
+    TLBRACE (287) 1 11 23 24 25
+    TRBRACE (288) 1 11 23 24 25
+    TOUTPARAM (289) 15
+    TINOUTPARAM (290) 17
+    TID (291) 1 4 5 11 22 30
+    TFLOAT (292) 43
+    TINTEGER (293) 42
+
+
+No terminales con las reglas donde aparecen
+
+    $accept (39)
+        on left: 0
+    programa (40)
+        on left: 1
+        on right: 0
+    erazagupenak (41)
+        on left: 2 3
+        on right: 1 2 11
+    id_zerrenda (42)
+        on left: 4
+        on right: 2 14 18
+    id_zerrendaren_bestea (43)
+        on left: 5 6
+        on right: 4 5
+    mota (44)
+        on left: 7 8
+        on right: 2 14 18
+    azpiprogramen_erazagupena (45)
+        on left: 9 10
+        on right: 1 9 11
+    azpiprogramaren_erazagupena (46)
+        on left: 11
+        on right: 9
+    argumentuak (47)
+        on left: 12 13
+        on right: 11
+    par_zerrenda (48)
+        on left: 14
+        on right: 12
+    par_mota (49)
+        on left: 15 16 17
+        on right: 14 18
+    par_zerrendaren_bestea (50)
+        on left: 18 19
+        on right: 14 18
+    sententzia_zerrenda (51)
+        on left: 20 21
+        on right: 1 11 20 23 24 25
+    sententzia (52)
+        on left: 22 23 24 25 26 27 28 29
+        on right: 20
+    aldagaia (53)
+        on left: 30
+        on right: 28 41
+    adierazpena (54)
+        on left: 31 32 33 34 35 36 37 38 39 40 41 42 43 44
+        on right: 22 23 25 26 29 31 32 33 34 35 36 37 38 39 40 44
+
+
+Estado 0
+
+    0 $accept: . programa $end
+    1 programa: . RPROGRAM TID erazagupenak azpiprogramen_erazagupena TLBRACE sententzia_zerrenda TRBRACE
+
+    RPROGRAM  desplazar e ir al estado 1
+
+    programa  ir al estado 2
+
+
+Estado 1
+
+    1 programa: RPROGRAM . TID erazagupenak azpiprogramen_erazagupena TLBRACE sententzia_zerrenda TRBRACE
+
+    TID  desplazar e ir al estado 3
+
+
+Estado 2
+
+    0 $accept: programa . $end
+
+    $end  desplazar e ir al estado 4
+
+
+Estado 3
+
+    1 programa: RPROGRAM TID . erazagupenak azpiprogramen_erazagupena TLBRACE sententzia_zerrenda TRBRACE
+    2 erazagupenak: . mota id_zerrenda TSEMIC erazagupenak
+    3             | . %empty  [RPROC, TLBRACE]
+    7 mota: . RINT
+    8     | . RFLOAT
+
+    RINT    desplazar e ir al estado 5
+    RFLOAT  desplazar e ir al estado 6
+
+    $default  reduce usando la regla 3 (erazagupenak)
+
+    erazagupenak  ir al estado 7
+    mota          ir al estado 8
+
+
+Estado 4
+
+    0 $accept: programa $end .
+
+    $default  aceptar
+
+
+Estado 5
+
+    7 mota: RINT .
+
+    $default  reduce usando la regla 7 (mota)
+
+
+Estado 6
+
+    8 mota: RFLOAT .
+
+    $default  reduce usando la regla 8 (mota)
+
+
+Estado 7
+
+    1 programa: RPROGRAM TID erazagupenak . azpiprogramen_erazagupena TLBRACE sententzia_zerrenda TRBRACE
+    9 azpiprogramen_erazagupena: . azpiprogramaren_erazagupena azpiprogramen_erazagupena
+   10                          | . %empty  [TLBRACE]
+   11 azpiprogramaren_erazagupena: . RPROC TID argumentuak erazagupenak azpiprogramen_erazagupena TLBRACE sententzia_zerrenda TRBRACE
+
+    RPROC  desplazar e ir al estado 9
+
+    $default  reduce usando la regla 10 (azpiprogramen_erazagupena)
+
+    azpiprogramen_erazagupena    ir al estado 10
+    azpiprogramaren_erazagupena  ir al estado 11
+
+
+Estado 8
+
+    2 erazagupenak: mota . id_zerrenda TSEMIC erazagupenak
+    4 id_zerrenda: . TID id_zerrendaren_bestea
+
+    TID  desplazar e ir al estado 12
+
+    id_zerrenda  ir al estado 13
+
+
+Estado 9
+
+   11 azpiprogramaren_erazagupena: RPROC . TID argumentuak erazagupenak azpiprogramen_erazagupena TLBRACE sententzia_zerrenda TRBRACE
+
+    TID  desplazar e ir al estado 14
+
+
+Estado 10
+
+    1 programa: RPROGRAM TID erazagupenak azpiprogramen_erazagupena . TLBRACE sententzia_zerrenda TRBRACE
+
+    TLBRACE  desplazar e ir al estado 15
+
+
+Estado 11
+
+    9 azpiprogramen_erazagupena: . azpiprogramaren_erazagupena azpiprogramen_erazagupena
+    9                          | azpiprogramaren_erazagupena . azpiprogramen_erazagupena
+   10                          | . %empty  [TLBRACE]
+   11 azpiprogramaren_erazagupena: . RPROC TID argumentuak erazagupenak azpiprogramen_erazagupena TLBRACE sententzia_zerrenda TRBRACE
+
+    RPROC  desplazar e ir al estado 9
+
+    $default  reduce usando la regla 10 (azpiprogramen_erazagupena)
+
+    azpiprogramen_erazagupena    ir al estado 16
+    azpiprogramaren_erazagupena  ir al estado 11
+
+
+Estado 12
+
+    4 id_zerrenda: TID . id_zerrendaren_bestea
+    5 id_zerrendaren_bestea: . TCOMMA TID id_zerrendaren_bestea
+    6                      | . %empty  [TSEMIC, TRPAREN]
+
+    TCOMMA  desplazar e ir al estado 17
+
+    $default  reduce usando la regla 6 (id_zerrendaren_bestea)
+
+    id_zerrendaren_bestea  ir al estado 18
+
+
+Estado 13
+
+    2 erazagupenak: mota id_zerrenda . TSEMIC erazagupenak
+
+    TSEMIC  desplazar e ir al estado 19
+
+
+Estado 14
+
+   11 azpiprogramaren_erazagupena: RPROC TID . argumentuak erazagupenak azpiprogramen_erazagupena TLBRACE sententzia_zerrenda TRBRACE
+   12 argumentuak: . TLPAREN par_zerrenda TRPAREN
+   13            | . %empty  [RPROC, RINT, RFLOAT, TLBRACE]
+
+    TLPAREN  desplazar e ir al estado 20
+
+    $default  reduce usando la regla 13 (argumentuak)
+
+    argumentuak  ir al estado 21
+
+
+Estado 15
+
+    1 programa: RPROGRAM TID erazagupenak azpiprogramen_erazagupena TLBRACE . sententzia_zerrenda TRBRACE
+   20 sententzia_zerrenda: . sententzia_zerrenda sententzia
+   21                    | . %empty
+
+    $default  reduce usando la regla 21 (sententzia_zerrenda)
+
+    sententzia_zerrenda  ir al estado 22
+
+
+Estado 16
+
+    9 azpiprogramen_erazagupena: azpiprogramaren_erazagupena azpiprogramen_erazagupena .
+
+    $default  reduce usando la regla 9 (azpiprogramen_erazagupena)
+
+
+Estado 17
+
+    5 id_zerrendaren_bestea: TCOMMA . TID id_zerrendaren_bestea
+
+    TID  desplazar e ir al estado 23
+
+
+Estado 18
+
+    4 id_zerrenda: TID id_zerrendaren_bestea .
+
+    $default  reduce usando la regla 4 (id_zerrenda)
+
+
+Estado 19
+
+    2 erazagupenak: . mota id_zerrenda TSEMIC erazagupenak
+    2             | mota id_zerrenda TSEMIC . erazagupenak
+    3             | . %empty  [RPROC, TLBRACE]
+    7 mota: . RINT
+    8     | . RFLOAT
+
+    RINT    desplazar e ir al estado 5
+    RFLOAT  desplazar e ir al estado 6
+
+    $default  reduce usando la regla 3 (erazagupenak)
+
+    erazagupenak  ir al estado 24
+    mota          ir al estado 8
+
+
+Estado 20
+
+    7 mota: . RINT
+    8     | . RFLOAT
+   12 argumentuak: TLPAREN . par_zerrenda TRPAREN
+   14 par_zerrenda: . mota par_mota id_zerrenda par_zerrendaren_bestea
+
+    RINT    desplazar e ir al estado 5
+    RFLOAT  desplazar e ir al estado 6
+
+    mota          ir al estado 25
+    par_zerrenda  ir al estado 26
+
+
+Estado 21
+
+    2 erazagupenak: . mota id_zerrenda TSEMIC erazagupenak
+    3             | . %empty  [RPROC, TLBRACE]
+    7 mota: . RINT
+    8     | . RFLOAT
+   11 azpiprogramaren_erazagupena: RPROC TID argumentuak . erazagupenak azpiprogramen_erazagupena TLBRACE sententzia_zerrenda TRBRACE
+
+    RINT    desplazar e ir al estado 5
+    RFLOAT  desplazar e ir al estado 6
+
+    $default  reduce usando la regla 3 (erazagupenak)
+
+    erazagupenak  ir al estado 27
+    mota          ir al estado 8
+
+
+Estado 22
+
+    1 programa: RPROGRAM TID erazagupenak azpiprogramen_erazagupena TLBRACE sententzia_zerrenda . TRBRACE
+   20 sententzia_zerrenda: sententzia_zerrenda . sententzia
+   22 sententzia: . TID TASSIG adierazpena TSEMIC
+   23           | . RIF adierazpena TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+   24           | . RWHILE RFOREVER TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+   25           | . RDO TLBRACE sententzia_zerrenda TRBRACE RUNTIL adierazpena RELSE TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+   26           | . RSKIP RIF adierazpena TSEMIC
+   27           | . REXIT TSEMIC
+   28           | . RREAD TLPAREN aldagaia TRPAREN TSEMIC
+   29           | . RPRINTLN TLPAREN adierazpena TRPAREN TSEMIC
+
+    RIF       desplazar e ir al estado 28
+    RWHILE    desplazar e ir al estado 29
+    RDO       desplazar e ir al estado 30
+    RSKIP     desplazar e ir al estado 31
+    REXIT     desplazar e ir al estado 32
+    RPRINTLN  desplazar e ir al estado 33
+    RREAD     desplazar e ir al estado 34
+    TRBRACE   desplazar e ir al estado 35
+    TID       desplazar e ir al estado 36
+
+    sententzia  ir al estado 37
+
+
+Estado 23
+
+    5 id_zerrendaren_bestea: . TCOMMA TID id_zerrendaren_bestea
+    5                      | TCOMMA TID . id_zerrendaren_bestea
+    6                      | . %empty  [TSEMIC, TRPAREN]
+
+    TCOMMA  desplazar e ir al estado 17
+
+    $default  reduce usando la regla 6 (id_zerrendaren_bestea)
+
+    id_zerrendaren_bestea  ir al estado 38
+
+
+Estado 24
+
+    2 erazagupenak: mota id_zerrenda TSEMIC erazagupenak .
+
+    $default  reduce usando la regla 2 (erazagupenak)
+
+
+Estado 25
+
+   14 par_zerrenda: mota . par_mota id_zerrenda par_zerrendaren_bestea
+   15 par_mota: . TOUTPARAM
+   16         | . TCLE
+   17         | . TINOUTPARAM
+
+    TCLE         desplazar e ir al estado 39
+    TOUTPARAM    desplazar e ir al estado 40
+    TINOUTPARAM  desplazar e ir al estado 41
+
+    par_mota  ir al estado 42
+
+
+Estado 26
+
+   12 argumentuak: TLPAREN par_zerrenda . TRPAREN
+
+    TRPAREN  desplazar e ir al estado 43
+
+
+Estado 27
+
+    9 azpiprogramen_erazagupena: . azpiprogramaren_erazagupena azpiprogramen_erazagupena
+   10                          | . %empty  [TLBRACE]
+   11 azpiprogramaren_erazagupena: . RPROC TID argumentuak erazagupenak azpiprogramen_erazagupena TLBRACE sententzia_zerrenda TRBRACE
+   11                            | RPROC TID argumentuak erazagupenak . azpiprogramen_erazagupena TLBRACE sententzia_zerrenda TRBRACE
+
+    RPROC  desplazar e ir al estado 9
+
+    $default  reduce usando la regla 10 (azpiprogramen_erazagupena)
+
+    azpiprogramen_erazagupena    ir al estado 44
+    azpiprogramaren_erazagupena  ir al estado 11
+
+
+Estado 28
+
+   23 sententzia: RIF . adierazpena TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+   30 aldagaia: . TID
+   31 adierazpena: . adierazpena TADD adierazpena
+   32            | . adierazpena TSUB adierazpena
+   33            | . adierazpena TMUL adierazpena
+   34            | . adierazpena TDIV adierazpena
+   35            | . adierazpena TCEQ adierazpena
+   36            | . adierazpena TCGT adierazpena
+   37            | . adierazpena TCLT adierazpena
+   38            | . adierazpena TCGE adierazpena
+   39            | . adierazpena TCLE adierazpena
+   40            | . adierazpena TCNE adierazpena
+   41            | . aldagaia
+   42            | . TINTEGER
+   43            | . TFLOAT
+   44            | . TLPAREN adierazpena TRPAREN
+
+    TLPAREN   desplazar e ir al estado 45
+    TID       desplazar e ir al estado 46
+    TFLOAT    desplazar e ir al estado 47
+    TINTEGER  desplazar e ir al estado 48
+
+    aldagaia     ir al estado 49
+    adierazpena  ir al estado 50
+
+
+Estado 29
+
+   24 sententzia: RWHILE . RFOREVER TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+
+    RFOREVER  desplazar e ir al estado 51
+
+
+Estado 30
+
+   25 sententzia: RDO . TLBRACE sententzia_zerrenda TRBRACE RUNTIL adierazpena RELSE TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+
+    TLBRACE  desplazar e ir al estado 52
+
+
+Estado 31
+
+   26 sententzia: RSKIP . RIF adierazpena TSEMIC
+
+    RIF  desplazar e ir al estado 53
+
+
+Estado 32
+
+   27 sententzia: REXIT . TSEMIC
+
+    TSEMIC  desplazar e ir al estado 54
+
+
+Estado 33
+
+   29 sententzia: RPRINTLN . TLPAREN adierazpena TRPAREN TSEMIC
+
+    TLPAREN  desplazar e ir al estado 55
+
+
+Estado 34
+
+   28 sententzia: RREAD . TLPAREN aldagaia TRPAREN TSEMIC
+
+    TLPAREN  desplazar e ir al estado 56
+
+
+Estado 35
+
+    1 programa: RPROGRAM TID erazagupenak azpiprogramen_erazagupena TLBRACE sententzia_zerrenda TRBRACE .
+
+    $default  reduce usando la regla 1 (programa)
+
+
+Estado 36
+
+   22 sententzia: TID . TASSIG adierazpena TSEMIC
+
+    TASSIG  desplazar e ir al estado 57
+
+
+Estado 37
+
+   20 sententzia_zerrenda: sententzia_zerrenda sententzia .
+
+    $default  reduce usando la regla 20 (sententzia_zerrenda)
+
+
+Estado 38
+
+    5 id_zerrendaren_bestea: TCOMMA TID id_zerrendaren_bestea .
+
+    $default  reduce usando la regla 5 (id_zerrendaren_bestea)
+
+
+Estado 39
+
+   16 par_mota: TCLE .
+
+    $default  reduce usando la regla 16 (par_mota)
+
+
+Estado 40
+
+   15 par_mota: TOUTPARAM .
+
+    $default  reduce usando la regla 15 (par_mota)
+
+
+Estado 41
+
+   17 par_mota: TINOUTPARAM .
+
+    $default  reduce usando la regla 17 (par_mota)
+
+
+Estado 42
+
+    4 id_zerrenda: . TID id_zerrendaren_bestea
+   14 par_zerrenda: mota par_mota . id_zerrenda par_zerrendaren_bestea
+
+    TID  desplazar e ir al estado 12
+
+    id_zerrenda  ir al estado 58
+
+
+Estado 43
+
+   12 argumentuak: TLPAREN par_zerrenda TRPAREN .
+
+    $default  reduce usando la regla 12 (argumentuak)
+
+
+Estado 44
+
+   11 azpiprogramaren_erazagupena: RPROC TID argumentuak erazagupenak azpiprogramen_erazagupena . TLBRACE sententzia_zerrenda TRBRACE
+
+    TLBRACE  desplazar e ir al estado 59
+
+
+Estado 45
+
+   30 aldagaia: . TID
+   31 adierazpena: . adierazpena TADD adierazpena
+   32            | . adierazpena TSUB adierazpena
+   33            | . adierazpena TMUL adierazpena
+   34            | . adierazpena TDIV adierazpena
+   35            | . adierazpena TCEQ adierazpena
+   36            | . adierazpena TCGT adierazpena
+   37            | . adierazpena TCLT adierazpena
+   38            | . adierazpena TCGE adierazpena
+   39            | . adierazpena TCLE adierazpena
+   40            | . adierazpena TCNE adierazpena
+   41            | . aldagaia
+   42            | . TINTEGER
+   43            | . TFLOAT
+   44            | . TLPAREN adierazpena TRPAREN
+   44            | TLPAREN . adierazpena TRPAREN
+
+    TLPAREN   desplazar e ir al estado 45
+    TID       desplazar e ir al estado 46
+    TFLOAT    desplazar e ir al estado 47
+    TINTEGER  desplazar e ir al estado 48
+
+    aldagaia     ir al estado 49
+    adierazpena  ir al estado 60
+
+
+Estado 46
+
+   30 aldagaia: TID .
+
+    $default  reduce usando la regla 30 (aldagaia)
+
+
+Estado 47
+
+   43 adierazpena: TFLOAT .
+
+    $default  reduce usando la regla 43 (adierazpena)
+
+
+Estado 48
+
+   42 adierazpena: TINTEGER .
+
+    $default  reduce usando la regla 42 (adierazpena)
+
+
+Estado 49
+
+   41 adierazpena: aldagaia .
+
+    $default  reduce usando la regla 41 (adierazpena)
+
+
+Estado 50
+
+   23 sententzia: RIF adierazpena . TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+   31 adierazpena: adierazpena . TADD adierazpena
+   32            | adierazpena . TSUB adierazpena
+   33            | adierazpena . TMUL adierazpena
+   34            | adierazpena . TDIV adierazpena
+   35            | adierazpena . TCEQ adierazpena
+   36            | adierazpena . TCGT adierazpena
+   37            | adierazpena . TCLT adierazpena
+   38            | adierazpena . TCGE adierazpena
+   39            | adierazpena . TCLE adierazpena
+   40            | adierazpena . TCNE adierazpena
+
+    TMUL     desplazar e ir al estado 61
+    TADD     desplazar e ir al estado 62
+    TSUB     desplazar e ir al estado 63
+    TDIV     desplazar e ir al estado 64
+    TCEQ     desplazar e ir al estado 65
+    TCGT     desplazar e ir al estado 66
+    TCLT     desplazar e ir al estado 67
+    TCGE     desplazar e ir al estado 68
+    TCLE     desplazar e ir al estado 69
+    TCNE     desplazar e ir al estado 70
+    TLBRACE  desplazar e ir al estado 71
+
+
+Estado 51
+
+   24 sententzia: RWHILE RFOREVER . TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+
+    TLBRACE  desplazar e ir al estado 72
+
+
+Estado 52
+
+   20 sententzia_zerrenda: . sententzia_zerrenda sententzia
+   21                    | . %empty
+   25 sententzia: RDO TLBRACE . sententzia_zerrenda TRBRACE RUNTIL adierazpena RELSE TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+
+    $default  reduce usando la regla 21 (sententzia_zerrenda)
+
+    sententzia_zerrenda  ir al estado 73
+
+
+Estado 53
+
+   26 sententzia: RSKIP RIF . adierazpena TSEMIC
+   30 aldagaia: . TID
+   31 adierazpena: . adierazpena TADD adierazpena
+   32            | . adierazpena TSUB adierazpena
+   33            | . adierazpena TMUL adierazpena
+   34            | . adierazpena TDIV adierazpena
+   35            | . adierazpena TCEQ adierazpena
+   36            | . adierazpena TCGT adierazpena
+   37            | . adierazpena TCLT adierazpena
+   38            | . adierazpena TCGE adierazpena
+   39            | . adierazpena TCLE adierazpena
+   40            | . adierazpena TCNE adierazpena
+   41            | . aldagaia
+   42            | . TINTEGER
+   43            | . TFLOAT
+   44            | . TLPAREN adierazpena TRPAREN
+
+    TLPAREN   desplazar e ir al estado 45
+    TID       desplazar e ir al estado 46
+    TFLOAT    desplazar e ir al estado 47
+    TINTEGER  desplazar e ir al estado 48
+
+    aldagaia     ir al estado 49
+    adierazpena  ir al estado 74
+
+
+Estado 54
+
+   27 sententzia: REXIT TSEMIC .
+
+    $default  reduce usando la regla 27 (sententzia)
+
+
+Estado 55
+
+   29 sententzia: RPRINTLN TLPAREN . adierazpena TRPAREN TSEMIC
+   30 aldagaia: . TID
+   31 adierazpena: . adierazpena TADD adierazpena
+   32            | . adierazpena TSUB adierazpena
+   33            | . adierazpena TMUL adierazpena
+   34            | . adierazpena TDIV adierazpena
+   35            | . adierazpena TCEQ adierazpena
+   36            | . adierazpena TCGT adierazpena
+   37            | . adierazpena TCLT adierazpena
+   38            | . adierazpena TCGE adierazpena
+   39            | . adierazpena TCLE adierazpena
+   40            | . adierazpena TCNE adierazpena
+   41            | . aldagaia
+   42            | . TINTEGER
+   43            | . TFLOAT
+   44            | . TLPAREN adierazpena TRPAREN
+
+    TLPAREN   desplazar e ir al estado 45
+    TID       desplazar e ir al estado 46
+    TFLOAT    desplazar e ir al estado 47
+    TINTEGER  desplazar e ir al estado 48
+
+    aldagaia     ir al estado 49
+    adierazpena  ir al estado 75
+
+
+Estado 56
+
+   28 sententzia: RREAD TLPAREN . aldagaia TRPAREN TSEMIC
+   30 aldagaia: . TID
+
+    TID  desplazar e ir al estado 46
+
+    aldagaia  ir al estado 76
+
+
+Estado 57
+
+   22 sententzia: TID TASSIG . adierazpena TSEMIC
+   30 aldagaia: . TID
+   31 adierazpena: . adierazpena TADD adierazpena
+   32            | . adierazpena TSUB adierazpena
+   33            | . adierazpena TMUL adierazpena
+   34            | . adierazpena TDIV adierazpena
+   35            | . adierazpena TCEQ adierazpena
+   36            | . adierazpena TCGT adierazpena
+   37            | . adierazpena TCLT adierazpena
+   38            | . adierazpena TCGE adierazpena
+   39            | . adierazpena TCLE adierazpena
+   40            | . adierazpena TCNE adierazpena
+   41            | . aldagaia
+   42            | . TINTEGER
+   43            | . TFLOAT
+   44            | . TLPAREN adierazpena TRPAREN
+
+    TLPAREN   desplazar e ir al estado 45
+    TID       desplazar e ir al estado 46
+    TFLOAT    desplazar e ir al estado 47
+    TINTEGER  desplazar e ir al estado 48
+
+    aldagaia     ir al estado 49
+    adierazpena  ir al estado 77
+
+
+Estado 58
+
+   14 par_zerrenda: mota par_mota id_zerrenda . par_zerrendaren_bestea
+   18 par_zerrendaren_bestea: . TSEMIC mota par_mota id_zerrenda par_zerrendaren_bestea
+   19                       | . %empty  [TRPAREN]
+
+    TSEMIC  desplazar e ir al estado 78
+
+    $default  reduce usando la regla 19 (par_zerrendaren_bestea)
+
+    par_zerrendaren_bestea  ir al estado 79
+
+
+Estado 59
+
+   11 azpiprogramaren_erazagupena: RPROC TID argumentuak erazagupenak azpiprogramen_erazagupena TLBRACE . sententzia_zerrenda TRBRACE
+   20 sententzia_zerrenda: . sententzia_zerrenda sententzia
+   21                    | . %empty
+
+    $default  reduce usando la regla 21 (sententzia_zerrenda)
+
+    sententzia_zerrenda  ir al estado 80
+
+
+Estado 60
+
+   31 adierazpena: adierazpena . TADD adierazpena
+   32            | adierazpena . TSUB adierazpena
+   33            | adierazpena . TMUL adierazpena
+   34            | adierazpena . TDIV adierazpena
+   35            | adierazpena . TCEQ adierazpena
+   36            | adierazpena . TCGT adierazpena
+   37            | adierazpena . TCLT adierazpena
+   38            | adierazpena . TCGE adierazpena
+   39            | adierazpena . TCLE adierazpena
+   40            | adierazpena . TCNE adierazpena
+   44            | TLPAREN adierazpena . TRPAREN
+
+    TMUL     desplazar e ir al estado 61
+    TADD     desplazar e ir al estado 62
+    TSUB     desplazar e ir al estado 63
+    TDIV     desplazar e ir al estado 64
+    TCEQ     desplazar e ir al estado 65
+    TCGT     desplazar e ir al estado 66
+    TCLT     desplazar e ir al estado 67
+    TCGE     desplazar e ir al estado 68
+    TCLE     desplazar e ir al estado 69
+    TCNE     desplazar e ir al estado 70
+    TRPAREN  desplazar e ir al estado 81
+
+
+Estado 61
+
+   30 aldagaia: . TID
+   31 adierazpena: . adierazpena TADD adierazpena
+   32            | . adierazpena TSUB adierazpena
+   33            | . adierazpena TMUL adierazpena
+   33            | adierazpena TMUL . adierazpena
+   34            | . adierazpena TDIV adierazpena
+   35            | . adierazpena TCEQ adierazpena
+   36            | . adierazpena TCGT adierazpena
+   37            | . adierazpena TCLT adierazpena
+   38            | . adierazpena TCGE adierazpena
+   39            | . adierazpena TCLE adierazpena
+   40            | . adierazpena TCNE adierazpena
+   41            | . aldagaia
+   42            | . TINTEGER
+   43            | . TFLOAT
+   44            | . TLPAREN adierazpena TRPAREN
+
+    TLPAREN   desplazar e ir al estado 45
+    TID       desplazar e ir al estado 46
+    TFLOAT    desplazar e ir al estado 47
+    TINTEGER  desplazar e ir al estado 48
+
+    aldagaia     ir al estado 49
+    adierazpena  ir al estado 82
+
+
+Estado 62
+
+   30 aldagaia: . TID
+   31 adierazpena: . adierazpena TADD adierazpena
+   31            | adierazpena TADD . adierazpena
+   32            | . adierazpena TSUB adierazpena
+   33            | . adierazpena TMUL adierazpena
+   34            | . adierazpena TDIV adierazpena
+   35            | . adierazpena TCEQ adierazpena
+   36            | . adierazpena TCGT adierazpena
+   37            | . adierazpena TCLT adierazpena
+   38            | . adierazpena TCGE adierazpena
+   39            | . adierazpena TCLE adierazpena
+   40            | . adierazpena TCNE adierazpena
+   41            | . aldagaia
+   42            | . TINTEGER
+   43            | . TFLOAT
+   44            | . TLPAREN adierazpena TRPAREN
+
+    TLPAREN   desplazar e ir al estado 45
+    TID       desplazar e ir al estado 46
+    TFLOAT    desplazar e ir al estado 47
+    TINTEGER  desplazar e ir al estado 48
+
+    aldagaia     ir al estado 49
+    adierazpena  ir al estado 83
+
+
+Estado 63
+
+   30 aldagaia: . TID
+   31 adierazpena: . adierazpena TADD adierazpena
+   32            | . adierazpena TSUB adierazpena
+   32            | adierazpena TSUB . adierazpena
+   33            | . adierazpena TMUL adierazpena
+   34            | . adierazpena TDIV adierazpena
+   35            | . adierazpena TCEQ adierazpena
+   36            | . adierazpena TCGT adierazpena
+   37            | . adierazpena TCLT adierazpena
+   38            | . adierazpena TCGE adierazpena
+   39            | . adierazpena TCLE adierazpena
+   40            | . adierazpena TCNE adierazpena
+   41            | . aldagaia
+   42            | . TINTEGER
+   43            | . TFLOAT
+   44            | . TLPAREN adierazpena TRPAREN
+
+    TLPAREN   desplazar e ir al estado 45
+    TID       desplazar e ir al estado 46
+    TFLOAT    desplazar e ir al estado 47
+    TINTEGER  desplazar e ir al estado 48
+
+    aldagaia     ir al estado 49
+    adierazpena  ir al estado 84
+
+
+Estado 64
+
+   30 aldagaia: . TID
+   31 adierazpena: . adierazpena TADD adierazpena
+   32            | . adierazpena TSUB adierazpena
+   33            | . adierazpena TMUL adierazpena
+   34            | . adierazpena TDIV adierazpena
+   34            | adierazpena TDIV . adierazpena
+   35            | . adierazpena TCEQ adierazpena
+   36            | . adierazpena TCGT adierazpena
+   37            | . adierazpena TCLT adierazpena
+   38            | . adierazpena TCGE adierazpena
+   39            | . adierazpena TCLE adierazpena
+   40            | . adierazpena TCNE adierazpena
+   41            | . aldagaia
+   42            | . TINTEGER
+   43            | . TFLOAT
+   44            | . TLPAREN adierazpena TRPAREN
+
+    TLPAREN   desplazar e ir al estado 45
+    TID       desplazar e ir al estado 46
+    TFLOAT    desplazar e ir al estado 47
+    TINTEGER  desplazar e ir al estado 48
+
+    aldagaia     ir al estado 49
+    adierazpena  ir al estado 85
+
+
+Estado 65
+
+   30 aldagaia: . TID
+   31 adierazpena: . adierazpena TADD adierazpena
+   32            | . adierazpena TSUB adierazpena
+   33            | . adierazpena TMUL adierazpena
+   34            | . adierazpena TDIV adierazpena
+   35            | . adierazpena TCEQ adierazpena
+   35            | adierazpena TCEQ . adierazpena
+   36            | . adierazpena TCGT adierazpena
+   37            | . adierazpena TCLT adierazpena
+   38            | . adierazpena TCGE adierazpena
+   39            | . adierazpena TCLE adierazpena
+   40            | . adierazpena TCNE adierazpena
+   41            | . aldagaia
+   42            | . TINTEGER
+   43            | . TFLOAT
+   44            | . TLPAREN adierazpena TRPAREN
+
+    TLPAREN   desplazar e ir al estado 45
+    TID       desplazar e ir al estado 46
+    TFLOAT    desplazar e ir al estado 47
+    TINTEGER  desplazar e ir al estado 48
+
+    aldagaia     ir al estado 49
+    adierazpena  ir al estado 86
+
+
+Estado 66
+
+   30 aldagaia: . TID
+   31 adierazpena: . adierazpena TADD adierazpena
+   32            | . adierazpena TSUB adierazpena
+   33            | . adierazpena TMUL adierazpena
+   34            | . adierazpena TDIV adierazpena
+   35            | . adierazpena TCEQ adierazpena
+   36            | . adierazpena TCGT adierazpena
+   36            | adierazpena TCGT . adierazpena
+   37            | . adierazpena TCLT adierazpena
+   38            | . adierazpena TCGE adierazpena
+   39            | . adierazpena TCLE adierazpena
+   40            | . adierazpena TCNE adierazpena
+   41            | . aldagaia
+   42            | . TINTEGER
+   43            | . TFLOAT
+   44            | . TLPAREN adierazpena TRPAREN
+
+    TLPAREN   desplazar e ir al estado 45
+    TID       desplazar e ir al estado 46
+    TFLOAT    desplazar e ir al estado 47
+    TINTEGER  desplazar e ir al estado 48
+
+    aldagaia     ir al estado 49
+    adierazpena  ir al estado 87
+
+
+Estado 67
+
+   30 aldagaia: . TID
+   31 adierazpena: . adierazpena TADD adierazpena
+   32            | . adierazpena TSUB adierazpena
+   33            | . adierazpena TMUL adierazpena
+   34            | . adierazpena TDIV adierazpena
+   35            | . adierazpena TCEQ adierazpena
+   36            | . adierazpena TCGT adierazpena
+   37            | . adierazpena TCLT adierazpena
+   37            | adierazpena TCLT . adierazpena
+   38            | . adierazpena TCGE adierazpena
+   39            | . adierazpena TCLE adierazpena
+   40            | . adierazpena TCNE adierazpena
+   41            | . aldagaia
+   42            | . TINTEGER
+   43            | . TFLOAT
+   44            | . TLPAREN adierazpena TRPAREN
+
+    TLPAREN   desplazar e ir al estado 45
+    TID       desplazar e ir al estado 46
+    TFLOAT    desplazar e ir al estado 47
+    TINTEGER  desplazar e ir al estado 48
+
+    aldagaia     ir al estado 49
+    adierazpena  ir al estado 88
+
+
+Estado 68
+
+   30 aldagaia: . TID
+   31 adierazpena: . adierazpena TADD adierazpena
+   32            | . adierazpena TSUB adierazpena
+   33            | . adierazpena TMUL adierazpena
+   34            | . adierazpena TDIV adierazpena
+   35            | . adierazpena TCEQ adierazpena
+   36            | . adierazpena TCGT adierazpena
+   37            | . adierazpena TCLT adierazpena
+   38            | . adierazpena TCGE adierazpena
+   38            | adierazpena TCGE . adierazpena
+   39            | . adierazpena TCLE adierazpena
+   40            | . adierazpena TCNE adierazpena
+   41            | . aldagaia
+   42            | . TINTEGER
+   43            | . TFLOAT
+   44            | . TLPAREN adierazpena TRPAREN
+
+    TLPAREN   desplazar e ir al estado 45
+    TID       desplazar e ir al estado 46
+    TFLOAT    desplazar e ir al estado 47
+    TINTEGER  desplazar e ir al estado 48
+
+    aldagaia     ir al estado 49
+    adierazpena  ir al estado 89
+
+
+Estado 69
+
+   30 aldagaia: . TID
+   31 adierazpena: . adierazpena TADD adierazpena
+   32            | . adierazpena TSUB adierazpena
+   33            | . adierazpena TMUL adierazpena
+   34            | . adierazpena TDIV adierazpena
+   35            | . adierazpena TCEQ adierazpena
+   36            | . adierazpena TCGT adierazpena
+   37            | . adierazpena TCLT adierazpena
+   38            | . adierazpena TCGE adierazpena
+   39            | . adierazpena TCLE adierazpena
+   39            | adierazpena TCLE . adierazpena
+   40            | . adierazpena TCNE adierazpena
+   41            | . aldagaia
+   42            | . TINTEGER
+   43            | . TFLOAT
+   44            | . TLPAREN adierazpena TRPAREN
+
+    TLPAREN   desplazar e ir al estado 45
+    TID       desplazar e ir al estado 46
+    TFLOAT    desplazar e ir al estado 47
+    TINTEGER  desplazar e ir al estado 48
+
+    aldagaia     ir al estado 49
+    adierazpena  ir al estado 90
+
+
+Estado 70
+
+   30 aldagaia: . TID
+   31 adierazpena: . adierazpena TADD adierazpena
+   32            | . adierazpena TSUB adierazpena
+   33            | . adierazpena TMUL adierazpena
+   34            | . adierazpena TDIV adierazpena
+   35            | . adierazpena TCEQ adierazpena
+   36            | . adierazpena TCGT adierazpena
+   37            | . adierazpena TCLT adierazpena
+   38            | . adierazpena TCGE adierazpena
+   39            | . adierazpena TCLE adierazpena
+   40            | . adierazpena TCNE adierazpena
+   40            | adierazpena TCNE . adierazpena
+   41            | . aldagaia
+   42            | . TINTEGER
+   43            | . TFLOAT
+   44            | . TLPAREN adierazpena TRPAREN
+
+    TLPAREN   desplazar e ir al estado 45
+    TID       desplazar e ir al estado 46
+    TFLOAT    desplazar e ir al estado 47
+    TINTEGER  desplazar e ir al estado 48
+
+    aldagaia     ir al estado 49
+    adierazpena  ir al estado 91
+
+
+Estado 71
+
+   20 sententzia_zerrenda: . sententzia_zerrenda sententzia
+   21                    | . %empty
+   23 sententzia: RIF adierazpena TLBRACE . sententzia_zerrenda TRBRACE TSEMIC
+
+    $default  reduce usando la regla 21 (sententzia_zerrenda)
+
+    sententzia_zerrenda  ir al estado 92
+
+
+Estado 72
+
+   20 sententzia_zerrenda: . sententzia_zerrenda sententzia
+   21                    | . %empty
+   24 sententzia: RWHILE RFOREVER TLBRACE . sententzia_zerrenda TRBRACE TSEMIC
+
+    $default  reduce usando la regla 21 (sententzia_zerrenda)
+
+    sententzia_zerrenda  ir al estado 93
+
+
+Estado 73
+
+   20 sententzia_zerrenda: sententzia_zerrenda . sententzia
+   22 sententzia: . TID TASSIG adierazpena TSEMIC
+   23           | . RIF adierazpena TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+   24           | . RWHILE RFOREVER TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+   25           | . RDO TLBRACE sententzia_zerrenda TRBRACE RUNTIL adierazpena RELSE TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+   25           | RDO TLBRACE sententzia_zerrenda . TRBRACE RUNTIL adierazpena RELSE TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+   26           | . RSKIP RIF adierazpena TSEMIC
+   27           | . REXIT TSEMIC
+   28           | . RREAD TLPAREN aldagaia TRPAREN TSEMIC
+   29           | . RPRINTLN TLPAREN adierazpena TRPAREN TSEMIC
+
+    RIF       desplazar e ir al estado 28
+    RWHILE    desplazar e ir al estado 29
+    RDO       desplazar e ir al estado 30
+    RSKIP     desplazar e ir al estado 31
+    REXIT     desplazar e ir al estado 32
+    RPRINTLN  desplazar e ir al estado 33
+    RREAD     desplazar e ir al estado 34
+    TRBRACE   desplazar e ir al estado 94
+    TID       desplazar e ir al estado 36
+
+    sententzia  ir al estado 37
+
+
+Estado 74
+
+   26 sententzia: RSKIP RIF adierazpena . TSEMIC
+   31 adierazpena: adierazpena . TADD adierazpena
+   32            | adierazpena . TSUB adierazpena
+   33            | adierazpena . TMUL adierazpena
+   34            | adierazpena . TDIV adierazpena
+   35            | adierazpena . TCEQ adierazpena
+   36            | adierazpena . TCGT adierazpena
+   37            | adierazpena . TCLT adierazpena
+   38            | adierazpena . TCGE adierazpena
+   39            | adierazpena . TCLE adierazpena
+   40            | adierazpena . TCNE adierazpena
+
+    TMUL    desplazar e ir al estado 61
+    TADD    desplazar e ir al estado 62
+    TSUB    desplazar e ir al estado 63
+    TDIV    desplazar e ir al estado 64
+    TCEQ    desplazar e ir al estado 65
+    TCGT    desplazar e ir al estado 66
+    TCLT    desplazar e ir al estado 67
+    TCGE    desplazar e ir al estado 68
+    TCLE    desplazar e ir al estado 69
+    TCNE    desplazar e ir al estado 70
+    TSEMIC  desplazar e ir al estado 95
+
+
+Estado 75
+
+   29 sententzia: RPRINTLN TLPAREN adierazpena . TRPAREN TSEMIC
+   31 adierazpena: adierazpena . TADD adierazpena
+   32            | adierazpena . TSUB adierazpena
+   33            | adierazpena . TMUL adierazpena
+   34            | adierazpena . TDIV adierazpena
+   35            | adierazpena . TCEQ adierazpena
+   36            | adierazpena . TCGT adierazpena
+   37            | adierazpena . TCLT adierazpena
+   38            | adierazpena . TCGE adierazpena
+   39            | adierazpena . TCLE adierazpena
+   40            | adierazpena . TCNE adierazpena
+
+    TMUL     desplazar e ir al estado 61
+    TADD     desplazar e ir al estado 62
+    TSUB     desplazar e ir al estado 63
+    TDIV     desplazar e ir al estado 64
+    TCEQ     desplazar e ir al estado 65
+    TCGT     desplazar e ir al estado 66
+    TCLT     desplazar e ir al estado 67
+    TCGE     desplazar e ir al estado 68
+    TCLE     desplazar e ir al estado 69
+    TCNE     desplazar e ir al estado 70
+    TRPAREN  desplazar e ir al estado 96
+
+
+Estado 76
+
+   28 sententzia: RREAD TLPAREN aldagaia . TRPAREN TSEMIC
+
+    TRPAREN  desplazar e ir al estado 97
+
+
+Estado 77
+
+   22 sententzia: TID TASSIG adierazpena . TSEMIC
+   31 adierazpena: adierazpena . TADD adierazpena
+   32            | adierazpena . TSUB adierazpena
+   33            | adierazpena . TMUL adierazpena
+   34            | adierazpena . TDIV adierazpena
+   35            | adierazpena . TCEQ adierazpena
+   36            | adierazpena . TCGT adierazpena
+   37            | adierazpena . TCLT adierazpena
+   38            | adierazpena . TCGE adierazpena
+   39            | adierazpena . TCLE adierazpena
+   40            | adierazpena . TCNE adierazpena
+
+    TMUL    desplazar e ir al estado 61
+    TADD    desplazar e ir al estado 62
+    TSUB    desplazar e ir al estado 63
+    TDIV    desplazar e ir al estado 64
+    TCEQ    desplazar e ir al estado 65
+    TCGT    desplazar e ir al estado 66
+    TCLT    desplazar e ir al estado 67
+    TCGE    desplazar e ir al estado 68
+    TCLE    desplazar e ir al estado 69
+    TCNE    desplazar e ir al estado 70
+    TSEMIC  desplazar e ir al estado 98
+
+
+Estado 78
+
+    7 mota: . RINT
+    8     | . RFLOAT
+   18 par_zerrendaren_bestea: TSEMIC . mota par_mota id_zerrenda par_zerrendaren_bestea
+
+    RINT    desplazar e ir al estado 5
+    RFLOAT  desplazar e ir al estado 6
+
+    mota  ir al estado 99
+
+
+Estado 79
+
+   14 par_zerrenda: mota par_mota id_zerrenda par_zerrendaren_bestea .
+
+    $default  reduce usando la regla 14 (par_zerrenda)
+
+
+Estado 80
+
+   11 azpiprogramaren_erazagupena: RPROC TID argumentuak erazagupenak azpiprogramen_erazagupena TLBRACE sententzia_zerrenda . TRBRACE
+   20 sententzia_zerrenda: sententzia_zerrenda . sententzia
+   22 sententzia: . TID TASSIG adierazpena TSEMIC
+   23           | . RIF adierazpena TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+   24           | . RWHILE RFOREVER TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+   25           | . RDO TLBRACE sententzia_zerrenda TRBRACE RUNTIL adierazpena RELSE TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+   26           | . RSKIP RIF adierazpena TSEMIC
+   27           | . REXIT TSEMIC
+   28           | . RREAD TLPAREN aldagaia TRPAREN TSEMIC
+   29           | . RPRINTLN TLPAREN adierazpena TRPAREN TSEMIC
+
+    RIF       desplazar e ir al estado 28
+    RWHILE    desplazar e ir al estado 29
+    RDO       desplazar e ir al estado 30
+    RSKIP     desplazar e ir al estado 31
+    REXIT     desplazar e ir al estado 32
+    RPRINTLN  desplazar e ir al estado 33
+    RREAD     desplazar e ir al estado 34
+    TRBRACE   desplazar e ir al estado 100
+    TID       desplazar e ir al estado 36
+
+    sententzia  ir al estado 37
+
+
+Estado 81
+
+   44 adierazpena: TLPAREN adierazpena TRPAREN .
+
+    $default  reduce usando la regla 44 (adierazpena)
+
+
+Estado 82
+
+   31 adierazpena: adierazpena . TADD adierazpena
+   32            | adierazpena . TSUB adierazpena
+   33            | adierazpena . TMUL adierazpena
+   33            | adierazpena TMUL adierazpena .  [RELSE, TMUL, TADD, TSUB, TDIV, TCEQ, TCGT, TCLT, TCGE, TCLE, TCNE, TSEMIC, TRPAREN, TLBRACE]
+   34            | adierazpena . TDIV adierazpena
+   35            | adierazpena . TCEQ adierazpena
+   36            | adierazpena . TCGT adierazpena
+   37            | adierazpena . TCLT adierazpena
+   38            | adierazpena . TCGE adierazpena
+   39            | adierazpena . TCLE adierazpena
+   40            | adierazpena . TCNE adierazpena
+
+    TMUL  desplazar e ir al estado 61
+    TADD  desplazar e ir al estado 62
+    TSUB  desplazar e ir al estado 63
+    TDIV  desplazar e ir al estado 64
+    TCEQ  desplazar e ir al estado 65
+    TCGT  desplazar e ir al estado 66
+    TCLT  desplazar e ir al estado 67
+    TCGE  desplazar e ir al estado 68
+    TCLE  desplazar e ir al estado 69
+    TCNE  desplazar e ir al estado 70
+
+    TMUL      [reduce usando la regla 33 (adierazpena)]
+    TADD      [reduce usando la regla 33 (adierazpena)]
+    TSUB      [reduce usando la regla 33 (adierazpena)]
+    TDIV      [reduce usando la regla 33 (adierazpena)]
+    TCEQ      [reduce usando la regla 33 (adierazpena)]
+    TCGT      [reduce usando la regla 33 (adierazpena)]
+    TCLT      [reduce usando la regla 33 (adierazpena)]
+    TCGE      [reduce usando la regla 33 (adierazpena)]
+    TCLE      [reduce usando la regla 33 (adierazpena)]
+    TCNE      [reduce usando la regla 33 (adierazpena)]
+    $default  reduce usando la regla 33 (adierazpena)
+
+
+Estado 83
+
+   31 adierazpena: adierazpena . TADD adierazpena
+   31            | adierazpena TADD adierazpena .  [RELSE, TMUL, TADD, TSUB, TDIV, TCEQ, TCGT, TCLT, TCGE, TCLE, TCNE, TSEMIC, TRPAREN, TLBRACE]
+   32            | adierazpena . TSUB adierazpena
+   33            | adierazpena . TMUL adierazpena
+   34            | adierazpena . TDIV adierazpena
+   35            | adierazpena . TCEQ adierazpena
+   36            | adierazpena . TCGT adierazpena
+   37            | adierazpena . TCLT adierazpena
+   38            | adierazpena . TCGE adierazpena
+   39            | adierazpena . TCLE adierazpena
+   40            | adierazpena . TCNE adierazpena
+
+    TMUL  desplazar e ir al estado 61
+    TADD  desplazar e ir al estado 62
+    TSUB  desplazar e ir al estado 63
+    TDIV  desplazar e ir al estado 64
+    TCEQ  desplazar e ir al estado 65
+    TCGT  desplazar e ir al estado 66
+    TCLT  desplazar e ir al estado 67
+    TCGE  desplazar e ir al estado 68
+    TCLE  desplazar e ir al estado 69
+    TCNE  desplazar e ir al estado 70
+
+    TMUL      [reduce usando la regla 31 (adierazpena)]
+    TADD      [reduce usando la regla 31 (adierazpena)]
+    TSUB      [reduce usando la regla 31 (adierazpena)]
+    TDIV      [reduce usando la regla 31 (adierazpena)]
+    TCEQ      [reduce usando la regla 31 (adierazpena)]
+    TCGT      [reduce usando la regla 31 (adierazpena)]
+    TCLT      [reduce usando la regla 31 (adierazpena)]
+    TCGE      [reduce usando la regla 31 (adierazpena)]
+    TCLE      [reduce usando la regla 31 (adierazpena)]
+    TCNE      [reduce usando la regla 31 (adierazpena)]
+    $default  reduce usando la regla 31 (adierazpena)
+
+
+Estado 84
+
+   31 adierazpena: adierazpena . TADD adierazpena
+   32            | adierazpena . TSUB adierazpena
+   32            | adierazpena TSUB adierazpena .  [RELSE, TMUL, TADD, TSUB, TDIV, TCEQ, TCGT, TCLT, TCGE, TCLE, TCNE, TSEMIC, TRPAREN, TLBRACE]
+   33            | adierazpena . TMUL adierazpena
+   34            | adierazpena . TDIV adierazpena
+   35            | adierazpena . TCEQ adierazpena
+   36            | adierazpena . TCGT adierazpena
+   37            | adierazpena . TCLT adierazpena
+   38            | adierazpena . TCGE adierazpena
+   39            | adierazpena . TCLE adierazpena
+   40            | adierazpena . TCNE adierazpena
+
+    TMUL  desplazar e ir al estado 61
+    TADD  desplazar e ir al estado 62
+    TSUB  desplazar e ir al estado 63
+    TDIV  desplazar e ir al estado 64
+    TCEQ  desplazar e ir al estado 65
+    TCGT  desplazar e ir al estado 66
+    TCLT  desplazar e ir al estado 67
+    TCGE  desplazar e ir al estado 68
+    TCLE  desplazar e ir al estado 69
+    TCNE  desplazar e ir al estado 70
+
+    TMUL      [reduce usando la regla 32 (adierazpena)]
+    TADD      [reduce usando la regla 32 (adierazpena)]
+    TSUB      [reduce usando la regla 32 (adierazpena)]
+    TDIV      [reduce usando la regla 32 (adierazpena)]
+    TCEQ      [reduce usando la regla 32 (adierazpena)]
+    TCGT      [reduce usando la regla 32 (adierazpena)]
+    TCLT      [reduce usando la regla 32 (adierazpena)]
+    TCGE      [reduce usando la regla 32 (adierazpena)]
+    TCLE      [reduce usando la regla 32 (adierazpena)]
+    TCNE      [reduce usando la regla 32 (adierazpena)]
+    $default  reduce usando la regla 32 (adierazpena)
+
+
+Estado 85
+
+   31 adierazpena: adierazpena . TADD adierazpena
+   32            | adierazpena . TSUB adierazpena
+   33            | adierazpena . TMUL adierazpena
+   34            | adierazpena . TDIV adierazpena
+   34            | adierazpena TDIV adierazpena .  [RELSE, TMUL, TADD, TSUB, TDIV, TCEQ, TCGT, TCLT, TCGE, TCLE, TCNE, TSEMIC, TRPAREN, TLBRACE]
+   35            | adierazpena . TCEQ adierazpena
+   36            | adierazpena . TCGT adierazpena
+   37            | adierazpena . TCLT adierazpena
+   38            | adierazpena . TCGE adierazpena
+   39            | adierazpena . TCLE adierazpena
+   40            | adierazpena . TCNE adierazpena
+
+    TMUL  desplazar e ir al estado 61
+    TADD  desplazar e ir al estado 62
+    TSUB  desplazar e ir al estado 63
+    TDIV  desplazar e ir al estado 64
+    TCEQ  desplazar e ir al estado 65
+    TCGT  desplazar e ir al estado 66
+    TCLT  desplazar e ir al estado 67
+    TCGE  desplazar e ir al estado 68
+    TCLE  desplazar e ir al estado 69
+    TCNE  desplazar e ir al estado 70
+
+    TMUL      [reduce usando la regla 34 (adierazpena)]
+    TADD      [reduce usando la regla 34 (adierazpena)]
+    TSUB      [reduce usando la regla 34 (adierazpena)]
+    TDIV      [reduce usando la regla 34 (adierazpena)]
+    TCEQ      [reduce usando la regla 34 (adierazpena)]
+    TCGT      [reduce usando la regla 34 (adierazpena)]
+    TCLT      [reduce usando la regla 34 (adierazpena)]
+    TCGE      [reduce usando la regla 34 (adierazpena)]
+    TCLE      [reduce usando la regla 34 (adierazpena)]
+    TCNE      [reduce usando la regla 34 (adierazpena)]
+    $default  reduce usando la regla 34 (adierazpena)
+
+
+Estado 86
+
+   31 adierazpena: adierazpena . TADD adierazpena
+   32            | adierazpena . TSUB adierazpena
+   33            | adierazpena . TMUL adierazpena
+   34            | adierazpena . TDIV adierazpena
+   35            | adierazpena . TCEQ adierazpena
+   35            | adierazpena TCEQ adierazpena .  [RELSE, TMUL, TADD, TSUB, TDIV, TCEQ, TCGT, TCLT, TCGE, TCLE, TCNE, TSEMIC, TRPAREN, TLBRACE]
+   36            | adierazpena . TCGT adierazpena
+   37            | adierazpena . TCLT adierazpena
+   38            | adierazpena . TCGE adierazpena
+   39            | adierazpena . TCLE adierazpena
+   40            | adierazpena . TCNE adierazpena
+
+    TMUL  desplazar e ir al estado 61
+    TADD  desplazar e ir al estado 62
+    TSUB  desplazar e ir al estado 63
+    TDIV  desplazar e ir al estado 64
+    TCEQ  desplazar e ir al estado 65
+    TCGT  desplazar e ir al estado 66
+    TCLT  desplazar e ir al estado 67
+    TCGE  desplazar e ir al estado 68
+    TCLE  desplazar e ir al estado 69
+    TCNE  desplazar e ir al estado 70
+
+    TMUL      [reduce usando la regla 35 (adierazpena)]
+    TADD      [reduce usando la regla 35 (adierazpena)]
+    TSUB      [reduce usando la regla 35 (adierazpena)]
+    TDIV      [reduce usando la regla 35 (adierazpena)]
+    TCEQ      [reduce usando la regla 35 (adierazpena)]
+    TCGT      [reduce usando la regla 35 (adierazpena)]
+    TCLT      [reduce usando la regla 35 (adierazpena)]
+    TCGE      [reduce usando la regla 35 (adierazpena)]
+    TCLE      [reduce usando la regla 35 (adierazpena)]
+    TCNE      [reduce usando la regla 35 (adierazpena)]
+    $default  reduce usando la regla 35 (adierazpena)
+
+
+Estado 87
+
+   31 adierazpena: adierazpena . TADD adierazpena
+   32            | adierazpena . TSUB adierazpena
+   33            | adierazpena . TMUL adierazpena
+   34            | adierazpena . TDIV adierazpena
+   35            | adierazpena . TCEQ adierazpena
+   36            | adierazpena . TCGT adierazpena
+   36            | adierazpena TCGT adierazpena .  [RELSE, TMUL, TADD, TSUB, TDIV, TCEQ, TCGT, TCLT, TCGE, TCLE, TCNE, TSEMIC, TRPAREN, TLBRACE]
+   37            | adierazpena . TCLT adierazpena
+   38            | adierazpena . TCGE adierazpena
+   39            | adierazpena . TCLE adierazpena
+   40            | adierazpena . TCNE adierazpena
+
+    TMUL  desplazar e ir al estado 61
+    TADD  desplazar e ir al estado 62
+    TSUB  desplazar e ir al estado 63
+    TDIV  desplazar e ir al estado 64
+    TCEQ  desplazar e ir al estado 65
+    TCGT  desplazar e ir al estado 66
+    TCLT  desplazar e ir al estado 67
+    TCGE  desplazar e ir al estado 68
+    TCLE  desplazar e ir al estado 69
+    TCNE  desplazar e ir al estado 70
+
+    TMUL      [reduce usando la regla 36 (adierazpena)]
+    TADD      [reduce usando la regla 36 (adierazpena)]
+    TSUB      [reduce usando la regla 36 (adierazpena)]
+    TDIV      [reduce usando la regla 36 (adierazpena)]
+    TCEQ      [reduce usando la regla 36 (adierazpena)]
+    TCGT      [reduce usando la regla 36 (adierazpena)]
+    TCLT      [reduce usando la regla 36 (adierazpena)]
+    TCGE      [reduce usando la regla 36 (adierazpena)]
+    TCLE      [reduce usando la regla 36 (adierazpena)]
+    TCNE      [reduce usando la regla 36 (adierazpena)]
+    $default  reduce usando la regla 36 (adierazpena)
+
+
+Estado 88
+
+   31 adierazpena: adierazpena . TADD adierazpena
+   32            | adierazpena . TSUB adierazpena
+   33            | adierazpena . TMUL adierazpena
+   34            | adierazpena . TDIV adierazpena
+   35            | adierazpena . TCEQ adierazpena
+   36            | adierazpena . TCGT adierazpena
+   37            | adierazpena . TCLT adierazpena
+   37            | adierazpena TCLT adierazpena .  [RELSE, TMUL, TADD, TSUB, TDIV, TCEQ, TCGT, TCLT, TCGE, TCLE, TCNE, TSEMIC, TRPAREN, TLBRACE]
+   38            | adierazpena . TCGE adierazpena
+   39            | adierazpena . TCLE adierazpena
+   40            | adierazpena . TCNE adierazpena
+
+    TMUL  desplazar e ir al estado 61
+    TADD  desplazar e ir al estado 62
+    TSUB  desplazar e ir al estado 63
+    TDIV  desplazar e ir al estado 64
+    TCEQ  desplazar e ir al estado 65
+    TCGT  desplazar e ir al estado 66
+    TCLT  desplazar e ir al estado 67
+    TCGE  desplazar e ir al estado 68
+    TCLE  desplazar e ir al estado 69
+    TCNE  desplazar e ir al estado 70
+
+    TMUL      [reduce usando la regla 37 (adierazpena)]
+    TADD      [reduce usando la regla 37 (adierazpena)]
+    TSUB      [reduce usando la regla 37 (adierazpena)]
+    TDIV      [reduce usando la regla 37 (adierazpena)]
+    TCEQ      [reduce usando la regla 37 (adierazpena)]
+    TCGT      [reduce usando la regla 37 (adierazpena)]
+    TCLT      [reduce usando la regla 37 (adierazpena)]
+    TCGE      [reduce usando la regla 37 (adierazpena)]
+    TCLE      [reduce usando la regla 37 (adierazpena)]
+    TCNE      [reduce usando la regla 37 (adierazpena)]
+    $default  reduce usando la regla 37 (adierazpena)
+
+
+Estado 89
+
+   31 adierazpena: adierazpena . TADD adierazpena
+   32            | adierazpena . TSUB adierazpena
+   33            | adierazpena . TMUL adierazpena
+   34            | adierazpena . TDIV adierazpena
+   35            | adierazpena . TCEQ adierazpena
+   36            | adierazpena . TCGT adierazpena
+   37            | adierazpena . TCLT adierazpena
+   38            | adierazpena . TCGE adierazpena
+   38            | adierazpena TCGE adierazpena .  [RELSE, TMUL, TADD, TSUB, TDIV, TCEQ, TCGT, TCLT, TCGE, TCLE, TCNE, TSEMIC, TRPAREN, TLBRACE]
+   39            | adierazpena . TCLE adierazpena
+   40            | adierazpena . TCNE adierazpena
+
+    TMUL  desplazar e ir al estado 61
+    TADD  desplazar e ir al estado 62
+    TSUB  desplazar e ir al estado 63
+    TDIV  desplazar e ir al estado 64
+    TCEQ  desplazar e ir al estado 65
+    TCGT  desplazar e ir al estado 66
+    TCLT  desplazar e ir al estado 67
+    TCGE  desplazar e ir al estado 68
+    TCLE  desplazar e ir al estado 69
+    TCNE  desplazar e ir al estado 70
+
+    TMUL      [reduce usando la regla 38 (adierazpena)]
+    TADD      [reduce usando la regla 38 (adierazpena)]
+    TSUB      [reduce usando la regla 38 (adierazpena)]
+    TDIV      [reduce usando la regla 38 (adierazpena)]
+    TCEQ      [reduce usando la regla 38 (adierazpena)]
+    TCGT      [reduce usando la regla 38 (adierazpena)]
+    TCLT      [reduce usando la regla 38 (adierazpena)]
+    TCGE      [reduce usando la regla 38 (adierazpena)]
+    TCLE      [reduce usando la regla 38 (adierazpena)]
+    TCNE      [reduce usando la regla 38 (adierazpena)]
+    $default  reduce usando la regla 38 (adierazpena)
+
+
+Estado 90
+
+   31 adierazpena: adierazpena . TADD adierazpena
+   32            | adierazpena . TSUB adierazpena
+   33            | adierazpena . TMUL adierazpena
+   34            | adierazpena . TDIV adierazpena
+   35            | adierazpena . TCEQ adierazpena
+   36            | adierazpena . TCGT adierazpena
+   37            | adierazpena . TCLT adierazpena
+   38            | adierazpena . TCGE adierazpena
+   39            | adierazpena . TCLE adierazpena
+   39            | adierazpena TCLE adierazpena .  [RELSE, TMUL, TADD, TSUB, TDIV, TCEQ, TCGT, TCLT, TCGE, TCLE, TCNE, TSEMIC, TRPAREN, TLBRACE]
+   40            | adierazpena . TCNE adierazpena
+
+    TMUL  desplazar e ir al estado 61
+    TADD  desplazar e ir al estado 62
+    TSUB  desplazar e ir al estado 63
+    TDIV  desplazar e ir al estado 64
+    TCEQ  desplazar e ir al estado 65
+    TCGT  desplazar e ir al estado 66
+    TCLT  desplazar e ir al estado 67
+    TCGE  desplazar e ir al estado 68
+    TCLE  desplazar e ir al estado 69
+    TCNE  desplazar e ir al estado 70
+
+    TMUL      [reduce usando la regla 39 (adierazpena)]
+    TADD      [reduce usando la regla 39 (adierazpena)]
+    TSUB      [reduce usando la regla 39 (adierazpena)]
+    TDIV      [reduce usando la regla 39 (adierazpena)]
+    TCEQ      [reduce usando la regla 39 (adierazpena)]
+    TCGT      [reduce usando la regla 39 (adierazpena)]
+    TCLT      [reduce usando la regla 39 (adierazpena)]
+    TCGE      [reduce usando la regla 39 (adierazpena)]
+    TCLE      [reduce usando la regla 39 (adierazpena)]
+    TCNE      [reduce usando la regla 39 (adierazpena)]
+    $default  reduce usando la regla 39 (adierazpena)
+
+
+Estado 91
+
+   31 adierazpena: adierazpena . TADD adierazpena
+   32            | adierazpena . TSUB adierazpena
+   33            | adierazpena . TMUL adierazpena
+   34            | adierazpena . TDIV adierazpena
+   35            | adierazpena . TCEQ adierazpena
+   36            | adierazpena . TCGT adierazpena
+   37            | adierazpena . TCLT adierazpena
+   38            | adierazpena . TCGE adierazpena
+   39            | adierazpena . TCLE adierazpena
+   40            | adierazpena . TCNE adierazpena
+   40            | adierazpena TCNE adierazpena .  [RELSE, TMUL, TADD, TSUB, TDIV, TCEQ, TCGT, TCLT, TCGE, TCLE, TCNE, TSEMIC, TRPAREN, TLBRACE]
+
+    TMUL  desplazar e ir al estado 61
+    TADD  desplazar e ir al estado 62
+    TSUB  desplazar e ir al estado 63
+    TDIV  desplazar e ir al estado 64
+    TCEQ  desplazar e ir al estado 65
+    TCGT  desplazar e ir al estado 66
+    TCLT  desplazar e ir al estado 67
+    TCGE  desplazar e ir al estado 68
+    TCLE  desplazar e ir al estado 69
+    TCNE  desplazar e ir al estado 70
+
+    TMUL      [reduce usando la regla 40 (adierazpena)]
+    TADD      [reduce usando la regla 40 (adierazpena)]
+    TSUB      [reduce usando la regla 40 (adierazpena)]
+    TDIV      [reduce usando la regla 40 (adierazpena)]
+    TCEQ      [reduce usando la regla 40 (adierazpena)]
+    TCGT      [reduce usando la regla 40 (adierazpena)]
+    TCLT      [reduce usando la regla 40 (adierazpena)]
+    TCGE      [reduce usando la regla 40 (adierazpena)]
+    TCLE      [reduce usando la regla 40 (adierazpena)]
+    TCNE      [reduce usando la regla 40 (adierazpena)]
+    $default  reduce usando la regla 40 (adierazpena)
+
+
+Estado 92
+
+   20 sententzia_zerrenda: sententzia_zerrenda . sententzia
+   22 sententzia: . TID TASSIG adierazpena TSEMIC
+   23           | . RIF adierazpena TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+   23           | RIF adierazpena TLBRACE sententzia_zerrenda . TRBRACE TSEMIC
+   24           | . RWHILE RFOREVER TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+   25           | . RDO TLBRACE sententzia_zerrenda TRBRACE RUNTIL adierazpena RELSE TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+   26           | . RSKIP RIF adierazpena TSEMIC
+   27           | . REXIT TSEMIC
+   28           | . RREAD TLPAREN aldagaia TRPAREN TSEMIC
+   29           | . RPRINTLN TLPAREN adierazpena TRPAREN TSEMIC
+
+    RIF       desplazar e ir al estado 28
+    RWHILE    desplazar e ir al estado 29
+    RDO       desplazar e ir al estado 30
+    RSKIP     desplazar e ir al estado 31
+    REXIT     desplazar e ir al estado 32
+    RPRINTLN  desplazar e ir al estado 33
+    RREAD     desplazar e ir al estado 34
+    TRBRACE   desplazar e ir al estado 101
+    TID       desplazar e ir al estado 36
+
+    sententzia  ir al estado 37
+
+
+Estado 93
+
+   20 sententzia_zerrenda: sententzia_zerrenda . sententzia
+   22 sententzia: . TID TASSIG adierazpena TSEMIC
+   23           | . RIF adierazpena TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+   24           | . RWHILE RFOREVER TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+   24           | RWHILE RFOREVER TLBRACE sententzia_zerrenda . TRBRACE TSEMIC
+   25           | . RDO TLBRACE sententzia_zerrenda TRBRACE RUNTIL adierazpena RELSE TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+   26           | . RSKIP RIF adierazpena TSEMIC
+   27           | . REXIT TSEMIC
+   28           | . RREAD TLPAREN aldagaia TRPAREN TSEMIC
+   29           | . RPRINTLN TLPAREN adierazpena TRPAREN TSEMIC
+
+    RIF       desplazar e ir al estado 28
+    RWHILE    desplazar e ir al estado 29
+    RDO       desplazar e ir al estado 30
+    RSKIP     desplazar e ir al estado 31
+    REXIT     desplazar e ir al estado 32
+    RPRINTLN  desplazar e ir al estado 33
+    RREAD     desplazar e ir al estado 34
+    TRBRACE   desplazar e ir al estado 102
+    TID       desplazar e ir al estado 36
+
+    sententzia  ir al estado 37
+
+
+Estado 94
+
+   25 sententzia: RDO TLBRACE sententzia_zerrenda TRBRACE . RUNTIL adierazpena RELSE TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+
+    RUNTIL  desplazar e ir al estado 103
+
+
+Estado 95
+
+   26 sententzia: RSKIP RIF adierazpena TSEMIC .
+
+    $default  reduce usando la regla 26 (sententzia)
+
+
+Estado 96
+
+   29 sententzia: RPRINTLN TLPAREN adierazpena TRPAREN . TSEMIC
+
+    TSEMIC  desplazar e ir al estado 104
+
+
+Estado 97
+
+   28 sententzia: RREAD TLPAREN aldagaia TRPAREN . TSEMIC
+
+    TSEMIC  desplazar e ir al estado 105
+
+
+Estado 98
+
+   22 sententzia: TID TASSIG adierazpena TSEMIC .
+
+    $default  reduce usando la regla 22 (sententzia)
+
+
+Estado 99
+
+   15 par_mota: . TOUTPARAM
+   16         | . TCLE
+   17         | . TINOUTPARAM
+   18 par_zerrendaren_bestea: TSEMIC mota . par_mota id_zerrenda par_zerrendaren_bestea
+
+    TCLE         desplazar e ir al estado 39
+    TOUTPARAM    desplazar e ir al estado 40
+    TINOUTPARAM  desplazar e ir al estado 41
+
+    par_mota  ir al estado 106
+
+
+Estado 100
+
+   11 azpiprogramaren_erazagupena: RPROC TID argumentuak erazagupenak azpiprogramen_erazagupena TLBRACE sententzia_zerrenda TRBRACE .
+
+    $default  reduce usando la regla 11 (azpiprogramaren_erazagupena)
+
+
+Estado 101
+
+   23 sententzia: RIF adierazpena TLBRACE sententzia_zerrenda TRBRACE . TSEMIC
+
+    TSEMIC  desplazar e ir al estado 107
+
+
+Estado 102
+
+   24 sententzia: RWHILE RFOREVER TLBRACE sententzia_zerrenda TRBRACE . TSEMIC
+
+    TSEMIC  desplazar e ir al estado 108
+
+
+Estado 103
+
+   25 sententzia: RDO TLBRACE sententzia_zerrenda TRBRACE RUNTIL . adierazpena RELSE TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+   30 aldagaia: . TID
+   31 adierazpena: . adierazpena TADD adierazpena
+   32            | . adierazpena TSUB adierazpena
+   33            | . adierazpena TMUL adierazpena
+   34            | . adierazpena TDIV adierazpena
+   35            | . adierazpena TCEQ adierazpena
+   36            | . adierazpena TCGT adierazpena
+   37            | . adierazpena TCLT adierazpena
+   38            | . adierazpena TCGE adierazpena
+   39            | . adierazpena TCLE adierazpena
+   40            | . adierazpena TCNE adierazpena
+   41            | . aldagaia
+   42            | . TINTEGER
+   43            | . TFLOAT
+   44            | . TLPAREN adierazpena TRPAREN
+
+    TLPAREN   desplazar e ir al estado 45
+    TID       desplazar e ir al estado 46
+    TFLOAT    desplazar e ir al estado 47
+    TINTEGER  desplazar e ir al estado 48
+
+    aldagaia     ir al estado 49
+    adierazpena  ir al estado 109
+
+
+Estado 104
+
+   29 sententzia: RPRINTLN TLPAREN adierazpena TRPAREN TSEMIC .
+
+    $default  reduce usando la regla 29 (sententzia)
+
+
+Estado 105
+
+   28 sententzia: RREAD TLPAREN aldagaia TRPAREN TSEMIC .
+
+    $default  reduce usando la regla 28 (sententzia)
+
+
+Estado 106
+
+    4 id_zerrenda: . TID id_zerrendaren_bestea
+   18 par_zerrendaren_bestea: TSEMIC mota par_mota . id_zerrenda par_zerrendaren_bestea
+
+    TID  desplazar e ir al estado 12
+
+    id_zerrenda  ir al estado 110
+
+
+Estado 107
+
+   23 sententzia: RIF adierazpena TLBRACE sententzia_zerrenda TRBRACE TSEMIC .
+
+    $default  reduce usando la regla 23 (sententzia)
+
+
+Estado 108
+
+   24 sententzia: RWHILE RFOREVER TLBRACE sententzia_zerrenda TRBRACE TSEMIC .
+
+    $default  reduce usando la regla 24 (sententzia)
+
+
+Estado 109
+
+   25 sententzia: RDO TLBRACE sententzia_zerrenda TRBRACE RUNTIL adierazpena . RELSE TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+   31 adierazpena: adierazpena . TADD adierazpena
+   32            | adierazpena . TSUB adierazpena
+   33            | adierazpena . TMUL adierazpena
+   34            | adierazpena . TDIV adierazpena
+   35            | adierazpena . TCEQ adierazpena
+   36            | adierazpena . TCGT adierazpena
+   37            | adierazpena . TCLT adierazpena
+   38            | adierazpena . TCGE adierazpena
+   39            | adierazpena . TCLE adierazpena
+   40            | adierazpena . TCNE adierazpena
+
+    RELSE  desplazar e ir al estado 111
+    TMUL   desplazar e ir al estado 61
+    TADD   desplazar e ir al estado 62
+    TSUB   desplazar e ir al estado 63
+    TDIV   desplazar e ir al estado 64
+    TCEQ   desplazar e ir al estado 65
+    TCGT   desplazar e ir al estado 66
+    TCLT   desplazar e ir al estado 67
+    TCGE   desplazar e ir al estado 68
+    TCLE   desplazar e ir al estado 69
+    TCNE   desplazar e ir al estado 70
+
+
+Estado 110
+
+   18 par_zerrendaren_bestea: . TSEMIC mota par_mota id_zerrenda par_zerrendaren_bestea
+   18                       | TSEMIC mota par_mota id_zerrenda . par_zerrendaren_bestea
+   19                       | . %empty  [TRPAREN]
+
+    TSEMIC  desplazar e ir al estado 78
+
+    $default  reduce usando la regla 19 (par_zerrendaren_bestea)
+
+    par_zerrendaren_bestea  ir al estado 112
+
+
+Estado 111
+
+   25 sententzia: RDO TLBRACE sententzia_zerrenda TRBRACE RUNTIL adierazpena RELSE . TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+
+    TLBRACE  desplazar e ir al estado 113
+
+
+Estado 112
+
+   18 par_zerrendaren_bestea: TSEMIC mota par_mota id_zerrenda par_zerrendaren_bestea .
+
+    $default  reduce usando la regla 18 (par_zerrendaren_bestea)
+
+
+Estado 113
+
+   20 sententzia_zerrenda: . sententzia_zerrenda sententzia
+   21                    | . %empty
+   25 sententzia: RDO TLBRACE sententzia_zerrenda TRBRACE RUNTIL adierazpena RELSE TLBRACE . sententzia_zerrenda TRBRACE TSEMIC
+
+    $default  reduce usando la regla 21 (sententzia_zerrenda)
+
+    sententzia_zerrenda  ir al estado 114
+
+
+Estado 114
+
+   20 sententzia_zerrenda: sententzia_zerrenda . sententzia
+   22 sententzia: . TID TASSIG adierazpena TSEMIC
+   23           | . RIF adierazpena TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+   24           | . RWHILE RFOREVER TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+   25           | . RDO TLBRACE sententzia_zerrenda TRBRACE RUNTIL adierazpena RELSE TLBRACE sententzia_zerrenda TRBRACE TSEMIC
+   25           | RDO TLBRACE sententzia_zerrenda TRBRACE RUNTIL adierazpena RELSE TLBRACE sententzia_zerrenda . TRBRACE TSEMIC
+   26           | . RSKIP RIF adierazpena TSEMIC
+   27           | . REXIT TSEMIC
+   28           | . RREAD TLPAREN aldagaia TRPAREN TSEMIC
+   29           | . RPRINTLN TLPAREN adierazpena TRPAREN TSEMIC
+
+    RIF       desplazar e ir al estado 28
+    RWHILE    desplazar e ir al estado 29
+    RDO       desplazar e ir al estado 30
+    RSKIP     desplazar e ir al estado 31
+    REXIT     desplazar e ir al estado 32
+    RPRINTLN  desplazar e ir al estado 33
+    RREAD     desplazar e ir al estado 34
+    TRBRACE   desplazar e ir al estado 115
+    TID       desplazar e ir al estado 36
+
+    sententzia  ir al estado 37
+
+
+Estado 115
+
+   25 sententzia: RDO TLBRACE sententzia_zerrenda TRBRACE RUNTIL adierazpena RELSE TLBRACE sententzia_zerrenda TRBRACE . TSEMIC
+
+    TSEMIC  desplazar e ir al estado 116
+
+
+Estado 116
+
+   25 sententzia: RDO TLBRACE sententzia_zerrenda TRBRACE RUNTIL adierazpena RELSE TLBRACE sententzia_zerrenda TRBRACE TSEMIC .
+
+    $default  reduce usando la regla 25 (sententzia)

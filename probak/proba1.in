@@ -1,11 +1,42 @@
 program adibidea
 
-// # hau iruzkin bat da
-// [* hau iruzkin
-//   bat da *]
+int a, b; float c;
+proc batu(int => x; int => y; int <=> emaitza)
+{  lag = y; emaitza = x;
+	  if emaitza <= 1000 {
+	    bueltak = 0;
+	   
+    }; # if amaiera
+
+    while forever {
+       bueltak = 1;
+    }; #while amaiera
+
+    do {
+       bueltak = 2;
+    } until bueltak == 2 
+    else {
+       emaitza = 1;
+    }; #do until else amaiera
+
+   skip if bueltak >= 3; 
+
+   exit; 
+
+   read(a); 
+
+   println(b);
+
+  } # proc amaiera
+  
+ # hau iruzkin bat da
+ [* hau iruzkin
+   bat da *]
 
 {
 
-   a = 0.4756 ;
+   a = 10;
+   b = 3;
+   c = 0.4756 ;
 
 }

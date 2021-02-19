@@ -18,7 +18,7 @@
 %}
 
 %%
-program                 		TOKEN(RPROGRAM) ;
+program                 		TOKEN(RPROGRAM);
 if                      		TOKEN(RIF);
 while                   		TOKEN(RWHILE);
 forever                 		TOKEN(RFOREVER);
@@ -33,10 +33,10 @@ read                    		TOKEN(RREAD);
 int                     		TOKEN(RINT);
 float                   		TOKEN(RFLOAT);
 
-"*"                    		TOKEN(TMUL);
-"="                    		TOKEN(TASSIG);
+"*"                    	  	TOKEN(TMUL);
+"="                    	  	TOKEN(TASSIG);
 "+"                     		TOKEN(TADD);
-"-"                    		TOKEN(TSUB);
+"-"                    	  	TOKEN(TSUB);
 "/"                     		TOKEN(TDIV);
 "=="                    		TOKEN(TCEQ);
 ">"                     		TOKEN(TCGT);
@@ -57,8 +57,8 @@ float                   		TOKEN(RFLOAT);
 [ \t\n]                        	;
 \[\*([^*]|\*+[^*\]])*\*+\]     	printf("%s",yytext);
 
-[a-zA-Z](_?[a-zA-Z0-9])*        	TOKEN(TID); 
-[0-9]+\.[0-9]+([eE][+-]?[0-9]+)?	TOKEN(TFLOAT);
+[a-zA-Z](_?[a-zA-Z0-9])*          	TOKEN(TID); 
+[0-9]+\.[0-9]+([eE][+-]?[0-9]+)?	  TOKEN(TFLOAT);
 [0-9]+                            	TOKEN(TINTEGER); 
 
 .                       		{ cout << "Token ezezaguna: " << yytext << endl; yyterminate(); }
