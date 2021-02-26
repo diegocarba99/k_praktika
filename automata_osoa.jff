@@ -5,7 +5,6 @@
 		<state id="0" name="q0">
 			<x>489.0</x>
 			<y>545.0</y>
-			<label>TZURIA</label>
 			<initial/>
 			<final/>
 		</state>
@@ -130,8 +129,8 @@
 			<y>725.0</y>
 		</state>
 		<state id="23" name="q23">
-			<x>778.0</x>
-			<y>805.0</y>
+			<x>765.0</x>
+			<y>802.0</y>
 			<label>TMULCOMM</label>
 			<final/>
 		</state>
@@ -202,91 +201,17 @@
 			<label>TFLOAT</label>
 			<final/>
 		</state>
+		<state id="37" name="q37">
+			<x>500.0</x>
+			<y>259.0</y>
+			<label>TZURIA</label>
+			<final/>
+		</state>
 		<!--The list of transitions.-->
 		<transition>
-			<from>35</from>
-			<to>36</to>
-			<read>[0-9]</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>12</to>
-			<read>-</read>
-		</transition>
-		<transition>
-			<from>22</from>
+			<from>20</from>
 			<to>21</to>
 			<read>*</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>3</to>
-			<read>=</read>
-		</transition>
-		<transition>
-			<from>3</from>
-			<to>4</to>
-			<read>=</read>
-		</transition>
-		<transition>
-			<from>7</from>
-			<to>8</to>
-			<read>=</read>
-		</transition>
-		<transition>
-			<from>22</from>
-			<to>22</to>
-			<read>\n</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>0</to>
-			<read>\n</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>0</to>
-			<read>\s</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>0</to>
-			<read>\t</read>
-		</transition>
-		<transition>
-			<from>9</from>
-			<to>10</to>
-			<read>=</read>
-		</transition>
-		<transition>
-			<from>33</from>
-			<to>34</to>
-			<read>e</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>7</to>
-			<read>&gt;</read>
-		</transition>
-		<transition>
-			<from>18</from>
-			<to>17</to>
-			<read>-</read>
-		</transition>
-		<transition>
-			<from>20</from>
-			<to>22</to>
-			<read>edozer</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>28</to>
-			<read>#</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>9</to>
-			<read>/</read>
 		</transition>
 		<transition>
 			<from>21</from>
@@ -294,22 +219,22 @@
 			<read>]</read>
 		</transition>
 		<transition>
-			<from>3</from>
-			<to>24</to>
-			<read>&gt;</read>
-		</transition>
-		<transition>
-			<from>29</from>
-			<to>29</to>
-			<read>ez_#</read>
-		</transition>
-		<transition>
 			<from>0</from>
-			<to>31</to>
-			<read>[0-9]</read>
+			<to>19</to>
+			<read>[</read>
 		</transition>
 		<transition>
-			<from>16</from>
+			<from>20</from>
+			<to>22</to>
+			<read>edozer_ken_*</read>
+		</transition>
+		<transition>
+			<from>22</from>
+			<to>22</to>
+			<read>\n</read>
+		</transition>
+		<transition>
+			<from>18</from>
 			<to>17</to>
 			<read>-</read>
 		</transition>
@@ -319,19 +244,34 @@
 			<read>\n</read>
 		</transition>
 		<transition>
-			<from>33</from>
-			<to>34</to>
-			<read>E</read>
+			<from>16</from>
+			<to>17</to>
+			<read>-</read>
 		</transition>
 		<transition>
-			<from>28</from>
-			<to>29</to>
-			<read>ez_#</read>
+			<from>9</from>
+			<to>10</to>
+			<read>=</read>
 		</transition>
 		<transition>
-			<from>20</from>
-			<to>22</to>
-			<read>\n</read>
+			<from>3</from>
+			<to>4</to>
+			<read>=</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>9</to>
+			<read>/</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>31</to>
+			<read>[0-9]</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>1</to>
+			<read>(</read>
 		</transition>
 		<transition>
 			<from>0</from>
@@ -340,8 +280,43 @@
 		</transition>
 		<transition>
 			<from>0</from>
-			<to>11</to>
-			<read>+</read>
+			<to>27</to>
+			<read>,</read>
+		</transition>
+		<transition>
+			<from>5</from>
+			<to>6</to>
+			<read>=</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>3</to>
+			<read>=</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>7</to>
+			<read>&gt;</read>
+		</transition>
+		<transition>
+			<from>34</from>
+			<to>36</to>
+			<read>[0-9]</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>13</to>
+			<read>*</read>
+		</transition>
+		<transition>
+			<from>6</from>
+			<to>25</to>
+			<read>&gt;</read>
+		</transition>
+		<transition>
+			<from>7</from>
+			<to>8</to>
+			<read>=</read>
 		</transition>
 		<transition>
 			<from>31</from>
@@ -359,14 +334,34 @@
 			<read>[0-9]</read>
 		</transition>
 		<transition>
-			<from>0</from>
-			<to>14</to>
-			<read>{</read>
+			<from>29</from>
+			<to>30</to>
+			<read>\n</read>
+		</transition>
+		<transition>
+			<from>31</from>
+			<to>32</to>
+			<read>.</read>
+		</transition>
+		<transition>
+			<from>22</from>
+			<to>21</to>
+			<read>*</read>
+		</transition>
+		<transition>
+			<from>3</from>
+			<to>24</to>
+			<read>&gt;</read>
 		</transition>
 		<transition>
 			<from>0</from>
-			<to>1</to>
-			<read>(</read>
+			<to>11</to>
+			<read>+</read>
+		</transition>
+		<transition>
+			<from>33</from>
+			<to>34</to>
+			<read>E</read>
 		</transition>
 		<transition>
 			<from>16</from>
@@ -374,39 +369,34 @@
 			<read>[a-zA-Z0-9]</read>
 		</transition>
 		<transition>
-			<from>0</from>
-			<to>15</to>
-			<read>}</read>
-		</transition>
-		<transition>
-			<from>19</from>
-			<to>20</to>
-			<read>*</read>
-		</transition>
-		<transition>
-			<from>29</from>
-			<to>30</to>
+			<from>20</from>
+			<to>22</to>
 			<read>\n</read>
 		</transition>
 		<transition>
 			<from>0</from>
-			<to>13</to>
-			<read>*</read>
+			<to>16</to>
+			<read>[a-zA-Z]</read>
+		</transition>
+		<transition>
+			<from>22</from>
+			<to>22</to>
+			<read>edozer_ken_*</read>
+		</transition>
+		<transition>
+			<from>18</from>
+			<to>18</to>
+			<read>[a-zA-Z0-9]</read>
 		</transition>
 		<transition>
 			<from>0</from>
-			<to>27</to>
-			<read>,</read>
+			<to>2</to>
+			<read>)</read>
 		</transition>
 		<transition>
-			<from>32</from>
-			<to>33</to>
+			<from>35</from>
+			<to>36</to>
 			<read>[0-9]</read>
-		</transition>
-		<transition>
-			<from>31</from>
-			<to>32</to>
-			<read>.</read>
 		</transition>
 		<transition>
 			<from>17</from>
@@ -415,43 +405,58 @@
 		</transition>
 		<transition>
 			<from>0</from>
-			<to>19</to>
-			<read>[</read>
+			<to>28</to>
+			<read>#</read>
 		</transition>
 		<transition>
-			<from>18</from>
-			<to>18</to>
-			<read>[a-zA-Z0-9]</read>
+			<from>0</from>
+			<to>14</to>
+			<read>{</read>
 		</transition>
 		<transition>
-			<from>34</from>
-			<to>36</to>
+			<from>32</from>
+			<to>33</to>
 			<read>[0-9]</read>
 		</transition>
 		<transition>
-			<from>20</from>
-			<to>21</to>
+			<from>28</from>
+			<to>29</to>
+			<read>ez_#</read>
+		</transition>
+		<transition>
+			<from>19</from>
+			<to>20</to>
 			<read>*</read>
 		</transition>
 		<transition>
 			<from>0</from>
-			<to>2</to>
-			<read>)</read>
+			<to>12</to>
+			<read>-</read>
 		</transition>
 		<transition>
-			<from>5</from>
-			<to>6</to>
-			<read>=</read>
+			<from>33</from>
+			<to>34</to>
+			<read>e</read>
+		</transition>
+		<transition>
+			<from>29</from>
+			<to>29</to>
+			<read>ez_#_ken_\n</read>
 		</transition>
 		<transition>
 			<from>0</from>
-			<to>16</to>
-			<read>[a-zA-Z]</read>
+			<to>37</to>
+			<read>\t</read>
 		</transition>
 		<transition>
-			<from>6</from>
-			<to>25</to>
-			<read>&gt;</read>
+			<from>0</from>
+			<to>15</to>
+			<read>}</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>37</to>
+			<read>\n</read>
 		</transition>
 		<transition>
 			<from>34</from>
@@ -459,19 +464,19 @@
 			<read>-</read>
 		</transition>
 		<transition>
-			<from>22</from>
-			<to>22</to>
-			<read>edozer</read>
+			<from>34</from>
+			<to>35</to>
+			<read>+</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>37</to>
+			<read>\s</read>
 		</transition>
 		<transition>
 			<from>0</from>
 			<to>5</to>
 			<read>&lt;</read>
-		</transition>
-		<transition>
-			<from>34</from>
-			<to>35</to>
-			<read>+</read>
 		</transition>
 	</automaton>
 </structure>
