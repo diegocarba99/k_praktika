@@ -1,0 +1,16 @@
+# Aldagaien definizioa lekuz kanpo dago.
+# Taldekideek sortua.
+
+program adibidea {
+
+  int a, b, tmp;
+    
+  # ヽ༼ ಠ益ಠ ༽ﾉ 
+  # Zergatik definitu dituzu aldagaiak hemen??
+
+
+  # Swap 'a' eta 'b'
+  tmp = a;
+  a = b;
+  b = tmp;
+}

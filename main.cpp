@@ -5,12 +5,12 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-  cout << "hasi da..." << endl << endl ;
+  cout << "INFO: Analisi lexiko hasieratzen..." << endl ;
   if (yyparse() == 0) { 
-    cout << "ONDO bukatu da..." << endl << endl ;
+    cout << "Emaitza: ONDO" << endl << endl ;
   }
   else {
-    cout << "GAIZKI bukatu da..." << endl << endl ;
+    cout << "Emaitza: GAIZKI" << endl << endl ;
   }
   return 0;
 }

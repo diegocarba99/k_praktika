@@ -1,3 +1,6 @@
+# Programa arrun bat egituraren frogapena. Fluxu egituren probak
+# Ikasgaiko irakasleek emana.
+
 program adibidea
 
 int a, b; float c;

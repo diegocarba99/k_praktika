@@ -1,0 +1,16 @@
+# Erabileen arteko lehentasunak egiaztatzeko proba
+# Taldekideek sortua.
+
+program eragileen_lehentasunak
+	int a, b, c;
+{
+  
+
+  a = 4;
+  b = 6;
+  c = 7;
+  
+  a = b + a * c;
+  b = b * a + a;
+  c = (a + b) * c;
+}

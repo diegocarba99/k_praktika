@@ -1,0 +1,18 @@
+# Parentesien funtzionamendu zuzenen proba. println baten barnean hainbat parentesi.
+# Taldekideek sortua.
+
+program adibidea 
+  int a, c;
+  float b;
+{ 
+  a = 5;
+  b = 0.3;
+  c = 6;
+
+  
+  if a /= 1{
+    # Zer gertatze da parentesi asko jartzean?
+    println( ( (a+c+a)*b ) );
+  };
+  
+}

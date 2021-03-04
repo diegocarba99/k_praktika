@@ -1,9 +1,12 @@
+# Oker dagoen komentarioen proba.
+# Ikasgaiko irakasleek emana.
+
+
 program adibidea
+	float a;
 
-# hau gaizki #
-
-[* hau iruzkin 
-   bat da ? ez
+ [* erdiak erdi ustel *]
+   komentario erdia ergel *]
 
 {
 

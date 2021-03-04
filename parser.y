@@ -15,7 +15,7 @@
 %}
 
 /* 
-   Hemen erazagutu ikurrek zein atributu-mota izan dezaketen
+   Hemen erazagutu ikurrek zein atributu-mota izan dezaketennnn
 
 %union {
     string *izena ; 
@@ -34,10 +34,9 @@
 /* 
    Lehentasunak ezarri.
 */
+%nonassoc TCEQ TCGT TCLT TCGE TCLE TCNE
 %left TADD TSUB
 %left TMUL TDIV
-
-%nonassoc TCEQ TCGT TCLT TCGE TCLE TCNE
 
 /* Hemen erazagutu atributuak dauzkaten ez-bukaerakoak. Adibidea:
 %type <izena> adierazpena
@@ -90,7 +89,7 @@ par_zerrendaren_bestea : TSEMIC mota par_mota id_zerrenda par_zerrendaren_bestea
 
 sententzia_zerrenda : sententzia_zerrenda sententzia
                     | /* hutsa */
-                    ;
+                    ; 
 
 sententzia : TID TASSIG adierazpena TSEMIC
            | RIF adierazpena TLBRACE sententzia_zerrenda TRBRACE TSEMIC

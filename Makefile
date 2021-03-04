@@ -8,7 +8,11 @@ all: parser proba
 .PHONY: clean
 
 clean:
-	rm parser.cpp parser.hpp parser tokens.cpp *~
+	rm parser.cpp parser.hpp parser tokens.cpp  *~
+
+graph: parser.hpp
+	bison -r all -g parser.y
+	dot -Tpdf parser.dot -o parser.pdf
 
 parser.cpp: parser.y
 	bison -d -o $@ $^
@@ -24,4 +28,8 @@ parser: $(SOURCES)
 proba:  parser ./probak/proba1.in ./probak/proba2.in ./probak/probatxar1.in
 	./parser <./probak/proba1.in
 	./parser <./probak/proba2.in
+	./parser <./probak/proba3.in
+	./parser <./probak/proba4.in
 	./parser <./probak/probatxar1.in
+	./parser <./probak/probatxar2.in
+	./parser <./probak/probatxar3.in
