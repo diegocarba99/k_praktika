@@ -54,14 +54,14 @@ float                   			TOKEN(RFLOAT);
 "<=>"                   			TOKEN(TINOUTPARAM);
 
 #[^#\n]*\n                    		;
-[ \t\n]                        	    ;
+[ \t\n]*                       	    ;
 \[\*([^*]|\*+[^*\]])*\*+\]          ;
 
 [a-zA-Z](_?[a-zA-Z0-9])*          	TOKEN(TID); 
-[0-9]+\.[0-9]+([eE][+-]?[0-9]+)?	TOKEN(TFLOAT);
+[0-9]+\.[0-9]+([eE][-+]?[0-9]+)?	TOKEN(TFLOAT);
 [0-9]+                            	TOKEN(TINTEGER); 
 
-.                       		    { cout << "ERROREA: Token ezezaguna '" << yytext << "'" << endl; yyterminate(); }
+.                       		    { cout << "ERR: Token ezezaguna '" << yytext << "'" << endl << "Mesedez kontu gehiago izan idazterakoan..."; yyterminate(); }
 %%
 
 
