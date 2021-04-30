@@ -1,45 +1,36 @@
 # Programa arrun bat egituraren frogapena. Fluxu egituren probak
 # Ikasgaiko irakasleek emana.
+program adibidea 
 
-program adibidea
+  int a, b, c;
+  float d, e; 
+  [* hau iruzkin 
+    lerroanitza da *]
 
-int a, b; float c;
-proc batu(int => x; int => y; int <=> emaitza)
-{  lag = y; emaitza = x;
-	  if emaitza <= 1000 {
-	    bueltak = 0;
-	   
+  proc batu(int => x; int => y; int <=> emaitza)
+    int lag, bueltak;   
+  {  
+    lag = y; 
+    emaitza = x;
+    if emaitza < 1000 {
+      bueltak = 0;
+      do { 
+          emaitza = emaitza + 1;
+          skip if emaitza > 100000;
+          lag = lag - 1;
+          bueltak = bueltak + 1;
+        } until lag == 0 
+      else {
+        if emaitza < 0 { exit; };
+        println(bueltak);
+      }; # do amaiera
     }; # if amaiera
-
-    while forever {
-       bueltak = 1;
-    }; #while amaiera
-
-    do {
-       bueltak = 2;
-    } until bueltak == 2 
-    else {
-       emaitza = 1;
-    }; #do until else amaiera
-
-   skip if bueltak >= 3; 
-
-   exit; 
-
-   read(a); 
-
-   println(b);
-
   } # proc amaiera
-  
- # hau iruzkin bat da
- [* hau iruzkin
-   bat da *]
-
-{
-
-   a = 10;
-   b = 3;
-   c = 0.4756 ;
-
+{ 
+  read(a); 
+  read(b);
+  d = 1/b;
+  [* batu(a,b,c); prozeduren deiak tratatzen dituzten praktiketan soilik *]
+  c = c*(c*d)+e;
+  println(c);
 }

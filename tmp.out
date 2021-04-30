@@ -1,0 +1,65 @@
+/usr/bin/ld: /tmp/cc1MFNat.o: en la función `yyparse()':
+parser.cpp:(.text+0xadc): referencia a `Kodea::agGehitu(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0xb09): referencia a `SinboloTaula::SinboloTaula()' sin definir
+/usr/bin/ld: parser.cpp:(.text+0xb1f): referencia a `SinboloTaulenPila::pilaratu(SinboloTaula const&)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0xb94): referencia a `Kodea::agGehitu(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0xbbe): referencia a `Kodea::idatzi()' sin definir
+/usr/bin/ld: parser.cpp:(.text+0xbca): referencia a `SinboloTaulenPila::despilatu()' sin definir
+/usr/bin/ld: parser.cpp:(.text+0xbfa): referencia a `Kodea::erazagupenakGehitu(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::list<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0xea5): referencia a `Kodea::agGehitu(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0xf0a): referencia a `Kodea::agGehitu(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0xfc1): referencia a `Kodea::parametroakGehitu(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::list<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x11aa): referencia a `Kodea::parametroakGehitu(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::list<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x1392): referencia a `Kodea::agGehitu(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x143e): referencia a `Kodea::agOsatu(std::__cxx11::list<int, std::allocator<int> >&, int)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x146e): referencia a `Kodea::agOsatu(std::__cxx11::list<int, std::allocator<int> >&, int)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x1559): referencia a `Kodea::agGehitu(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x15a9): referencia a `Kodea::agOsatu(std::__cxx11::list<int, std::allocator<int> >&, int)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x1605): referencia a `Kodea::agOsatu(std::__cxx11::list<int, std::allocator<int> >&, int)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x1635): referencia a `Kodea::agOsatu(std::__cxx11::list<int, std::allocator<int> >&, int)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x1664): referencia a `Kodea::agOsatu(std::__cxx11::list<int, std::allocator<int> >&, int)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x1694): referencia a `Kodea::agOsatu(std::__cxx11::list<int, std::allocator<int> >&, int)' sin definir
+/usr/bin/ld: /tmp/cc1MFNat.o:parser.cpp:(.text+0x177d): más referencias a `Kodea::agOsatu(std::__cxx11::list<int, std::allocator<int> >&, int)' sin definir a continuación
+/usr/bin/ld: /tmp/cc1MFNat.o: en la función `yyparse()':
+parser.cpp:(.text+0x1833): referencia a `Kodea::agGehitu(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x18c4): referencia a `Kodea::agGehitu(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x1924): referencia a `Kodea::agGehitu(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x19f1): referencia a `Kodea::idBerria[abi:cxx11]()' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x1acb): referencia a `Kodea::agGehitu(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x1b84): referencia a `Kodea::idBerria[abi:cxx11]()' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x1c2c): referencia a `Kodea::idBerria[abi:cxx11]()' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x1d06): referencia a `Kodea::agGehitu(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x1dbf): referencia a `Kodea::idBerria[abi:cxx11]()' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x1e99): referencia a `Kodea::agGehitu(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x1f69): referencia a `Kodea::lortuErref() const' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x1f98): referencia a `Kodea::lortuErref() const' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x2059): referencia a `Kodea::agGehitu(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x20d7): referencia a `Kodea::agGehitu(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x2143): referencia a `Kodea::lortuErref() const' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x2172): referencia a `Kodea::lortuErref() const' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x2233): referencia a `Kodea::agGehitu(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x22b1): referencia a `Kodea::agGehitu(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x231d): referencia a `Kodea::lortuErref() const' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x234c): referencia a `Kodea::lortuErref() const' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x240d): referencia a `Kodea::agGehitu(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x248b): referencia a `Kodea::agGehitu(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x24f7): referencia a `Kodea::lortuErref() const' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x2526): referencia a `Kodea::lortuErref() const' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x25e7): referencia a `Kodea::agGehitu(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x2665): referencia a `Kodea::agGehitu(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x26d1): referencia a `Kodea::lortuErref() const' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x2700): referencia a `Kodea::lortuErref() const' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x27c1): referencia a `Kodea::agGehitu(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x283f): referencia a `Kodea::agGehitu(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x28ab): referencia a `Kodea::lortuErref() const' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x28da): referencia a `Kodea::lortuErref() const' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x299b): referencia a `Kodea::agGehitu(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x2a19): referencia a `Kodea::agGehitu(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x2ccf): referencia a `Kodea::lortuErref() const' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x2d09): referencia a `Kodea::lortuErref() const' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x2d63): referencia a `Kodea::agGehitu(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)' sin definir
+/usr/bin/ld: /tmp/cc1MFNat.o: en la función `__static_initialization_and_destruction_0(int, int)':
+parser.cpp:(.text+0x3ca7): referencia a `Kodea::Kodea()' sin definir
+/usr/bin/ld: parser.cpp:(.text+0x3ccd): referencia a `SinboloTaulenPila::SinboloTaulenPila()' sin definir
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:26: parser] Error 1

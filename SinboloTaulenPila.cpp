@@ -1,4 +1,6 @@
 #include "SinboloTaulenPila.h"
+#include "Lag.h"
+#include "SinboloTaula.h"
 
 #include <iostream>
 

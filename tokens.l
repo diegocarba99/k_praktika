@@ -4,13 +4,14 @@
  #include <string>
  #include <iostream>
  #include <vector>
- #include "parser.hpp" 
+ #include "parser.hpp"
+ #include "Lag.h"
  
  using namespace std ;
 
  #define TOKEN(t) return t 
 
- /* #define TOKENST(t) yylval.izena = new std::string(yytext, yyleng) ; return t */
+ #define TOKENST(t) yylval.izena = new std::string(yytext, yyleng) ; return t 
 
  extern "C" int yywrap() { return(1) ; }  
  extern void processtoken (int t, string id);
@@ -57,9 +58,9 @@ float                   			TOKEN(RFLOAT);
 [ \t\n]*                       	    ;
 \[\*([^*]|\*+[^*\]])*\*+\]          ;
 
-[a-zA-Z](_?[a-zA-Z0-9])*          	TOKEN(TID); 
-[0-9]+\.[0-9]+([eE][-+]?[0-9]+)?	TOKEN(TFLOAT);
-[0-9]+                            	TOKEN(TINTEGER); 
+[a-zA-Z](_?[a-zA-Z0-9])*          	TOKENST(TID); 
+[0-9]+\.[0-9]+([eE][-+]?[0-9]+)?	TOKENST(TFLOAT);
+[0-9]+                            	TOKENST(TINTEGER); 
 
 .                       		    { cout << "ERR: Token ezezaguna '" << yytext << "'" << endl << "Mesedez kontu gehiago izan idazterakoan..."; yyterminate(); }
 %%

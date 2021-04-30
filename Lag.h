@@ -6,23 +6,30 @@
 #include <vector>
 #include <list>
 
+using namespace std;
 
+typedef list<int> ref_list;
+typedef list<string> id_list;
+typedef list<struct identifikadore> identifikadoreak;
+typedef list<struct prozedura> prozedurak;
 
-typedef std::list<int> ErrefLista;
-typedef std::list<std::string> IdLista;
-typedef std::list<struct identifikadore> Identifikadoreak;
-typedef std::list<struct prozedura> Prozedurak;
-
-struct expresionstruct {
-  std::string izena ;
-  ErrefLista trueLista ;
-  ErrefLista falseLista ;
-  std::string mota ;
+struct ref_list_st {
+  ref_list exit;
+  ref_list skip;
 };
 
+struct expr_st {
+  string   izena ;
+  ref_list true_list ;
+  ref_list false_list ;
+  //string   mota ;
+};
+
+
+
 struct zerrendastruct {
-  IdLista izenak;
-  IdLista motak;
+  id_list izenak;
+  id_list motak;
 };
 
 

@@ -7,7 +7,6 @@
 #include <vector>
 #include <list>
 #include "Lag.h"
-#include "Erregistroa.h"
 
 
 /* Sortuko den kodea kudeatzeko egitura. Kodea zuzenean idatzi beharrean, egitura honetan gordeko da, eta amaieran,
@@ -46,15 +45,15 @@ public:
 	void agGehitu(const std::string &agindu);
 
 	/* Aldagai zerrenda eta mota emanda erazagupen aginduak sortu eta gehitu */
-	void erazagupenakGehitu(const std::string &motaIzena, const IdLista &idIzenak);
+	void erazagupenakGehitu(const std::string &motaIzena, const id_list &idIzenak);
 
 	/* Parametro zerrenda eta mota emanda parametro erazagupen aginduak sortu eta gehitu */
-	void parametroakGehitu(const std::string &motaIzena, const IdLista &idIzenak, const std::string &pMota) ;
+	void parametroakGehitu(const std::string &motaIzena, const id_list &idIzenak, const std::string &pMota) ;
 
 
 	/* Adierazitako aginduei falta zaien erreferentzia gehitzen die.
 	 * Adibidez: "goto" => "goto 20;" */
-	void agOsatu(ErrefLista &aginduZenbakiak, const int erreferentzia);
+	void agOsatu(ref_list &aginduZenbakiak, const int erreferentzia);
 
 	/* Egituran metatutako aginduak fitxategian idazten ditu. */
 	void idatzi();
@@ -64,10 +63,10 @@ public:
 
 	/*IdListak duen osagai kopuru berdina duen lista bat bueltatuko du, osagai bakoitza parametro gisa pasatutako mota izanik*/
 	
-	void bildu_param(const IdLista &lista, const std::string &mota, const std::string &par, prozedura &idList);
+	void bildu_param(const id_list &lista, const std::string &mota, const std::string &par, prozedura &idList);
 
 
-	bool idatzi_parametroa(const std::string &id, const std::string &mota, const std::string &param, const Erregistroa &erreg);
+	
 
 
 

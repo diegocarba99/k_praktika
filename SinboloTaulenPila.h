@@ -3,6 +3,8 @@
 
 #include <stack>
 #include "SinboloTaula.h"
+#include "Lag.h"
+#include <iostream>
 
 /* Sinbolo-taulen pila errepresentatzeko egitura. Itzultzailearen eta sinbolo-taularen tartean kokatzen da.
  * Honela, egitura honi sinbolo baten informazioa eskatzean, tontorreko taulan begiratuko du. Aurkitzen ez badu,

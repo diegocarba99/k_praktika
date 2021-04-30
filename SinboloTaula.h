@@ -4,6 +4,9 @@
 #include <string>
 #include <map>
 #include <vector>
+#include "Kodea.h"
+#include "Lag.h"
+
 
 /* Sinbolo-taula errepresentatuko duen datu-egitura. Honek bidea eman behar du konpilazioan zehar erazagutzen
  * diren sinbolo desberdinak (aldagaiak, prozedurak, ...) eta informazio gehigarria (motak, parametroak, ...) gorde

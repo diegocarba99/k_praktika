@@ -1,0 +1,8 @@
+TODO list:
+
+- Fix exit jumps as they seem to not work. Check how the references get stored and when is the update done.
+
+- Add 'for' statement
+- Add switch case statement
+- Add procedure callings
+- Make use of sinbolo taula ?
