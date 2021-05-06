@@ -43,54 +43,82 @@
 #if YYDEBUG
 extern int yydebug;
 #endif
+/* "%code requires" blocks.  */
+#line 39 "parser.y"
+
+  #include "Kodea.h"
+  #include "Lag.h"
+  #include "SinboloTaula.h"
+  #include "SinboloTaulenPila.h"
+
+#line 55 "parser.hpp"
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
 # define YYTOKENTYPE
   enum yytokentype
   {
-    RPROGRAM = 258,
-    RIF = 259,
-    RWHILE = 260,
-    RFOREVER = 261,
-    RDO = 262,
-    RPROC = 263,
-    RUNTIL = 264,
-    RELSE = 265,
-    RSKIP = 266,
-    REXIT = 267,
-    RPRINTLN = 268,
-    RREAD = 269,
-    RINT = 270,
-    RFLOAT = 271,
-    TMUL = 272,
-    TASSIG = 273,
-    TADD = 274,
-    TSUB = 275,
-    TDIV = 276,
-    TCEQ = 277,
-    TCGT = 278,
-    TCLT = 279,
-    TCGE = 280,
-    TCLE = 281,
-    TCNE = 282,
-    TSEMIC = 283,
-    TCOMMA = 284,
-    TLPAREN = 285,
-    TRPAREN = 286,
-    TLBRACE = 287,
-    TRBRACE = 288,
-    TOUTPARAM = 289,
-    TINOUTPARAM = 290,
-    TID = 291,
-    TFLOAT = 292,
-    TINTEGER = 293
+    TID = 258,
+    TFLOAT = 259,
+    TINTEGER = 260,
+    RPROGRAM = 261,
+    RIF = 262,
+    RWHILE = 263,
+    RFOREVER = 264,
+    RDO = 265,
+    RPROC = 266,
+    RUNTIL = 267,
+    RELSE = 268,
+    RSKIP = 269,
+    REXIT = 270,
+    RPRINTLN = 271,
+    RREAD = 272,
+    RINT = 273,
+    RFLOAT = 274,
+    TMUL = 275,
+    TASSIG = 276,
+    TADD = 277,
+    TSUB = 278,
+    TDIV = 279,
+    TCEQ = 280,
+    TCGT = 281,
+    TCLT = 282,
+    TCGE = 283,
+    TCLE = 284,
+    TCNE = 285,
+    TSEMIC = 286,
+    TCOMMA = 287,
+    TLPAREN = 288,
+    TRPAREN = 289,
+    TLBRACE = 290,
+    TRBRACE = 291,
+    TOUTPARAM = 292,
+    TINOUTPARAM = 293,
+    PRECED3 = 294,
+    PRECED2 = 295,
+    PRECED1 = 296
   };
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+union YYSTYPE
+{
+#line 50 "parser.y"
+
+    int ref;
+    std::string *izena;
+    std::string *mota;
+    id_list *izenak;
+    ref_list *next;
+    expr_st *expr;
+    ref_list_st *sent;
+    var_st *var;
+
+#line 119 "parser.hpp"
+
+};
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif

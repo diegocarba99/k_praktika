@@ -21,8 +21,23 @@ void SinboloTaula::gehituAldagaia(string id, string mota) {
 	if (!taula.insert(pair<string, Ezaugarriak> (id, ezaugarriak)).second) {
 		throw string(id + " identifikadorea behin baino gehiagotan erazagutzen saiatu zara.");
 	}
+	/*
+	std::cout << "[ST] gehituAldagaia(" << id << "," << mota << ")\n";
+	for (const auto& x : taula) {
+        std::cout << x.first << ": " << x.second.idMota << "|" << x.second.aldMota << "\n";
+    }
+    std::cout << "----------------------------------\n";
+    */
 }
 
+/******************/
+/* gehituAldagaiak */
+/******************
+
+void gehituAldagaiak(list<string> id, string mota) {
+	
+}
+*/
 
 /*******************/
 /* gehituProzedura */
@@ -34,7 +49,15 @@ void SinboloTaula::gehituProzedura(std::string id) {
 	if (!taula.insert(pair<string, Ezaugarriak> (id, ezaugarriak)).second) {
 		throw string(id + " identifikadorea behin baino gehiagotan erazagutzen saiatu zara.");
 	}
+	/*
+	std::cout << "[ST] gehituProzedura(" << id << ")\n";
+	for (const auto& x : taula) {
+        std::cout << x.first << ": " << x.second.idMota << "|" << x.second.aldMota << "\n";
+    }
+    std::cout << "----------------------------------\n";
+    */
 }
+
 
 
 /*******************/
@@ -43,9 +66,11 @@ void SinboloTaula::gehituProzedura(std::string id) {
 
 void SinboloTaula::gehituParametroa(string id, string parMota, string aldMota) {
 	if (taula.count(id) == 0) {
+		//std::cout << string("[ST] gehituParametroa() " + id + " prozedura erazagutu gabe erabiltzen saiatu zara.\n");
 		throw string(id + " prozedura erazagutu gabe erabiltzen saiatu zara.");
 	}
 	if (taula.find(id)->second.idMota != "prozedura") {
+		//std::cout << string("[ST] gehituParametroa() " + id + " identifikadorea erazagututa dago baina ez da prozedura bat.\n");
 		throw string(id + " identifikadorea erazagututa dago baina ez da prozedura bat.");
 	}
 	pair<string, string> motak(parMota, aldMota);
@@ -58,10 +83,19 @@ void SinboloTaula::gehituParametroa(string id, string parMota, string aldMota) {
 /*************/
 
 string SinboloTaula::lortuMota(string id) {
+	/*
+	std::cout << "SinboloTaula::lortuMota("<< id << ")\n";
+	for (const auto& x : taula) {
+        std::cout << x.first << ": " << x.second.idMota << "|" << x.second.aldMota << "\n";
+    }
+    std::cout << "----------------------------------\n";
+	*/
 	if (taula.count(id) == 0) {
+		//std::cout << string("[ST] lortuMota() " + id + " aldagaia erazagutu gabe erabiltzen saiatu zara.\n");
 		throw string(id + " aldagaia erazagutu gabe erabiltzen saiatu zara.");
 	}
 	if (taula.find(id)->second.idMota != "aldagaia") {
+		//std::cout << string("[ST] lortuMota() " + id + " identifikadorea erazagututa dago baina ez da aldagai bat.\n");
 		throw string(id + " identifikadorea erazagututa dago baina ez da aldagai bat.");
 	}
 	return taula.find(id)->second.aldMota;
@@ -111,4 +145,13 @@ bool SinboloTaula::idDago(string id) {
 
 void SinboloTaula::ezabatuId(string id) {
 	taula.erase(id);
+}
+
+
+
+/********************/
+/* lortuLehenengoId */
+/********************/
+string SinboloTaula::lortuLehenengoId(){
+	return taula.begin()->first;
 }

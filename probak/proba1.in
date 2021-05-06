@@ -29,7 +29,7 @@ program adibidea
 { 
   read(a); 
   read(b);
-  d = 1/b;
+  d = 1.0/b;
   [* batu(a,b,c); prozeduren deiak tratatzen dituzten praktiketan soilik *]
   c = c*(c*d)+e;
   println(c);

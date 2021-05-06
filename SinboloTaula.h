@@ -73,6 +73,13 @@ public:
 	/* Id jakin bat emanda, bere sarrera sinbolo-taulatik ezabatzen du. */
 	void ezabatuId(std::string id);
 
+	/* Sinbolo taulan gehitu den lehenengo elementuaren IDa bueltatzen du */
+	string lortuLehenengoId();
+
 };
+
+/* Aldagai motako sinbolo asko eta beraien mota (int edo float) gehitzen ditu. *
+void gehituAldagaiak(std::list<std::string> ids, std::string mota);
+*/
 
 #endif /* SINBOLOTAULA_H_ */

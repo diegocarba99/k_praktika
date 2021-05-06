@@ -1,7 +1,7 @@
 CFLAGS=
 CPPFLAGS= -std=c++11
 CC= g++
-SOURCES=parser.cpp main.cpp tokens.cpp Kodea.cpp SinboloTaulenPila.cpp SinboloTaula.cpp
+SOURCES=parser.cpp main.cpp tokens.cpp Kodea.cpp SinboloTaulenPila.cpp SinboloTaula.cpp Printer.cpp
 
 all: parser proba
 
@@ -26,10 +26,10 @@ parser: $(SOURCES) Kodea.h Lag.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^
 
 proba:  parser ./probak/proba1.in ./probak/proba2.in ./probak/probatxar1.in
-	./parser <./probak/proba1.in
-#	./parser <./probak/proba2.in
-#	./parser <./probak/proba3.in
-#	./parser <./probak/proba4.in
-#	./parser <./probak/probatxar1.in
-#	./parser <./probak/probatxar2.in
-#	./parser <./probak/probatxar3.in
+	./parser < ./probak/proba1.in
+	./parser <./probak/proba2.in
+	./parser <./probak/proba3.in
+	./parser <./probak/proba4.in
+	./parser <./probak/probatxar1.in
+	./parser <./probak/probatxar2.in
+	./parser <./probak/probatxar3.in

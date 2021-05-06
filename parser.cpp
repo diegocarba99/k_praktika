@@ -66,23 +66,41 @@
 
 
 /* First part of user prologue.  */
-#line 1 "parser.y"
-
-   #include <stdio.h>
-   #include <iostream>
-   #include <vector>
-   #include <string>
-   using namespace std; 
-
-   extern int yylex();
-   extern int yylineno;
-   extern char *yytext;
-   void yyerror (const char *msg) {
-     printf("line %d: %s at '%s'\n", yylineno, msg, yytext) ;
-   }
+#line 3 "parser.y"
 
 
-#line 86 "parser.cpp"
+  // C++|ko liburutegi estandarrak 
+  #include <stdio.h>
+  #include <iostream>
+  #include <vector>
+  #include <string>
+  #include <list>
+  #include <cstring>
+
+
+
+  // Liburutegi pertsonalizatuak
+  #include "Kodea.h"
+  #include "Lag.h"
+  #include "SinboloTaula.h"
+  #include "SinboloTaulenPila.h"
+  #include "Printer.h"
+
+  using namespace std;
+  
+  extern int yylex();
+  extern int yylineno;
+  extern char *yytext;
+  void yyerror (const char *msg) {
+    printf("line %d: %s at '%s'\n", yylineno, msg, yytext) ;
+  }
+
+  // Definitutako abstrakzioen aurrerazagupena
+  Kodea kodea;
+  SinboloTaulenPila stPila;
+
+
+#line 104 "parser.cpp"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -110,7 +128,7 @@
 # undef YYERROR_VERBOSE
 # define YYERROR_VERBOSE 1
 #else
-# define YYERROR_VERBOSE 0
+# define YYERROR_VERBOSE 1
 #endif
 
 /* Use api.header.include to #include this header
@@ -124,54 +142,82 @@
 #if YYDEBUG
 extern int yydebug;
 #endif
+/* "%code requires" blocks.  */
+#line 39 "parser.y"
+
+  #include "Kodea.h"
+  #include "Lag.h"
+  #include "SinboloTaula.h"
+  #include "SinboloTaulenPila.h"
+
+#line 154 "parser.cpp"
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
 # define YYTOKENTYPE
   enum yytokentype
   {
-    RPROGRAM = 258,
-    RIF = 259,
-    RWHILE = 260,
-    RFOREVER = 261,
-    RDO = 262,
-    RPROC = 263,
-    RUNTIL = 264,
-    RELSE = 265,
-    RSKIP = 266,
-    REXIT = 267,
-    RPRINTLN = 268,
-    RREAD = 269,
-    RINT = 270,
-    RFLOAT = 271,
-    TMUL = 272,
-    TASSIG = 273,
-    TADD = 274,
-    TSUB = 275,
-    TDIV = 276,
-    TCEQ = 277,
-    TCGT = 278,
-    TCLT = 279,
-    TCGE = 280,
-    TCLE = 281,
-    TCNE = 282,
-    TSEMIC = 283,
-    TCOMMA = 284,
-    TLPAREN = 285,
-    TRPAREN = 286,
-    TLBRACE = 287,
-    TRBRACE = 288,
-    TOUTPARAM = 289,
-    TINOUTPARAM = 290,
-    TID = 291,
-    TFLOAT = 292,
-    TINTEGER = 293
+    TID = 258,
+    TFLOAT = 259,
+    TINTEGER = 260,
+    RPROGRAM = 261,
+    RIF = 262,
+    RWHILE = 263,
+    RFOREVER = 264,
+    RDO = 265,
+    RPROC = 266,
+    RUNTIL = 267,
+    RELSE = 268,
+    RSKIP = 269,
+    REXIT = 270,
+    RPRINTLN = 271,
+    RREAD = 272,
+    RINT = 273,
+    RFLOAT = 274,
+    TMUL = 275,
+    TASSIG = 276,
+    TADD = 277,
+    TSUB = 278,
+    TDIV = 279,
+    TCEQ = 280,
+    TCGT = 281,
+    TCLT = 282,
+    TCGE = 283,
+    TCLE = 284,
+    TCNE = 285,
+    TSEMIC = 286,
+    TCOMMA = 287,
+    TLPAREN = 288,
+    TRPAREN = 289,
+    TLBRACE = 290,
+    TRBRACE = 291,
+    TOUTPARAM = 292,
+    TINOUTPARAM = 293,
+    PRECED3 = 294,
+    PRECED2 = 295,
+    PRECED1 = 296
   };
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+union YYSTYPE
+{
+#line 50 "parser.y"
+
+    int ref;
+    std::string *izena;
+    std::string *mota;
+    id_list *izenak;
+    ref_list *next;
+    expr_st *expr;
+    ref_list_st *sent;
+    var_st *var;
+
+#line 218 "parser.cpp"
+
+};
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
@@ -282,7 +328,7 @@ typedef int yytype_uint16;
 #define YYSIZEOF(X) YY_CAST (YYPTRDIFF_T, sizeof (X))
 
 /* Stored state numbers (used for stacks). */
-typedef yytype_int8 yy_state_t;
+typedef yytype_uint8 yy_state_t;
 
 /* State numbers in computations.  */
 typedef int yy_state_fast_t;
@@ -487,19 +533,19 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  4
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   226
+#define YYLAST   258
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  39
+#define YYNTOKENS  42
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  16
+#define YYNNTS  23
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  45
+#define YYNRULES  52
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  117
+#define YYNSTATES  132
 
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   293
+#define YYMAXUTOK   296
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -540,36 +586,38 @@ static const yytype_int8 yytranslate[] =
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35,    36,    37,    38
+      35,    36,    37,    38,    39,    40,    41
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_int8 yyrline[] =
+static const yytype_int16 yyrline[] =
 {
-       0,    49,    49,    52,    53,    56,    59,    60,    63,    64,
-      67,    68,    71,    74,    75,    78,    81,    82,    83,    86,
-      87,    90,    91,    94,    95,    96,    97,    98,    99,   100,
-     101,   104,   107,   108,   109,   110,   111,   112,   113,   114,
-     115,   116,   117,   118,   119,   120
+       0,    99,    99,    98,   121,   120,   139,   142,   152,   161,
+     166,   170,   176,   177,   181,   180,   194,   195,   199,   198,
+     229,   233,   237,   244,   243,   264,   267,   283,   288,   307,
+     324,   332,   355,   368,   373,   382,   395,   404,   442,   480,
+     518,   528,   538,   548,   558,   568,   578,   588,   595,   602,
+     609,   622,   629
 };
 #endif
 
-#if YYDEBUG || YYERROR_VERBOSE || 0
+#if YYDEBUG || YYERROR_VERBOSE || 1
 /* YYTNAME[SYMBOL-NUM] -- String name of the symbol SYMBOL-NUM.
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "RPROGRAM", "RIF", "RWHILE", "RFOREVER",
-  "RDO", "RPROC", "RUNTIL", "RELSE", "RSKIP", "REXIT", "RPRINTLN", "RREAD",
-  "RINT", "RFLOAT", "TMUL", "TASSIG", "TADD", "TSUB", "TDIV", "TCEQ",
-  "TCGT", "TCLT", "TCGE", "TCLE", "TCNE", "TSEMIC", "TCOMMA", "TLPAREN",
-  "TRPAREN", "TLBRACE", "TRBRACE", "TOUTPARAM", "TINOUTPARAM", "TID",
-  "TFLOAT", "TINTEGER", "$accept", "programa", "erazagupenak",
-  "id_zerrenda", "id_zerrendaren_bestea", "mota",
-  "azpiprogramen_erazagupena", "azpiprogramaren_erazagupena",
-  "argumentuak", "par_zerrenda", "par_mota", "par_zerrendaren_bestea",
-  "sententzia_zerrenda", "sententzia", "aldagaia", "adierazpena", YY_NULLPTR
+  "$end", "error", "$undefined", "TID", "TFLOAT", "TINTEGER", "RPROGRAM",
+  "RIF", "RWHILE", "RFOREVER", "RDO", "RPROC", "RUNTIL", "RELSE", "RSKIP",
+  "REXIT", "RPRINTLN", "RREAD", "RINT", "RFLOAT", "TMUL", "TASSIG", "TADD",
+  "TSUB", "TDIV", "TCEQ", "TCGT", "TCLT", "TCGE", "TCLE", "TCNE", "TSEMIC",
+  "TCOMMA", "TLPAREN", "TRPAREN", "TLBRACE", "TRBRACE", "TOUTPARAM",
+  "TINOUTPARAM", "PRECED3", "PRECED2", "PRECED1", "$accept", "programa",
+  "$@1", "erazagupenak", "$@2", "id_zerrenda", "id_zerrendaren_bestea",
+  "mota", "azpiprogramen_erazagupena", "azpiprogramaren_erazagupena",
+  "$@3", "argumentuak", "par_zerrenda", "$@4", "par_mota",
+  "par_zerrendaren_bestea", "$@5", "sententzia_zerrenda", "sententzia",
+  "aldagaia", "adierazpena", "M", "N", YY_NULLPTR
 };
 #endif
 
@@ -581,16 +629,17 @@ static const yytype_int16 yytoknum[] =
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
      265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
      275,   276,   277,   278,   279,   280,   281,   282,   283,   284,
-     285,   286,   287,   288,   289,   290,   291,   292,   293
+     285,   286,   287,   288,   289,   290,   291,   292,   293,   294,
+     295,   296
 };
 # endif
 
-#define YYPACT_NINF (-52)
+#define YYPACT_NINF (-64)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
 
-#define YYTABLE_NINF (-1)
+#define YYTABLE_NINF (-53)
 
 #define yytable_value_is_error(Yyn) \
   ((Yyn) == YYTABLE_NINF)
@@ -599,18 +648,20 @@ static const yytype_int16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-       1,   -26,    33,    -2,   -52,   -52,   -52,    28,     2,     3,
-       8,    28,    18,    21,    29,   -52,   -52,    15,   -52,    -2,
-      -2,    -2,    30,    18,   -52,   -23,    36,    28,    20,    55,
-      37,    64,    42,    46,    48,   -52,    53,   -52,   -52,   -52,
-     -52,   -52,     2,   -52,    56,    20,   -52,   -52,   -52,   -52,
-     135,    57,   -52,    20,   -52,    20,    49,    20,    59,   -52,
-     149,    20,    20,    20,    20,    20,    20,    20,    20,    20,
-      20,   -52,   -52,    41,   175,   162,    63,   187,    -2,   -52,
-      68,   -52,   -52,   -12,   -12,   -52,   199,   199,   199,   199,
-     199,   199,    79,    95,    86,   -52,    69,    70,   -52,   -23,
-     -52,    75,    77,    20,   -52,   -52,     2,   -52,   -52,   124,
-      59,    82,   -52,   -52,   106,    88,   -52
+      25,    29,    34,   -64,   -64,    -4,   -64,   -64,    28,    37,
+      40,    18,    28,    16,    23,   -64,   -64,   -64,    52,   -64,
+     -64,    24,    35,    16,    -4,    -4,    -4,   -64,     8,   -64,
+      49,    26,    27,   -64,   -64,    41,    50,    46,   -64,   -64,
+     -21,    31,    28,   -64,   -64,     8,   -64,   164,    32,     8,
+       8,    63,     8,    59,    38,   -64,   -64,   -64,    37,   -64,
+      39,   178,     8,     8,     8,     8,     8,     8,     8,     8,
+       8,     8,   -64,   -64,   204,   191,    42,   216,    43,   -64,
+     -64,   -64,   -64,   -64,    13,    13,   -64,   228,   228,   228,
+     228,   228,   228,   -64,    86,   -64,    44,    51,   -64,   -64,
+      60,   102,   117,    65,   -64,   -64,   -64,   132,    -4,   -64,
+     -64,   -64,   -64,   -64,   -21,    61,     8,    64,    37,   -64,
+     152,   -64,   -64,   -64,    60,    48,   -64,   -64,   147,   -64,
+      66,   -64
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -618,127 +669,141 @@ static const yytype_int16 yypact[] =
      means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       0,     0,     0,     4,     1,     8,     9,    11,     0,     0,
-       0,    11,     7,     0,    14,    22,    10,     0,     5,     4,
-       0,     4,     0,     7,     3,     0,     0,    11,     0,     0,
-       0,     0,     0,     0,     0,     2,     0,    21,     6,    17,
-      16,    18,     0,    13,     0,     0,    31,    44,    43,    42,
-       0,     0,    22,     0,    28,     0,     0,     0,    20,    22,
+       0,     0,     0,     2,     1,     6,    10,    11,    13,     0,
+       0,     0,    13,     9,     0,    14,    27,    12,     0,     7,
+       4,    17,    51,     9,     6,     0,     6,    36,     0,    51,
+       0,     0,     0,     3,    26,     0,     0,     0,     8,     5,
+       0,     0,    13,    49,    48,     0,    47,     0,     0,     0,
+       0,     0,     0,     0,     0,    21,    20,    22,     0,    16,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,    22,    22,     0,     0,     0,     0,     0,     0,    15,
-       0,    45,    34,    32,    33,    35,    36,    37,    38,    39,
-      40,    41,     0,     0,     0,    27,     0,     0,    23,     0,
-      12,     0,     0,     0,    30,    29,     0,    24,    25,     0,
-      20,     0,    19,    22,     0,     0,    26
+       0,     0,    51,    27,     0,     0,     0,     0,     0,    33,
+      18,    27,    50,    39,    37,    38,    40,    41,    42,    43,
+      44,    45,    46,    27,    51,    51,     0,     0,    28,    27,
+      25,    51,    51,     0,    32,    35,    34,    51,     0,    19,
+      15,    51,    51,    51,     0,     0,     0,     0,     0,    29,
+       0,    30,    23,    51,    25,     0,    24,    27,    51,    51,
+       0,    31
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -52,   -52,    -3,   -42,    73,   -18,    -5,   -52,   -52,   -52,
-      22,    12,   -51,   -52,    67,   -38
+     -64,   -64,   -64,    20,   -64,   -55,    58,   -24,    -7,   -64,
+     -64,   -64,   -64,   -64,   -20,   -34,   -64,   -63,   -64,   -22,
+     -43,   -25,   -64
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     2,     7,    13,    18,     8,    10,    11,    21,    26,
-      42,    79,    22,    37,    49,    50
+      -1,     2,     5,     8,    24,    14,    19,     9,    11,    12,
+      21,    26,    41,   100,    58,   109,   124,    22,    34,    46,
+      47,    36,    37
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
      positive, shift that token.  If negative, reduce the rule whose
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
-static const yytype_int8 yytable[] =
+static const yytype_int16 yytable[] =
 {
-      58,    73,    25,    39,     1,    61,    16,    60,    80,    64,
-       3,    40,    41,     5,     6,    74,    24,    75,    27,    77,
-      92,    93,    44,    82,    83,    84,    85,    86,    87,    88,
-      89,    90,    91,     4,    28,    29,     9,    30,    12,    14,
-      15,    31,    32,    33,    34,    28,    29,    17,    30,    19,
-      45,    23,    31,    32,    33,    34,    46,    47,    48,    20,
-      99,    51,   114,    35,   110,   109,    36,    43,    53,    52,
-      54,    57,    28,    29,    94,    30,    55,    36,    56,    31,
-      32,    33,    34,    28,    29,    46,    30,    78,    59,    72,
-      31,    32,    33,    34,    97,   103,    38,   104,   105,    28,
-      29,   100,    30,   107,    36,   108,    31,    32,    33,    34,
-      28,    29,   101,    30,   113,    36,   116,    31,    32,    33,
-      34,   106,   112,    76,     0,     0,     0,     0,   102,     0,
-       0,    36,     0,     0,   111,     0,     0,     0,     0,   115,
-       0,    61,    36,    62,    63,    64,    65,    66,    67,    68,
-      69,    70,    61,     0,    62,    63,    64,    65,    66,    67,
-      68,    69,    70,     0,     0,     0,    61,    71,    62,    63,
-      64,    65,    66,    67,    68,    69,    70,     0,     0,    61,
-      81,    62,    63,    64,    65,    66,    67,    68,    69,    70,
-       0,     0,    61,    96,    62,    63,    64,    65,    66,    67,
-      68,    69,    70,    95,    61,     0,    62,    63,    64,    65,
-      66,    67,    68,    69,    70,    98,    61,     0,    62,    63,
-      64,    -1,    -1,    -1,    -1,    -1,    -1
+      35,    40,    61,    80,    48,    17,    74,    75,    55,    77,
+      94,    27,    43,    44,     6,     7,    56,    57,   101,    83,
+      84,    85,    86,    87,    88,    89,    90,    91,    92,    76,
+     102,     1,     3,    62,     4,    60,   107,    65,    27,    10,
+      13,    45,    28,    15,    39,    29,    42,    93,    18,    30,
+     -52,    31,    32,    16,    20,    23,    49,    25,    53,    50,
+      51,    54,    52,   122,   128,    59,    27,    73,    78,    79,
+     104,    33,    35,   120,    81,   105,    97,   112,    99,    35,
+      35,    38,   106,   127,   114,    35,   115,   116,   117,    27,
+     126,   108,   119,    28,   118,   121,    29,   131,   125,     0,
+      30,   -52,    31,    32,   130,    27,    35,     0,     0,    28,
+       0,     0,    29,     0,     0,     0,    30,   -52,    31,    32,
+      27,     0,   103,     0,    28,     0,     0,    29,     0,     0,
+       0,    30,   -52,    31,    32,    27,     0,     0,   110,    28,
+       0,     0,    29,     0,     0,     0,    30,   -52,    31,    32,
+      27,     0,     0,   111,    28,     0,     0,    29,     0,     0,
+       0,    30,   -52,    31,    32,   123,     0,     0,   113,     0,
+       0,     0,    62,     0,    63,    64,    65,    66,    67,    68,
+      69,    70,    71,   129,    62,     0,    63,    64,    65,    66,
+      67,    68,    69,    70,    71,     0,     0,     0,    62,    72,
+      63,    64,    65,    66,    67,    68,    69,    70,    71,     0,
+       0,    62,    82,    63,    64,    65,    66,    67,    68,    69,
+      70,    71,     0,     0,    62,    96,    63,    64,    65,    66,
+      67,    68,    69,    70,    71,    95,    62,     0,    63,    64,
+      65,    66,    67,    68,    69,    70,    71,    98,    62,     0,
+      63,    64,    65,   -53,   -53,   -53,   -53,   -53,   -53
 };
 
-static const yytype_int8 yycheck[] =
+static const yytype_int16 yycheck[] =
 {
-      42,    52,    20,    26,     3,    17,    11,    45,    59,    21,
-      36,    34,    35,    15,    16,    53,    19,    55,    21,    57,
-      71,    72,    27,    61,    62,    63,    64,    65,    66,    67,
-      68,    69,    70,     0,     4,     5,     8,     7,    36,    36,
-      32,    11,    12,    13,    14,     4,     5,    29,     7,    28,
-      30,    36,    11,    12,    13,    14,    36,    37,    38,    30,
-      78,     6,   113,    33,   106,   103,    36,    31,     4,    32,
-      28,    18,     4,     5,    33,     7,    30,    36,    30,    11,
-      12,    13,    14,     4,     5,    36,     7,    28,    32,    32,
-      11,    12,    13,    14,    31,     9,    23,    28,    28,     4,
-       5,    33,     7,    28,    36,    28,    11,    12,    13,    14,
-       4,     5,    33,     7,    32,    36,    28,    11,    12,    13,
-      14,    99,   110,    56,    -1,    -1,    -1,    -1,    33,    -1,
-      -1,    36,    -1,    -1,    10,    -1,    -1,    -1,    -1,    33,
-      -1,    17,    36,    19,    20,    21,    22,    23,    24,    25,
-      26,    27,    17,    -1,    19,    20,    21,    22,    23,    24,
-      25,    26,    27,    -1,    -1,    -1,    17,    32,    19,    20,
-      21,    22,    23,    24,    25,    26,    27,    -1,    -1,    17,
-      31,    19,    20,    21,    22,    23,    24,    25,    26,    27,
-      -1,    -1,    17,    31,    19,    20,    21,    22,    23,    24,
-      25,    26,    27,    28,    17,    -1,    19,    20,    21,    22,
-      23,    24,    25,    26,    27,    28,    17,    -1,    19,    20,
-      21,    22,    23,    24,    25,    26,    27
+      22,    25,    45,    58,    29,    12,    49,    50,    29,    52,
+      73,     3,     4,     5,    18,    19,    37,    38,    81,    62,
+      63,    64,    65,    66,    67,    68,    69,    70,    71,    51,
+      93,     6,     3,    20,     0,    42,    99,    24,     3,    11,
+       3,    33,     7,     3,    24,    10,    26,    72,    32,    14,
+      15,    16,    17,    35,    31,     3,     7,    33,     8,    33,
+      33,    15,    21,   118,   127,    34,     3,    35,     9,    31,
+      95,    36,    94,   116,    35,    31,    34,    12,    35,   101,
+     102,    23,    31,    35,   108,   107,   111,   112,   113,     3,
+     124,    31,    31,     7,   114,    31,    10,    31,   123,    -1,
+      14,    15,    16,    17,   129,     3,   128,    -1,    -1,     7,
+      -1,    -1,    10,    -1,    -1,    -1,    14,    15,    16,    17,
+       3,    -1,    36,    -1,     7,    -1,    -1,    10,    -1,    -1,
+      -1,    14,    15,    16,    17,     3,    -1,    -1,    36,     7,
+      -1,    -1,    10,    -1,    -1,    -1,    14,    15,    16,    17,
+       3,    -1,    -1,    36,     7,    -1,    -1,    10,    -1,    -1,
+      -1,    14,    15,    16,    17,    13,    -1,    -1,    36,    -1,
+      -1,    -1,    20,    -1,    22,    23,    24,    25,    26,    27,
+      28,    29,    30,    36,    20,    -1,    22,    23,    24,    25,
+      26,    27,    28,    29,    30,    -1,    -1,    -1,    20,    35,
+      22,    23,    24,    25,    26,    27,    28,    29,    30,    -1,
+      -1,    20,    34,    22,    23,    24,    25,    26,    27,    28,
+      29,    30,    -1,    -1,    20,    34,    22,    23,    24,    25,
+      26,    27,    28,    29,    30,    31,    20,    -1,    22,    23,
+      24,    25,    26,    27,    28,    29,    30,    31,    20,    -1,
+      22,    23,    24,    25,    26,    27,    28,    29,    30
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     3,    40,    36,     0,    15,    16,    41,    44,     8,
-      45,    46,    36,    42,    36,    32,    45,    29,    43,    28,
-      30,    47,    51,    36,    41,    44,    48,    41,     4,     5,
-       7,    11,    12,    13,    14,    33,    36,    52,    43,    26,
-      34,    35,    49,    31,    45,    30,    36,    37,    38,    53,
-      54,     6,    32,     4,    28,    30,    30,    18,    42,    32,
-      54,    17,    19,    20,    21,    22,    23,    24,    25,    26,
-      27,    32,    32,    51,    54,    54,    53,    54,    28,    50,
-      51,    31,    54,    54,    54,    54,    54,    54,    54,    54,
-      54,    54,    51,    51,    33,    28,    31,    31,    28,    44,
-      33,    33,    33,     9,    28,    28,    49,    28,    28,    54,
-      42,    10,    50,    32,    51,    33,    28
+       0,     6,    43,     3,     0,    44,    18,    19,    45,    49,
+      11,    50,    51,     3,    47,     3,    35,    50,    32,    48,
+      31,    52,    59,     3,    46,    33,    53,     3,     7,    10,
+      14,    16,    17,    36,    60,    61,    63,    64,    48,    45,
+      49,    54,    45,     4,     5,    33,    61,    62,    63,     7,
+      33,    33,    21,     8,    15,    29,    37,    38,    56,    34,
+      50,    62,    20,    22,    23,    24,    25,    26,    27,    28,
+      29,    30,    35,    35,    62,    62,    61,    62,     9,    31,
+      47,    35,    34,    62,    62,    62,    62,    62,    62,    62,
+      62,    62,    62,    63,    59,    31,    34,    34,    31,    35,
+      55,    59,    59,    36,    63,    31,    31,    59,    31,    57,
+      36,    36,    12,    36,    49,    63,    63,    63,    56,    31,
+      62,    31,    47,    13,    58,    63,    57,    35,    59,    36,
+      63,    31
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    39,    40,    41,    41,    42,    43,    43,    44,    44,
-      45,    45,    46,    47,    47,    48,    49,    49,    49,    50,
-      50,    51,    51,    52,    52,    52,    52,    52,    52,    52,
-      52,    53,    54,    54,    54,    54,    54,    54,    54,    54,
-      54,    54,    54,    54,    54,    54
+       0,    42,    44,    43,    46,    45,    45,    47,    48,    48,
+      49,    49,    50,    50,    52,    51,    53,    53,    55,    54,
+      56,    56,    56,    58,    57,    57,    59,    59,    60,    60,
+      60,    60,    60,    60,    60,    60,    61,    62,    62,    62,
+      62,    62,    62,    62,    62,    62,    62,    62,    62,    62,
+      62,    63,    64
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     7,     4,     0,     2,     3,     0,     1,     1,
-       2,     0,     8,     3,     0,     4,     1,     1,     1,     5,
-       0,     2,     0,     4,     6,     6,    11,     4,     2,     5,
-       5,     1,     3,     3,     3,     3,     3,     3,     3,     3,
-       3,     3,     1,     1,     1,     3
+       0,     2,     0,     8,     0,     5,     0,     2,     3,     0,
+       1,     1,     2,     0,     0,     9,     3,     0,     0,     5,
+       1,     1,     1,     0,     6,     0,     2,     0,     4,     8,
+       8,    15,     5,     3,     5,     5,     1,     3,     3,     3,
+       3,     3,     3,     3,     3,     3,     3,     1,     1,     1,
+       3,     0,     0
 };
 
 
@@ -1433,8 +1498,669 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
+  case 2:
+#line 99 "parser.y"
+            {
+              kodea.agGehitu("prog " + std::string(*(yyvsp[0].izena)));
+              SinboloTaula st;
+              stPila.pilaratu(st);
+              delete (yyvsp[0].izena);
+            }
+#line 1510 "parser.cpp"
+    break;
 
-#line 1438 "parser.cpp"
+  case 3:
+#line 106 "parser.y"
+            {
+              if ( ! (yyvsp[-1].sent)->error.empty() )
+              {
+                printErrors((yyvsp[-1].sent)->error);
+              } 
+              else
+              {
+                kodea.agGehitu("halt");
+                kodea.idatzi();
+                stPila.despilatu();
+              }
+            }
+#line 1527 "parser.cpp"
+    break;
+
+  case 4:
+#line 121 "parser.y"
+                {
+                  kodea.erazagupenakGehitu(*(yyvsp[-2].mota), *(yyvsp[-1].izenak));
+
+                  // st_gehitu_aldagaiak();
+                  id_list *izenak = (yyvsp[-1].izenak);
+                  SinboloTaula st = stPila.tontorra();
+                  stPila.despilatu();
+                  while (izenak->size()>0){
+                    st.gehituAldagaia(izenak->back(), *(yyvsp[-2].mota));  
+                    izenak->pop_back();
+                  }
+                  stPila.pilaratu(st);
+
+
+                  delete (yyvsp[-2].mota);
+                  delete (yyvsp[-1].izenak);
+                }
+#line 1549 "parser.cpp"
+    break;
+
+  case 7:
+#line 143 "parser.y"
+              {
+                (yyval.izenak) = new id_list;
+                (yyvsp[0].izenak)->push_front(*(yyvsp[-1].izena));
+                (yyval.izenak)->merge(*(yyvsp[0].izenak));  
+                delete (yyvsp[-1].izena); 
+                delete (yyvsp[0].izenak);
+              }
+#line 1561 "parser.cpp"
+    break;
+
+  case 8:
+#line 153 "parser.y"
+                        {
+                          (yyval.izenak) = new id_list;
+                          (yyvsp[0].izenak)->push_front(*(yyvsp[-1].izena));
+                          (yyval.izenak)->merge(*(yyvsp[0].izenak));  
+                          delete (yyvsp[-1].izena); 
+                          delete (yyvsp[0].izenak);
+                        }
+#line 1573 "parser.cpp"
+    break;
+
+  case 9:
+#line 161 "parser.y"
+                        {
+                          (yyval.izenak) = new id_list;
+                        }
+#line 1581 "parser.cpp"
+    break;
+
+  case 10:
+#line 167 "parser.y"
+        {
+          (yyval.mota) = new string(MOTA_ENT);
+        }
+#line 1589 "parser.cpp"
+    break;
+
+  case 11:
+#line 171 "parser.y"
+        {
+          (yyval.mota) = new string(MOTA_REAL);
+        }
+#line 1597 "parser.cpp"
+    break;
+
+  case 14:
+#line 181 "parser.y"
+                              {
+                                kodea.agGehitu( "proc " + string(*(yyvsp[0].izena))); 
+                                SinboloTaula *st = new SinboloTaula; 
+                                st->gehituProzedura(*(yyvsp[0].izena));
+                                stPila.pilaratu(*st);
+                              }
+#line 1608 "parser.cpp"
+    break;
+
+  case 15:
+#line 188 "parser.y"
+                              {
+                                kodea.agGehitu("endproc");
+                                delete (yyvsp[-7].izena);
+                              }
+#line 1617 "parser.cpp"
+    break;
+
+  case 18:
+#line 199 "parser.y"
+                {
+                  kodea.parametroakGehitu(string(*(yyvsp[-2].mota)), *(yyvsp[0].izenak), string(*(yyvsp[-1].mota)));
+
+                  // st_gehitu_parametroak
+                  id_list *izenak = (yyvsp[0].izenak);
+                  //std::cout << "izenak lista sortu\n";
+                  SinboloTaula st = stPila.tontorra();
+                  //std::cout << "sinbolo taularen tontorra atzitu\n";
+                  stPila.despilatu();
+                  string prozeduraID = st.lortuLehenengoId();
+                  //std::cout << "sinbolo taulako tontorra despilatu\n";
+                  while (izenak->size()>0){
+                    st.gehituParametroa(prozeduraID, *(yyvsp[-1].mota), *(yyvsp[-2].mota));
+                    //std::cout << "st.gehituParametroa\n";
+                    st.gehituAldagaia(izenak->back(), *(yyvsp[-2].mota));
+                    //std::cout << "st.gehituAldagaia\n";
+                    izenak->pop_back();
+                    //std::cout << "izena atera zerrendatik\n";
+                  }
+                  stPila.pilaratu(st);
+                  //std::cout << "pilaratu st\n";
+
+
+                  delete (yyvsp[-2].mota);
+                  delete (yyvsp[-1].mota);
+                  delete (yyvsp[0].izenak);
+                }
+#line 1649 "parser.cpp"
+    break;
+
+  case 20:
+#line 230 "parser.y"
+            {
+              (yyval.mota) = new string(PAR_VAL);
+            }
+#line 1657 "parser.cpp"
+    break;
+
+  case 21:
+#line 234 "parser.y"
+            {
+              (yyval.mota) = new string(PAR_REF);
+            }
+#line 1665 "parser.cpp"
+    break;
+
+  case 22:
+#line 238 "parser.y"
+            {
+              (yyval.mota) = new string(PAR_REF);
+            }
+#line 1673 "parser.cpp"
+    break;
+
+  case 23:
+#line 244 "parser.y"
+                          {
+                            kodea.parametroakGehitu(string(*(yyvsp[-2].mota)), *(yyvsp[0].izenak), string(*(yyvsp[-1].mota)));
+
+                            // st_gehitu_parametroak
+                            id_list *izenak = (yyvsp[0].izenak);
+                            SinboloTaula st = stPila.tontorra();
+                            stPila.despilatu();
+                            string prozeduraID = st.lortuLehenengoId();
+                            while (izenak->size()>0){
+                              st.gehituParametroa(prozeduraID, *(yyvsp[-1].mota), *(yyvsp[-2].mota));
+                              st.gehituAldagaia(izenak->back(), *(yyvsp[-2].mota));
+                              izenak->pop_back();
+                            }
+                            stPila.pilaratu(st);
+
+                            delete (yyvsp[-2].mota);
+                            delete (yyvsp[-1].mota);
+                            delete (yyvsp[0].izenak);
+                          }
+#line 1697 "parser.cpp"
+    break;
+
+  case 26:
+#line 268 "parser.y"
+                      {
+                        (yyval.sent) = new ref_list_st;
+                        (yyval.sent)->exit.merge((yyvsp[-1].sent)->exit);
+                        (yyval.sent)->exit.merge((yyvsp[0].sent)->exit);
+
+                        (yyval.sent)->skip.merge((yyvsp[-1].sent)->skip);
+                        (yyval.sent)->skip.merge((yyvsp[0].sent)->skip);
+
+                        (yyval.sent)->error.merge((yyvsp[-1].sent)->error);
+                        (yyval.sent)->error.merge((yyvsp[0].sent)->error);
+
+                        delete (yyvsp[-1].sent);
+                        delete (yyvsp[0].sent);
+                      }
+#line 1716 "parser.cpp"
+    break;
+
+  case 27:
+#line 283 "parser.y"
+                      {
+                        (yyval.sent) = new ref_list_st;
+                      }
+#line 1724 "parser.cpp"
+    break;
+
+  case 28:
+#line 289 "parser.y"
+              {
+                (yyval.sent) = new ref_list_st;
+                if ((yyvsp[-3].var)->mota == MOTA_ENT && (yyvsp[-1].expr)->mota == MOTA_REAL){
+                  (yyvsp[-3].var)->mota = MOTA_REAL;
+                  kodea.agGehitu("implicit_conversion_to_real " + (yyvsp[-3].var)->izena);
+                }
+                kodea.agGehitu((yyvsp[-3].var)->izena + " := " + (yyvsp[-1].expr)->izena);
+
+                
+                
+                if ( (yyvsp[-3].var)->mota.compare((yyvsp[-1].expr)->mota) != 0) {
+                  //$<sent>$->error.merge(kalkulatuErroreak(ERR_NONE,*$<var>1, *$<expr>3)); 
+                  kalkulatuErroreak((yyval.sent)->error, *(yyvsp[-3].var), *(yyvsp[-1].expr)); 
+                }
+
+                delete (yyvsp[-3].var); 
+                delete (yyvsp[-1].expr); 
+              }
+#line 1747 "parser.cpp"
+    break;
+
+  case 29:
+#line 308 "parser.y"
+              {
+                kodea.agOsatu((yyvsp[-6].expr)->true_list, (yyvsp[-4].ref));
+                kodea.agOsatu((yyvsp[-6].expr)->false_list, (yyvsp[-1].ref));
+                (yyval.sent) = new ref_list_st;
+                (yyval.sent)->exit.merge((yyvsp[-3].sent)->exit);
+                (yyval.sent)->skip.merge((yyvsp[-3].sent)->skip);
+                (yyval.sent)->error.merge((yyvsp[-3].sent)->error);
+
+                
+
+                if ((yyvsp[-6].expr)->mota.compare(ADI_ERL) != 0)
+                  kalkulatuErroreak((yyval.sent)->error, ERR_IF, *(yyvsp[-6].expr));
+
+                delete (yyvsp[-6].expr);
+                delete (yyvsp[-3].sent);
+              }
+#line 1768 "parser.cpp"
+    break;
+
+  case 30:
+#line 325 "parser.y"
+              {
+                kodea.agGehitu("goto " + to_string((yyvsp[-7].ref)));
+                kodea.agOsatu((yyvsp[-3].sent)->exit, (yyvsp[-1].ref)+1);
+                (yyval.sent) = new ref_list_st;
+                (yyval.sent)->error.merge((yyvsp[-3].sent)->error);
+                delete (yyvsp[-3].sent);
+              }
+#line 1780 "parser.cpp"
+    break;
+
+  case 31:
+#line 333 "parser.y"
+              {
+                kodea.agOsatu((yyvsp[-7].expr)->true_list, (yyvsp[-5].ref));
+                kodea.agOsatu((yyvsp[-7].expr)->false_list, (yyvsp[-13].ref));
+                kodea.agOsatu((yyvsp[-11].sent)->exit, (yyvsp[-5].ref));
+                kodea.agOsatu((yyvsp[-11].sent)->skip, (yyvsp[-8].ref));
+                kodea.agOsatu((yyvsp[-3].sent)->exit, (yyvsp[-1].ref));
+                (yyval.sent) = new ref_list_st;
+                (yyval.sent)->skip.merge((yyvsp[-3].sent)->skip);
+
+                
+
+                if ((yyvsp[-7].expr)->mota.compare(ADI_ERL) != 0)
+                  kalkulatuErroreak((yyval.sent)->error, ERR_DO, *(yyvsp[-7].expr));
+
+                (yyval.sent)->error.merge((yyvsp[-11].sent)->error);
+                (yyval.sent)->error.merge((yyvsp[-3].sent)->error);
+
+
+                delete (yyvsp[-7].expr);
+                delete (yyvsp[-11].sent);
+                delete (yyvsp[-3].sent);
+              }
+#line 1807 "parser.cpp"
+    break;
+
+  case 32:
+#line 356 "parser.y"
+              {
+                kodea.agOsatu((yyvsp[-2].expr)->false_list, (yyvsp[0].ref));
+                (yyval.sent) = new ref_list_st;
+                (yyval.sent)->skip.merge((yyvsp[-2].expr)->true_list);
+
+                
+
+                if ((yyvsp[-2].expr)->mota.compare(ADI_ERL) != 0)
+                  kalkulatuErroreak((yyval.sent)->error, ERR_SKIP, *(yyvsp[-2].expr));
+
+                delete (yyvsp[-2].expr);
+              }
+#line 1824 "parser.cpp"
+    break;
+
+  case 33:
+#line 369 "parser.y"
+              {
+                (yyval.sent) = new ref_list_st;
+                (yyval.sent)->exit.merge(*(yyvsp[-2].next));
+              }
+#line 1833 "parser.cpp"
+    break;
+
+  case 34:
+#line 374 "parser.y"
+              {
+                kodea.agGehitu("read " + (yyvsp[-2].var)->izena);
+                (yyval.sent) = new ref_list_st;
+                
+                // ikusi ea aldagia definitu den S_Tn
+
+                delete (yyvsp[-2].var);
+              }
+#line 1846 "parser.cpp"
+    break;
+
+  case 35:
+#line 383 "parser.y"
+              {
+                kodea.agGehitu("write " + string((yyvsp[-2].expr)->izena));
+                kodea.agGehitu("writeln");
+                (yyval.sent) = new ref_list_st;
+
+                if ((yyvsp[-2].expr)->mota.compare(ADI_ERL) == 0)
+                  kalkulatuErroreak((yyval.sent)->error, ERR_PRINT, *(yyvsp[-2].expr));
+
+                delete (yyvsp[-2].expr); 
+              }
+#line 1861 "parser.cpp"
+    break;
+
+  case 36:
+#line 396 "parser.y"
+            {
+              (yyval.var) = new var_st;
+              (yyval.var)->izena = string(*(yyvsp[0].izena));
+              (yyval.var)->mota = stPila.lortuMota(*(yyvsp[0].izena));
+              delete (yyvsp[0].izena);
+            }
+#line 1872 "parser.cpp"
+    break;
+
+  case 37:
+#line 405 "parser.y"
+              {
+                (yyval.expr) = new expr_st;
+                (yyval.expr)->izena = kodea.idBerria();
+
+                int mota_aldaketa = kalkulatuMota(*(yyval.expr), *(yyvsp[-2].expr), *(yyvsp[0].expr));
+                string ad1_converted, ad2_converted;
+
+                if (mota_aldaketa == 0)  // ez dago mota aldaketarik. izenak mantendu
+                {
+                  ad1_converted = (yyvsp[-2].expr)->izena;
+                  ad2_converted = (yyvsp[0].expr)->izena;
+                } 
+                else if (mota_aldaketa == 1)  // 1go adierazpena aldatu real motara
+                {
+                  ad1_converted = kodea.idBerria();
+                  ad2_converted = (yyvsp[0].expr)->izena;
+                  kodea.agGehitu(ad1_converted + " := ent_to_real(" + (yyvsp[-2].expr)->izena  + ")");
+                }
+                else if (mota_aldaketa == 2)  // 2go adierazpena aldatu real motara
+                {
+                  ad1_converted = (yyvsp[-2].expr)->izena;
+                  ad2_converted = kodea.idBerria();
+                  kodea.agGehitu(ad2_converted + " := ent_to_real(" + (yyvsp[0].expr)->izena  + ")");
+                }
+                else  // 1go eta 2n adierazpenak aldatu real motara
+                {
+                  ad1_converted = kodea.idBerria();
+                  ad2_converted = kodea.idBerria();
+                  kodea.agGehitu(ad1_converted + " := ent_to_real(" + (yyvsp[-2].expr)->izena  + ")");
+                  kodea.agGehitu(ad2_converted + " := ent_to_real(" + (yyvsp[0].expr)->izena  + ")");
+                }
+
+                kodea.agGehitu((yyval.expr)->izena + " := " + ad1_converted  + " + " + ad2_converted);
+                
+                delete (yyvsp[-2].expr);
+                delete (yyvsp[0].expr);
+              }
+#line 1914 "parser.cpp"
+    break;
+
+  case 38:
+#line 443 "parser.y"
+              {
+                (yyval.expr) = new expr_st;
+                (yyval.expr)->izena = kodea.idBerria();
+
+                int mota_aldaketa = kalkulatuMota(*(yyval.expr), *(yyvsp[-2].expr), *(yyvsp[0].expr));
+                string ad1_converted, ad2_converted;
+
+                if (mota_aldaketa == 0)  // ez dago mota aldaketarik. izenak mantendu
+                {
+                  ad1_converted = (yyvsp[-2].expr)->izena;
+                  ad2_converted = (yyvsp[0].expr)->izena;
+                } 
+                else if (mota_aldaketa == 1)  // 1go adierazpena aldatu real motara
+                {
+                  ad1_converted = kodea.idBerria();
+                  ad2_converted = (yyvsp[0].expr)->izena;
+                  kodea.agGehitu(ad1_converted + " := ent_to_real(" + (yyvsp[-2].expr)->izena  + ")");
+                }
+                else if (mota_aldaketa == 2)  // 2go adierazpena aldatu real motara
+                {
+                  ad1_converted = (yyvsp[-2].expr)->izena;
+                  ad2_converted = kodea.idBerria();
+                  kodea.agGehitu(ad2_converted + " := ent_to_real(" + (yyvsp[0].expr)->izena  + ")");
+                }
+                else  // 1go eta 2n adierazpenak aldatu real motara
+                {
+                  ad1_converted = kodea.idBerria();
+                  ad2_converted = kodea.idBerria();
+                  kodea.agGehitu(ad1_converted + " := ent_to_real(" + (yyvsp[-2].expr)->izena  + ")");
+                  kodea.agGehitu(ad2_converted + " := ent_to_real(" + (yyvsp[0].expr)->izena  + ")");
+                }
+
+                kodea.agGehitu((yyval.expr)->izena + " := " + ad1_converted  + " - " + ad2_converted);
+                
+                delete (yyvsp[-2].expr);
+                delete (yyvsp[0].expr);
+              }
+#line 1956 "parser.cpp"
+    break;
+
+  case 39:
+#line 481 "parser.y"
+              {
+                (yyval.expr) = new expr_st;
+                (yyval.expr)->izena = kodea.idBerria();
+                
+                int mota_aldaketa = kalkulatuMota(*(yyval.expr), *(yyvsp[-2].expr), *(yyvsp[0].expr));
+                string ad1_converted, ad2_converted;
+
+                if (mota_aldaketa == 0)  // ez dago mota aldaketarik. izenak mantendu
+                {
+                  ad1_converted = (yyvsp[-2].expr)->izena;
+                  ad2_converted = (yyvsp[0].expr)->izena;
+                } 
+                else if (mota_aldaketa == 1)  // 1go adierazpena aldatu real motara
+                {
+                  ad1_converted = kodea.idBerria();
+                  ad2_converted = (yyvsp[0].expr)->izena;
+                  kodea.agGehitu(ad1_converted + " := ent_to_real(" + (yyvsp[-2].expr)->izena  + ")");
+                }
+                else if (mota_aldaketa == 2)  // 2go adierazpena aldatu real motara
+                {
+                  ad1_converted = (yyvsp[-2].expr)->izena;
+                  ad2_converted = kodea.idBerria();
+                  kodea.agGehitu(ad2_converted + " := ent_to_real(" + (yyvsp[0].expr)->izena  + ")");
+                }
+                else  // 1go eta 2n adierazpenak aldatu real motara
+                {
+                  ad1_converted = kodea.idBerria();
+                  ad2_converted = kodea.idBerria();
+                  kodea.agGehitu(ad1_converted + " := ent_to_real(" + (yyvsp[-2].expr)->izena  + ")");
+                  kodea.agGehitu(ad2_converted + " := ent_to_real(" + (yyvsp[0].expr)->izena  + ")");
+                }
+
+                kodea.agGehitu((yyval.expr)->izena + " := " + ad1_converted  + " * " + ad2_converted);
+
+                delete (yyvsp[-2].expr);
+                delete (yyvsp[0].expr);
+              }
+#line 1998 "parser.cpp"
+    break;
+
+  case 40:
+#line 519 "parser.y"
+              {
+                (yyval.expr) = new expr_st;
+                (yyval.expr)->izena = kodea.idBerria();
+                (yyval.expr)->mota = MOTA_REAL;            
+                kodea.agGehitu((yyval.expr)->izena + " := " + (yyvsp[-2].expr)->izena  + " / " + (yyvsp[0].expr)->izena);
+
+                delete (yyvsp[-2].expr);
+                delete (yyvsp[0].expr);
+              }
+#line 2012 "parser.cpp"
+    break;
+
+  case 41:
+#line 529 "parser.y"
+              {
+                (yyval.expr) = new expr_st;
+                (yyval.expr)->izena = "";
+                (yyval.expr)->true_list.push_front(kodea.lortuErref());
+                (yyval.expr)->false_list.push_front(kodea.lortuErref()+1); 
+                (yyval.expr)->mota = ADI_ERL;
+                kodea.agGehitu("if " + (yyvsp[-2].expr)->izena  + " = " + (yyvsp[0].expr)->izena + " goto ");
+                kodea.agGehitu("goto ");
+              }
+#line 2026 "parser.cpp"
+    break;
+
+  case 42:
+#line 539 "parser.y"
+              {
+                (yyval.expr) = new expr_st;
+                (yyval.expr)->izena = "";
+                (yyval.expr)->true_list.push_front(kodea.lortuErref());
+                (yyval.expr)->false_list.push_front(kodea.lortuErref()+1); 
+                (yyval.expr)->mota = ADI_ERL;
+                kodea.agGehitu("if " + (yyvsp[-2].expr)->izena  + " > " + (yyvsp[0].expr)->izena + " goto ");
+                kodea.agGehitu("goto ");
+              }
+#line 2040 "parser.cpp"
+    break;
+
+  case 43:
+#line 549 "parser.y"
+              {
+                (yyval.expr) = new expr_st;
+                (yyval.expr)->izena = "";
+                (yyval.expr)->true_list.push_front(kodea.lortuErref());
+                (yyval.expr)->false_list.push_front(kodea.lortuErref()+1); 
+                (yyval.expr)->mota = ADI_ERL;
+                kodea.agGehitu("if " + (yyvsp[-2].expr)->izena  + " < " + (yyvsp[0].expr)->izena + " goto ");
+                kodea.agGehitu("goto ");
+              }
+#line 2054 "parser.cpp"
+    break;
+
+  case 44:
+#line 559 "parser.y"
+              {
+                (yyval.expr) = new expr_st;
+                (yyval.expr)->izena = "";
+                (yyval.expr)->true_list.push_front(kodea.lortuErref());
+                (yyval.expr)->false_list.push_front(kodea.lortuErref()+1); 
+                (yyval.expr)->mota = ADI_ERL;
+                kodea.agGehitu("if " + (yyvsp[-2].expr)->izena  + " >= " + (yyvsp[0].expr)->izena + " goto ");
+                kodea.agGehitu("goto ");
+              }
+#line 2068 "parser.cpp"
+    break;
+
+  case 45:
+#line 569 "parser.y"
+              {
+                (yyval.expr) = new expr_st;
+                (yyval.expr)->izena = "";
+                (yyval.expr)->true_list.push_front(kodea.lortuErref());
+                (yyval.expr)->false_list.push_front(kodea.lortuErref()+1); 
+                (yyval.expr)->mota = ADI_ERL;
+                kodea.agGehitu("if " + (yyvsp[-2].expr)->izena  + " <= " + (yyvsp[0].expr)->izena + " goto ");
+                kodea.agGehitu("goto ");
+              }
+#line 2082 "parser.cpp"
+    break;
+
+  case 46:
+#line 579 "parser.y"
+              {
+                (yyval.expr) = new expr_st;
+                (yyval.expr)->izena = "";
+                (yyval.expr)->true_list.push_front(kodea.lortuErref());
+                (yyval.expr)->false_list.push_front(kodea.lortuErref()+1); 
+                (yyval.expr)->mota = ADI_ERL;
+                kodea.agGehitu("if " + (yyvsp[-2].expr)->izena  + " != " + (yyvsp[0].expr)->izena + " goto ");
+                kodea.agGehitu("goto ");
+              }
+#line 2096 "parser.cpp"
+    break;
+
+  case 47:
+#line 589 "parser.y"
+              {
+                (yyval.expr) = new expr_st;
+                (yyval.expr)->izena = (yyvsp[0].var)->izena.data();
+                (yyval.expr)->mota = (yyvsp[0].var)->mota;
+                delete (yyvsp[0].var);
+              }
+#line 2107 "parser.cpp"
+    break;
+
+  case 48:
+#line 596 "parser.y"
+              {
+                (yyval.expr) = new expr_st;
+                (yyval.expr)->izena = string(*(yyvsp[0].izena));
+                (yyval.expr)->mota = string(MOTA_ENT);
+                delete (yyvsp[0].izena);
+              }
+#line 2118 "parser.cpp"
+    break;
+
+  case 49:
+#line 603 "parser.y"
+              {
+                (yyval.expr) = new expr_st;
+                (yyval.expr)->izena = string(*(yyvsp[0].izena));
+                (yyval.expr)->mota = string(MOTA_REAL);
+                delete (yyvsp[0].izena);
+              }
+#line 2129 "parser.cpp"
+    break;
+
+  case 50:
+#line 610 "parser.y"
+              {
+                (yyval.expr) = new expr_st;
+                (yyval.expr)->izena = string((yyvsp[-1].expr)->izena);
+                (yyval.expr)->true_list.merge((yyvsp[-1].expr)->true_list);
+                (yyval.expr)->false_list.merge((yyvsp[-1].expr)->false_list); 
+                (yyval.expr)->mota = (yyvsp[-1].expr)->mota;
+                delete (yyvsp[-1].expr);
+              }
+#line 2142 "parser.cpp"
+    break;
+
+  case 51:
+#line 622 "parser.y"
+    { 
+      (yyval.ref) = kodea.lortuErref(); 
+    }
+#line 2150 "parser.cpp"
+    break;
+
+  case 52:
+#line 629 "parser.y"
+    { 
+      (yyval.next) = new ref_list;
+      (yyval.next)->push_back(kodea.lortuErref());
+      kodea.agGehitu("goto");
+    }
+#line 2160 "parser.cpp"
+    break;
+
+
+#line 2164 "parser.cpp"
 
       default: break;
     }
@@ -1666,6 +2392,6 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 122 "parser.y"
+#line 635 "parser.y"
 
 

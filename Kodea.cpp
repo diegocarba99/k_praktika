@@ -45,6 +45,7 @@ void Kodea::agGehitu(const string &aginduKatea) {
   stringstream agindua;
   agindua << hurrengoAgindua() << ": " << aginduKatea;
   aginduak.push_back(agindua.str());
+  std::cout << "[!] " << agindua.str() << std::endl;
 }
 
 /**********************/
