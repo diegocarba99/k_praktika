@@ -338,16 +338,25 @@ sententzia :  aldagaia TASSIG adierazpena TSEMIC
                 delete $<var>1; 
                 delete $<expr>3; 
               }
-              | RIF adierazpena TLBRACE M sententzia_zerrenda TRBRACE M TSEMIC
+              | RIF adierazpena TLBRACE M sententzia_zerrenda TRBRACE N M if_jarraipena M TSEMIC 
               {
                 kodea.agOsatu($<expr>2->true_list, $<ref>4);
-                kodea.agOsatu($<expr>2->false_list, $<ref>7);
+                kodea.agOsatu($<expr>2->false_list, $<ref>8);
+                kodea.agOsatu(*$<next>7, $<ref>10);
                 $<sent>$ = new ref_list_st;
+
                 $<sent>$->exit.merge($<sent>5->exit);
+                $<sent>$->exit.merge($<sent>9->exit);
+                
                 $<sent>$->skip.merge($<sent>5->skip);
+                $<sent>$->skip.merge($<sent>9->skip);
+                
                 $<sent>$->error.merge($<sent>5->error);
-                $<sent>$->zatizero.merge($<sent>5->zatizero);
+                $<sent>$->error.merge($<sent>9->error);
+                
                 $<sent>$->zatizero.merge($<expr>2->zatizero);
+                $<sent>$->zatizero.merge($<sent>5->zatizero);
+                $<sent>$->zatizero.merge($<sent>9->zatizero);
 
                 
                 if ($<expr>2->mota.compare(ADI_ERL) != 0)
@@ -355,6 +364,9 @@ sententzia :  aldagaia TASSIG adierazpena TSEMIC
 
                 delete $<expr>2;
                 delete $<sent>5;
+                delete $<sent>9;
+                delete $<next>7;
+
               }
               | M RWHILE RFOREVER TLBRACE sententzia_zerrenda TRBRACE M TSEMIC
               {
@@ -427,6 +439,60 @@ sententzia :  aldagaia TASSIG adierazpena TSEMIC
                 delete $<expr>3; 
               }
 ;
+
+if_jarraipena : bestela
+              {
+                $<sent>$ = new ref_list_st;
+                $<sent>$->exit.merge($<sent>1->exit);
+                $<sent>$->skip.merge($<sent>1->skip);
+                $<sent>$->error.merge($<sent>1->error);
+                $<sent>$->zatizero.merge($<sent>1->zatizero);
+              }
+              | /* hutsa */
+              {
+                $<sent>$ = new ref_list_st;
+              }
+;
+
+bestela : RELSIF adierazpena TLBRACE M sententzia_zerrenda TRBRACE N M bestela M
+        {
+          kodea.agOsatu($<expr>2->true_list, $<ref>4);
+          kodea.agOsatu($<expr>2->false_list, $<ref>8);
+          kodea.agOsatu(*$<next>7, $<ref>10);
+          $<sent>$ = new ref_list_st;
+
+          $<sent>$->exit.merge($<sent>5->exit);
+          $<sent>$->exit.merge($<sent>9->exit);
+          
+          $<sent>$->skip.merge($<sent>5->skip);
+          $<sent>$->skip.merge($<sent>9->skip);
+          
+          $<sent>$->error.merge($<sent>5->error);
+          $<sent>$->error.merge($<sent>9->error);
+          
+          $<sent>$->zatizero.merge($<expr>2->zatizero);
+          $<sent>$->zatizero.merge($<sent>5->zatizero);
+          $<sent>$->zatizero.merge($<sent>9->zatizero);
+
+          
+          if ($<expr>2->mota.compare(ADI_ERL) != 0)
+            kalkulatuErroreak($<sent>$->error, ERR_IF, *$<expr>2);
+
+          delete $<expr>2;
+          delete $<sent>5;
+          delete $<sent>9;
+          delete $<next>7;
+        }
+        | RELSE TLBRACE sententzia_zerrenda TRBRACE
+        {
+          $<sent>$ = new ref_list_st;
+          $<sent>$->exit.merge($<sent>3->exit);
+          $<sent>$->skip.merge($<sent>3->skip);
+          $<sent>$->error.merge($<sent>3->error);
+          $<sent>$->zatizero.merge($<sent>3->zatizero);
+        }
+;
+
 
 aldagaia :  TID
             {
@@ -645,6 +711,39 @@ adierazpena : adierazpena TADD adierazpena
                 $<expr>$->zatizero.merge($<expr>3->zatizero);
                 kodea.agGehitu("if " + $<expr>1->izena  + " != " + $<expr>3->izena + " goto");
                 kodea.agGehitu("goto");
+              }
+              | adierazpena RAND M adierazpena
+              { 
+                kodea.agOsatu($<expr>1->true_list, $<ref>3);
+                $<expr>$ = new expr_st;
+                $<expr>$->izena = "";
+                $<expr>$->true_list.merge($<expr>4->true_list);
+                $<expr>$->false_list.merge($<expr>1->false_list);
+                $<expr>$->false_list.merge($<expr>4->false_list); 
+                $<expr>$->mota = ADI_ERL;
+                $<expr>$->zatizero.merge($<expr>1->zatizero);
+                $<expr>$->zatizero.merge($<expr>4->zatizero);
+              }
+              | adierazpena ROR M adierazpena
+              {
+                kodea.agOsatu($<expr>1->false_list, $<ref>3);
+                $<expr>$ = new expr_st;
+                $<expr>$->izena = "";
+                $<expr>$->true_list.merge($<expr>1->true_list);
+                $<expr>$->true_list.merge($<expr>4->true_list);
+                $<expr>$->false_list.merge($<expr>4->false_list); 
+                $<expr>$->mota = ADI_ERL;
+                $<expr>$->zatizero.merge($<expr>1->zatizero);
+                $<expr>$->zatizero.merge($<expr>4->zatizero);
+              }
+              | RNOT adierazpena
+              {
+                $<expr>$ = new expr_st;
+                $<expr>$->izena = "";
+                $<expr>$->true_list.merge($<expr>2->true_list);
+                $<expr>$->false_list.merge($<expr>2->false_list); 
+                $<expr>$->mota = ADI_ERL;
+                $<expr>$->zatizero.merge($<expr>2->zatizero);
               }
               | aldagaia
               {
