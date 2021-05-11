@@ -53,6 +53,7 @@
     std::string *mota;
     id_list *izenak;
     ref_list *next;
+    azpiprog_st *azpi;
     expr_st *expr;
     ref_list_st *sent;
     var_st *var;
@@ -74,6 +75,7 @@
 %type <var> aldagaia 
 %type <izenak> id_zerrenda id_zerrendaren_bestea
 %type <mota> mota par_mota
+%type <azpi> azpiprogramen_erazagupena azpiprogramaren_erazagupena
 %type <ref> M
 %type <next> N
 %type <sent> sententzia sententzia_zerrenda
@@ -102,7 +104,7 @@ programa :  RPROGRAM TID
               stPila.pilaratu(st);
               delete $<izena>2;
             }
-            erazagupenak azpiprogramen_erazagupena TLBRACE sententzia_zerrenda TRBRACE 
+            erazagupenak azpiprogramen_erazagupena TLBRACE sententzia_zerrenda TRBRACE M
             {
               if ( ! $<sent>7->error.empty() )
               {
@@ -111,6 +113,16 @@ programa :  RPROGRAM TID
               else
               {
                 kodea.agGehitu("halt");
+                kodea.agOsatu($<azpi>5->zatizero, kodea.lortuErref() );
+                kodea.agOsatu($<sent>7->zatizero, kodea.lortuErref() );
+
+                std::cout << "[info] M.ref: " << $<ref>9 << endl;
+
+                if ( !$<azpi>5->zatizero.empty() || !$<sent>7->zatizero.empty() ) {
+                  kodea.agGehitu("write \"zerorekin zatiketa gertatu da\"");
+                  kodea.agGehitu("writeln");
+                  kodea.agGehitu("goto " + to_string($<ref>9));
+                }
                 kodea.idatzi();
                 stPila.despilatu();
               }
@@ -174,7 +186,18 @@ mota :  RINT
 ;
 
 azpiprogramen_erazagupena : azpiprogramaren_erazagupena azpiprogramen_erazagupena
+                            {
+                              $<azpi>$ = new azpiprog_st;
+                              $<azpi>$->zatizero.merge($<azpi>1->zatizero);
+                              $<azpi>$->zatizero.merge($<azpi>2->zatizero);
+
+                              delete $<azpi>1;
+                              delete $<azpi>2;
+                            }
                             | /* hutsa */
+                            {
+                              $<azpi>$ = new azpiprog_st; 
+                            }
 ;
 
 azpiprogramaren_erazagupena : RPROC TID 
@@ -187,6 +210,13 @@ azpiprogramaren_erazagupena : RPROC TID
                               argumentuak erazagupenak azpiprogramen_erazagupena TLBRACE sententzia_zerrenda TRBRACE
                               {
                                 kodea.agGehitu("endproc");
+
+                                $<azpi>$ = new azpiprog_st;
+                                $<azpi>$->zatizero.merge($<azpi>6->zatizero);
+                                $<azpi>$->zatizero.merge($<sent>8->zatizero);
+
+                                delete $<azpi>6;
+                                delete $<sent>8;
                                 delete $<izena>2;
                               }
 ;
@@ -276,6 +306,9 @@ sententzia_zerrenda : sententzia_zerrenda sententzia
                         $<sent>$->error.merge($<sent>1->error);
                         $<sent>$->error.merge($<sent>2->error);
 
+                        $<sent>$->zatizero.merge($<sent>1->zatizero);
+                        $<sent>$->zatizero.merge($<sent>2->zatizero);
+
                         delete $<sent>1;
                         delete $<sent>2;
                       }
@@ -288,14 +321,15 @@ sententzia_zerrenda : sententzia_zerrenda sententzia
 sententzia :  aldagaia TASSIG adierazpena TSEMIC
               {
                 $<sent>$ = new ref_list_st;
+                $<sent>$->zatizero.merge($<expr>3->zatizero);
+
                 if ($<var>1->mota == MOTA_ENT && $<expr>3->mota == MOTA_REAL){
                   $<var>1->mota = MOTA_REAL;
                   kodea.agGehitu("implicit_conversion_to_real " + $<var>1->izena);
                 }
+
                 kodea.agGehitu($<var>1->izena + " := " + $<expr>3->izena);
 
-                
-                
                 if ( $<var>1->mota.compare($<expr>3->mota) != 0) {
                   //$<sent>$->error.merge(kalkulatuErroreak(ERR_NONE,*$<var>1, *$<expr>3)); 
                   kalkulatuErroreak($<sent>$->error, *$<var>1, *$<expr>3); 
@@ -312,9 +346,10 @@ sententzia :  aldagaia TASSIG adierazpena TSEMIC
                 $<sent>$->exit.merge($<sent>5->exit);
                 $<sent>$->skip.merge($<sent>5->skip);
                 $<sent>$->error.merge($<sent>5->error);
+                $<sent>$->zatizero.merge($<sent>5->zatizero);
+                $<sent>$->zatizero.merge($<expr>2->zatizero);
 
                 
-
                 if ($<expr>2->mota.compare(ADI_ERL) != 0)
                   kalkulatuErroreak($<sent>$->error, ERR_IF, *$<expr>2);
 
@@ -327,6 +362,7 @@ sententzia :  aldagaia TASSIG adierazpena TSEMIC
                 kodea.agOsatu($<sent>5->exit, $<ref>7+1);
                 $<sent>$ = new ref_list_st;
                 $<sent>$->error.merge($<sent>5->error);
+                $<sent>$->zatizero.merge($<sent>5->zatizero);
                 delete $<sent>5;
               }
               | RDO M TLBRACE sententzia_zerrenda TRBRACE RUNTIL M adierazpena RELSE M TLBRACE sententzia_zerrenda TRBRACE M TSEMIC
@@ -338,15 +374,15 @@ sententzia :  aldagaia TASSIG adierazpena TSEMIC
                 kodea.agOsatu($<sent>12->exit, $<ref>14);
                 $<sent>$ = new ref_list_st;
                 $<sent>$->skip.merge($<sent>12->skip);
-
-                
+                $<sent>$->zatizero.merge($<sent>4->zatizero);
+                $<sent>$->zatizero.merge($<expr>8->zatizero);
+                $<sent>$->zatizero.merge($<sent>12->zatizero);                
 
                 if ($<expr>8->mota.compare(ADI_ERL) != 0)
                   kalkulatuErroreak($<sent>$->error, ERR_DO, *$<expr>8);
 
                 $<sent>$->error.merge($<sent>4->error);
                 $<sent>$->error.merge($<sent>12->error);
-
 
                 delete $<expr>8;
                 delete $<sent>4;
@@ -357,8 +393,7 @@ sententzia :  aldagaia TASSIG adierazpena TSEMIC
                 kodea.agOsatu($<expr>3->false_list, $<ref>5);
                 $<sent>$ = new ref_list_st;
                 $<sent>$->skip.merge($<expr>3->true_list);
-
-                
+                $<sent>$->zatizero.merge($<expr>3->zatizero);
 
                 if ($<expr>3->mota.compare(ADI_ERL) != 0)
                   kalkulatuErroreak($<sent>$->error, ERR_SKIP, *$<expr>3);
@@ -384,6 +419,7 @@ sententzia :  aldagaia TASSIG adierazpena TSEMIC
                 kodea.agGehitu("write " + string($<expr>3->izena));
                 kodea.agGehitu("writeln");
                 $<sent>$ = new ref_list_st;
+                $<sent>$->zatizero.merge($<expr>3->zatizero);
 
                 if ($<expr>3->mota.compare(ADI_ERL) == 0)
                   kalkulatuErroreak($<sent>$->error, ERR_PRINT, *$<expr>3);
@@ -405,6 +441,8 @@ adierazpena : adierazpena TADD adierazpena
               {
                 $<expr>$ = new expr_st;
                 $<expr>$->izena = kodea.idBerria();
+                $<expr>$->zatizero.merge($<expr>1->zatizero);
+                $<expr>$->zatizero.merge($<expr>3->zatizero);
 
                 int mota_aldaketa = kalkulatuMota(*$<expr>$, *$<expr>1, *$<expr>3);
                 string ad1_converted, ad2_converted;
@@ -443,6 +481,8 @@ adierazpena : adierazpena TADD adierazpena
               {
                 $<expr>$ = new expr_st;
                 $<expr>$->izena = kodea.idBerria();
+                $<expr>$->zatizero.merge($<expr>1->zatizero);
+                $<expr>$->zatizero.merge($<expr>3->zatizero);
 
                 int mota_aldaketa = kalkulatuMota(*$<expr>$, *$<expr>1, *$<expr>3);
                 string ad1_converted, ad2_converted;
@@ -481,6 +521,8 @@ adierazpena : adierazpena TADD adierazpena
               {
                 $<expr>$ = new expr_st;
                 $<expr>$->izena = kodea.idBerria();
+                $<expr>$->zatizero.merge($<expr>1->zatizero);
+                $<expr>$->zatizero.merge($<expr>3->zatizero);
                 
                 int mota_aldaketa = kalkulatuMota(*$<expr>$, *$<expr>1, *$<expr>3);
                 string ad1_converted, ad2_converted;
@@ -519,7 +561,14 @@ adierazpena : adierazpena TADD adierazpena
               {
                 $<expr>$ = new expr_st;
                 $<expr>$->izena = kodea.idBerria();
-                $<expr>$->mota = MOTA_REAL;            
+                $<expr>$->mota = MOTA_REAL;   
+                $<expr>$->zatizero.push_front(kodea.lortuErref());
+                $<expr>$->zatizero.merge($<expr>1->zatizero);   
+                $<expr>$->zatizero.merge($<expr>3->zatizero);
+
+                for(auto v: $<expr>$->zatizero) std::cout << "[info] zatizero reference: " << v << std::endl;
+
+                kodea.agGehitu("if " + $<expr>3->izena + " = 0 goto");      
                 kodea.agGehitu($<expr>$->izena + " := " + $<expr>1->izena  + " / " + $<expr>3->izena);
 
                 delete $<expr>1;
@@ -532,8 +581,10 @@ adierazpena : adierazpena TADD adierazpena
                 $<expr>$->true_list.push_front(kodea.lortuErref());
                 $<expr>$->false_list.push_front(kodea.lortuErref()+1); 
                 $<expr>$->mota = ADI_ERL;
-                kodea.agGehitu("if " + $<expr>1->izena  + " = " + $<expr>3->izena + " goto ");
-                kodea.agGehitu("goto ");
+                $<expr>$->zatizero.merge($<expr>1->zatizero);
+                $<expr>$->zatizero.merge($<expr>3->zatizero);
+                kodea.agGehitu("if " + $<expr>1->izena  + " = " + $<expr>3->izena + " goto");
+                kodea.agGehitu("goto");
               }
               | adierazpena TCGT adierazpena
               {
@@ -542,8 +593,10 @@ adierazpena : adierazpena TADD adierazpena
                 $<expr>$->true_list.push_front(kodea.lortuErref());
                 $<expr>$->false_list.push_front(kodea.lortuErref()+1); 
                 $<expr>$->mota = ADI_ERL;
-                kodea.agGehitu("if " + $<expr>1->izena  + " > " + $<expr>3->izena + " goto ");
-                kodea.agGehitu("goto ");
+                $<expr>$->zatizero.merge($<expr>1->zatizero);
+                $<expr>$->zatizero.merge($<expr>3->zatizero);
+                kodea.agGehitu("if " + $<expr>1->izena  + " > " + $<expr>3->izena + " goto");
+                kodea.agGehitu("goto");
               }
               | adierazpena TCLT adierazpena
               {
@@ -552,8 +605,10 @@ adierazpena : adierazpena TADD adierazpena
                 $<expr>$->true_list.push_front(kodea.lortuErref());
                 $<expr>$->false_list.push_front(kodea.lortuErref()+1); 
                 $<expr>$->mota = ADI_ERL;
-                kodea.agGehitu("if " + $<expr>1->izena  + " < " + $<expr>3->izena + " goto ");
-                kodea.agGehitu("goto ");
+                $<expr>$->zatizero.merge($<expr>1->zatizero);
+                $<expr>$->zatizero.merge($<expr>3->zatizero);
+                kodea.agGehitu("if " + $<expr>1->izena  + " < " + $<expr>3->izena + " goto");
+                kodea.agGehitu("goto");
               }
               | adierazpena TCGE adierazpena
               {
@@ -562,8 +617,10 @@ adierazpena : adierazpena TADD adierazpena
                 $<expr>$->true_list.push_front(kodea.lortuErref());
                 $<expr>$->false_list.push_front(kodea.lortuErref()+1); 
                 $<expr>$->mota = ADI_ERL;
-                kodea.agGehitu("if " + $<expr>1->izena  + " >= " + $<expr>3->izena + " goto ");
-                kodea.agGehitu("goto ");
+                $<expr>$->zatizero.merge($<expr>1->zatizero);
+                $<expr>$->zatizero.merge($<expr>3->zatizero);
+                kodea.agGehitu("if " + $<expr>1->izena  + " >= " + $<expr>3->izena + " goto");
+                kodea.agGehitu("goto");
               }
               | adierazpena TCLE adierazpena
               {
@@ -572,8 +629,10 @@ adierazpena : adierazpena TADD adierazpena
                 $<expr>$->true_list.push_front(kodea.lortuErref());
                 $<expr>$->false_list.push_front(kodea.lortuErref()+1); 
                 $<expr>$->mota = ADI_ERL;
-                kodea.agGehitu("if " + $<expr>1->izena  + " <= " + $<expr>3->izena + " goto ");
-                kodea.agGehitu("goto ");
+                $<expr>$->zatizero.merge($<expr>1->zatizero);
+                $<expr>$->zatizero.merge($<expr>3->zatizero);
+                kodea.agGehitu("if " + $<expr>1->izena  + " <= " + $<expr>3->izena + " goto");
+                kodea.agGehitu("goto");
               }
               | adierazpena TCNE adierazpena
               {
@@ -582,8 +641,10 @@ adierazpena : adierazpena TADD adierazpena
                 $<expr>$->true_list.push_front(kodea.lortuErref());
                 $<expr>$->false_list.push_front(kodea.lortuErref()+1); 
                 $<expr>$->mota = ADI_ERL;
-                kodea.agGehitu("if " + $<expr>1->izena  + " != " + $<expr>3->izena + " goto ");
-                kodea.agGehitu("goto ");
+                $<expr>$->zatizero.merge($<expr>1->zatizero);
+                $<expr>$->zatizero.merge($<expr>3->zatizero);
+                kodea.agGehitu("if " + $<expr>1->izena  + " != " + $<expr>3->izena + " goto");
+                kodea.agGehitu("goto");
               }
               | aldagaia
               {
@@ -613,6 +674,7 @@ adierazpena : adierazpena TADD adierazpena
                 $<expr>$->true_list.merge($<expr>2->true_list);
                 $<expr>$->false_list.merge($<expr>2->false_list); 
                 $<expr>$->mota = $<expr>2->mota;
+                $<expr>$->zatizero.merge($<expr>2->zatizero);
                 delete $<expr>2;
               }
     

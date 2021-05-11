@@ -40,6 +40,7 @@ typedef list<struct prozedura> prozedurak;
 struct ref_list_st {
   ref_list exit;
   ref_list skip;
+  ref_list zatizero;
   message_list error;
 };
 
@@ -48,11 +49,17 @@ struct expr_st {
   ref_list true_list ;
   ref_list false_list ;
   string   mota ;
+  ref_list zatizero;
 };
 
 struct var_st {
   string izena;
   string mota;
+};
+
+struct azpiprog_st
+{
+  ref_list zatizero;
 };
 
 

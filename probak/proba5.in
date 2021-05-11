@@ -1,0 +1,10 @@
+# Errore dinamikoak testeatzeko programa
+
+program adibidea 
+  int a, c;
+  float b;
+{ 
+  a = 5;
+  b = 0.3;
+  c = a / b; 
+}

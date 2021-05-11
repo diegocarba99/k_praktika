@@ -111,11 +111,12 @@ union YYSTYPE
     std::string *mota;
     id_list *izenak;
     ref_list *next;
+    azpiprog_st *azpi;
     expr_st *expr;
     ref_list_st *sent;
     var_st *var;
 
-#line 119 "parser.hpp"
+#line 120 "parser.hpp"
 
 };
 typedef union YYSTYPE YYSTYPE;
