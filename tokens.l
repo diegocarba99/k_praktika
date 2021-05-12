@@ -27,12 +27,16 @@ do                      			TOKEN(RDO);
 proc                    			TOKEN(RPROC); 
 until                   			TOKEN(RUNTIL);
 else                    			TOKEN(RELSE);
+elsif								TOKEN(RELSIF);
 skip                    			TOKEN(RSKIP);
 exit                    			TOKEN(REXIT);
 println                 			TOKEN(RPRINTLN);
 read                    			TOKEN(RREAD);
 int                     			TOKEN(RINT);
 float                   			TOKEN(RFLOAT);
+and									TOKEN(RAND);
+or									TOKEN(ROR);
+not									TOKEN(RNOT);
 
 "*"                     	  		TOKEN(TMUL);
 "="                     	  		TOKEN(TASSIG);

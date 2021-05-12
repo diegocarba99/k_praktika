@@ -15,7 +15,7 @@ graph: parser.hpp
 	dot -Tpdf parser.dot -o parser.pdf
 
 parser.cpp: parser.y 
-	bison -d -o $@ $^
+	bison -d -v -o $@ $^
 
 parser.hpp: parser.cpp
 
@@ -25,12 +25,14 @@ tokens.cpp: tokens.l parser.hpp
 parser: $(SOURCES) Kodea.h Lag.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^
 
-proba:  parser ./probak/proba1.in ./probak/proba2.in ./probak/proba3.in ./probak/proba4.in ./probak/proba5.in ./probak/probatxar1.in ./probak/probatxar2.in ./probak/probatxar3.in
-	./parser < ./probak/proba1.in
-	./parser <./probak/proba2.in
-	./parser <./probak/proba3.in
-	./parser <./probak/proba4.in
-	./parser <./probak/proba5.in
-	./parser <./probak/probatxar1.in
-	./parser <./probak/probatxar2.in
-	./parser <./probak/probatxar3.in
+proba:  parser ./probak/proba1.in ./probak/proba2.in ./probak/proba3.in ./probak/proba4.in ./probak/proba5.in ./probak/proba6.in ./probak/proba7.in ./probak/probatxar1.in ./probak/probatxar2.in ./probak/probatxar3.in
+#	./parser < ./probak/proba1.in
+#	./parser < ./probak/proba2.in
+#	./parser < ./probak/proba3.in
+#	./parser < ./probak/proba4.in
+#	./parser < ./probak/proba5.in
+#	./parser < ./probak/proba6.in
+	./parser < ./probak/proba7.in
+#	./parser <./probak/probatxar1.in
+#	./parser <./probak/probatxar2.in
+#	./parser <./probak/probatxar3.in

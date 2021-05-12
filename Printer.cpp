@@ -5,30 +5,40 @@
 using namespace std;
 
 
+void printErrorsPreamble()
+{
+	cout << "Erroreak daude zure programan. Mesedez ber-begiratu" << endl;
+}
+
 void printErrors ( message_list errors)
 {
-	std::cout << "ERRORS:" << std::endl;
+	cout << "ERRORS:" << endl;
 	for ( auto v: errors )
-		std::cout << v << std::endl;
+		cout << v << endl;
 }
 
 int kalkulatuMota(expr_st &e, expr_st &e1, expr_st &e2)
 {
-	if (e1.mota == MOTA_ENT && e2.mota == MOTA_ENT) {
-		e.mota = string(MOTA_ENT);
-		return 0;
-	}
 
-	if (e1.mota == MOTA_REAL ) {
+	if (e1.mota.compare(e2.mota))
+	{
 		e.mota = string(MOTA_REAL);
-		return 2;
+		if (e1.mota == MOTA_REAL) 
+			return 2;
+		else
+			return 1;
 	}
+	e.mota = e1.mota.data();
 
-	if (e2.mota == MOTA_REAL) {
-		e.mota = string(MOTA_REAL);
-		return 1;
-	}
-	return 3;
+	if (e1.mota.compare(MOTA_ERL) == 0 || e1.mota.compare(MOTA_BOL) == 0 )
+		e.error.push_front(string(e1.izena + " ez da adierazpen aritmetiko bat"));
+
+	if (e2.mota.compare(MOTA_ERL) == 0 || e2.mota.compare(MOTA_BOL) == 0 )
+		e.error.push_front(string(e1.izena + " ez da adierazpen aritmetiko bat"));
+
+	return 0;
+
+	
 }
 
 void kalkulatuErroreak(message_list &errors, var_st &var, expr_st &expr)
@@ -41,12 +51,35 @@ void kalkulatuErroreak(message_list &errors, var_st &var, expr_st &expr)
 	errors.push_front(stream.str());
 }
 
+void kalkulatuErroreak(message_list &errors, int type, var_st &var)
+{
+	stringstream stream;
+	switch (type) {
+		case ERR_NOT_DEFINED:
+			stream << var.izena << "(" << var.mota << ") ezin da erabili";
+			stream << "\n\tez dago definiturik";
+			break;
+
+		case ERR_READ:
+			stream << "adierazpen okerra 'read(" << var.izena << ")' sententzian";
+			stream << "\n\t" << var.izena << "ez dago aldez aurretik definitua";
+			break;
+		}
+
+	errors.push_front(stream.str());
+}
+
 void kalkulatuErroreak(message_list &errors, int type, expr_st &expr)
 {
 	stringstream stream;
 	switch (type) {
 		case ERR_IF:
 			stream << "adierazpen okerra 'if " << expr.izena << "' sententzian";
+			stream << "\n\t" << expr.izena << "ez da adierazpen erlazionala";
+			break;
+
+		case ERR_ELSIF:
+			stream << "adierazpen okerra 'elsif " << expr.izena << "' sententzian";
 			stream << "\n\t" << expr.izena << "ez da adierazpen erlazionala";
 			break;
 

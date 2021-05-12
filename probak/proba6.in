@@ -1,0 +1,29 @@
+# if-elsif-else egitura probatzeko programa
+
+program adibidea 
+  int a, b, c;
+  int d;
+{ 
+	a = 2;
+	b = 3;
+	c = 4;
+  	
+  	if b < c 
+  	{
+  		d = 0;
+  	}
+  	elsif b > c
+  	{
+  		d = 1;
+  	}
+  	elsif a < b 
+  	{
+  		d = 2;
+  	}
+  	else
+  	{
+  		d = 3;
+  	};
+
+  	println(d);
+}

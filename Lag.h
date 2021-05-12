@@ -10,7 +10,9 @@
 using namespace std;
 
 
-#define ADI_ERL "adierazpen erlazionala"
+#define MOTA_ERL "adierazpen erlazionala"
+#define MOTA_BOL "adierazpen boolerra"
+
 
 #define ADI_ADD 0
 #define ADI_SUB 1
@@ -22,6 +24,9 @@ using namespace std;
 #define ERR_DO 2
 #define ERR_SKIP 3
 #define ERR_PRINT 4
+#define ERR_NOT_DEFINED 5
+#define ERR_READ 6
+#define ERR_ELSIF 7
 
 #define MOTA_ENT "ent"
 #define MOTA_REAL "real"
@@ -50,16 +55,19 @@ struct expr_st {
   ref_list false_list ;
   string   mota ;
   ref_list zatizero;
+  message_list error;
 };
 
 struct var_st {
   string izena;
   string mota;
+  message_list error;
 };
 
 struct azpiprog_st
 {
   ref_list zatizero;
+  message_list error;
 };
 
 

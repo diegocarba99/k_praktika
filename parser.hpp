@@ -75,28 +75,32 @@ extern int yydebug;
     RREAD = 272,
     RINT = 273,
     RFLOAT = 274,
-    TMUL = 275,
-    TASSIG = 276,
-    TADD = 277,
-    TSUB = 278,
-    TDIV = 279,
-    TCEQ = 280,
-    TCGT = 281,
-    TCLT = 282,
-    TCGE = 283,
-    TCLE = 284,
-    TCNE = 285,
-    TSEMIC = 286,
-    TCOMMA = 287,
-    TLPAREN = 288,
-    TRPAREN = 289,
-    TLBRACE = 290,
-    TRBRACE = 291,
-    TOUTPARAM = 292,
-    TINOUTPARAM = 293,
-    PRECED3 = 294,
-    PRECED2 = 295,
-    PRECED1 = 296
+    RELSIF = 275,
+    RAND = 276,
+    ROR = 277,
+    RNOT = 278,
+    TMUL = 279,
+    TASSIG = 280,
+    TADD = 281,
+    TSUB = 282,
+    TDIV = 283,
+    TCEQ = 284,
+    TCGT = 285,
+    TCLT = 286,
+    TCGE = 287,
+    TCLE = 288,
+    TCNE = 289,
+    TSEMIC = 290,
+    TCOMMA = 291,
+    TLPAREN = 292,
+    TRPAREN = 293,
+    TLBRACE = 294,
+    TRBRACE = 295,
+    TOUTPARAM = 296,
+    TINOUTPARAM = 297,
+    PRECED3 = 298,
+    PRECED2 = 299,
+    PRECED1 = 300
   };
 #endif
 
@@ -116,7 +120,7 @@ union YYSTYPE
     ref_list_st *sent;
     var_st *var;
 
-#line 120 "parser.hpp"
+#line 124 "parser.hpp"
 
 };
 typedef union YYSTYPE YYSTYPE;
