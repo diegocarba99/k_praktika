@@ -2,100 +2,141 @@
 #include "Lag.h"
 #include "Printer.h"
 
+extern int yylineno;
+
 using namespace std;
 
-
 void printErrorsPreamble()
+                           
+
 {
-	cout << "Erroreak daude zure programan. Mesedez ber-begiratu" << endl;
+	printf("\x1b[1;32m");
+	printf(R"(
+           _                     
+            \
+             \                  ______________________________
+             |\                /   ______   _____    _____    \
+             /|                |  | | ____ | | \ \  | | \ \   |
+            /'|                |  | |  | | | |  | | | |  | |  |
+          ,' //                |  |_|__|_| |_|_/_/  |_|_/_/   |              
+        ,'..`/                 \_____________________________/
+       /   '/                          the interprter                  _...._.---._
+     /:   ,'                                                         .' ,--. ,--.  \
+   ,'    ,                                                           | /... /...|  |,..._
+  ,'    /                                   _..---------..__         \.\_O_/  O /  '     \
+ .'  _, /                 .---..._       ,-'  __.-.....__   '-  ___.-----._'---'     ,'  |
+ |-`'  (                  |       `--..,'_,-''   '.     `''"-._( .-.'.--.         _.'   /
+ |      \                 |  ,.__     /,'  |      |      \     \ | / |  /      ,,'  __ /
+ |     .`.               /  .'  _)--..'    |       |     '\     \`  ..--:`     _.--' \
+ |   .'  .-.__           |  |,-' _.-\      |       |      |     |`\''''''''_.-'   ,' (__...'
+  \         ,-`''-- =--::|   \-'|    |     |       |      |     | `'.....-' .,:-'  |  \
+   `.    ,  /  /     '`. |   |  |    |     |       |      |     |  \__.-` `..      \   \
+    '.  /  /  /         '|   |  |    [     |       |       |    |    ,       '._    |  |
+      `.  /  | .--------'    `-. |   '     |       |       |    |,L______       `--..   \
+        ``.  | \               |-^---''".  |      |       .'    |.'      ``-..._         \
+           `.-..\.__...---....,'-.....--'`'"-........_____|.. `'                `'`--..../ 
+
+)");
+	printf("\x1b[1;32m\x1b[4;32m");
+	printf("Arranopola! Ematen duenez, gdd-k arazoak aurkitu ditu zure kodean, ikus ditzagun zeintzuk diren:\n\n");
+	printf("\x1b[40m\x1b[0;37m\x1b[0m");
+
+
+
 }
 
-void printErrors ( message_list errors)
+
+
+
+
+void printErrors ( message_list &errors)
 {
-	cout << "ERRORS:" << endl;
 	for ( auto v: errors )
-		cout << v << endl;
+		cout << v;
 }
 
 int kalkulatuMota(expr_st &e, expr_st &e1, expr_st &e2)
 {
 
-	if (e1.mota.compare(e2.mota))
+	if (e1.mota.compare(MOTA_REAL) == 0 && e2.mota.compare(MOTA_ENT) == 0 )
 	{
 		e.mota = string(MOTA_REAL);
-		if (e1.mota == MOTA_REAL) 
-			return 2;
-		else
-			return 1;
+		return 2;
+	}
+	else if (e1.mota.compare(MOTA_ENT) == 0  && e2.mota.compare(MOTA_REAL) == 0 )
+	{
+		e.mota = string(MOTA_REAL);
+		return 1;	
 	}
 	e.mota = e1.mota.data();
 
-	if (e1.mota.compare(MOTA_ERL) == 0 || e1.mota.compare(MOTA_BOL) == 0 )
-		e.error.push_front(string(e1.izena + " ez da adierazpen aritmetiko bat"));
+	string line = to_string(yylineno);
+	stringstream stream;
 
-	if (e2.mota.compare(MOTA_ERL) == 0 || e2.mota.compare(MOTA_BOL) == 0 )
-		e.error.push_front(string(e1.izena + " ez da adierazpen aritmetiko bat"));
+	if (e1.mota.compare(MOTA_ERL) == 0 || e1.mota.compare(MOTA_BOL) == 0 ){
+		stream << COLOR_BLUE_BOLD << line << " lerroan" << COLOR_RESET << " - " << COLOR_RED_BOLD << "errorea" COLOR_RESET << ": ";
+		stream << COLOR_BOLD << "'" << e1.izena << "'" << COLOR_RESET << " ez da adierazpen aritmetiko bat" << endl;
+		stream << "\t" << e.deskribapena << endl;
+		e.error.push_front(stream.str());
+	}
 
+	if (e2.mota.compare(MOTA_ERL) == 0 || e2.mota.compare(MOTA_BOL) == 0 ){
+		stream << COLOR_BLUE_BOLD << line << " lerroan" << COLOR_RESET << " - " << COLOR_RED_BOLD << "errorea" COLOR_RESET << ": ";
+		stream << COLOR_BOLD << "'" << e2.izena << "'" << COLOR_RESET << " ez da adierazpen aritmetiko bat" << endl;
+		stream << "\t" << e.deskribapena << endl;
+		e.error.push_front(stream.str());
+	}
 	return 0;
-
-	
 }
 
 void kalkulatuErroreak(message_list &errors, var_st &var, expr_st &expr)
 {
 	stringstream stream;
-	 
-	stream << "ezin da esleitu \'" << expr.izena << "\'(" << expr.mota << ") adierazpena " << var.izena << "(" << var.mota << ") aldagaiari";
-	stream << "\n\tmota bateraezinak " << expr.mota << " =/= " << var.mota;
+
+	stream << COLOR_BLUE_BOLD << yylineno << " lerroan" << COLOR_RESET << " - " << COLOR_RED_BOLD << "errorea" COLOR_RESET << ": ";
+	stream << "ezin zaio esleitu " << COLOR_BOLD << "'" << expr.mota << "'" << COLOR_RESET << " motako balio bat ";
+	stream << COLOR_BOLD << "'" << var.izena << "'" << COLOR_RESET << "aldagaiari, mota bateraezinak" << endl;
+	stream << "\t" << var.izena << " = " << expr.deskribapena << endl;
 			
 	errors.push_front(stream.str());
 }
 
-void kalkulatuErroreak(message_list &errors, int type, var_st &var)
-{
-	stringstream stream;
-	switch (type) {
-		case ERR_NOT_DEFINED:
-			stream << var.izena << "(" << var.mota << ") ezin da erabili";
-			stream << "\n\tez dago definiturik";
-			break;
 
-		case ERR_READ:
-			stream << "adierazpen okerra 'read(" << var.izena << ")' sententzian";
-			stream << "\n\t" << var.izena << "ez dago aldez aurretik definitua";
-			break;
-		}
-
-	errors.push_front(stream.str());
-}
 
 void kalkulatuErroreak(message_list &errors, int type, expr_st &expr)
 {
 	stringstream stream;
+
 	switch (type) {
 		case ERR_IF:
-			stream << "adierazpen okerra 'if " << expr.izena << "' sententzian";
-			stream << "\n\t" << expr.izena << "ez da adierazpen erlazionala";
+			stream << COLOR_BLUE_BOLD << yylineno << " lerroan" << COLOR_RESET << " - " << COLOR_RED_BOLD << "errorea" COLOR_RESET << ": ";
+			stream << "sententzia kondizionalean adierazpen erlazional bat espero da" << endl;
+			stream << "\tif " << expr.deskribapena << " { ..."<< endl;
 			break;
 
 		case ERR_ELSIF:
-			stream << "adierazpen okerra 'elsif " << expr.izena << "' sententzian";
-			stream << "\n\t" << expr.izena << "ez da adierazpen erlazionala";
+			stream << COLOR_BLUE_BOLD << yylineno << " lerroan" << COLOR_RESET << " - " << COLOR_RED_BOLD << "errorea" COLOR_RESET << ": ";
+			stream << "sententzia kondizionalean adierazpen erlazional bat espero da" << endl;
+			stream << "\telsif " << expr.deskribapena << " { ..."<< endl;
 			break;
 
 		case ERR_DO:
-			stream << "adierazpen okerra 'do-until " << expr.izena << "' sententzian"; 
-			stream << "\n\t" << expr.izena << "ez da adierazpen erlazionala";
+			stream << COLOR_BLUE_BOLD << yylineno << " lerroan" << COLOR_RESET << " - " << COLOR_RED_BOLD << "errorea" COLOR_RESET << ": ";
+			stream << "sententzia kondizionalean adierazpen erlazional bat espero da" << endl;
+			stream << "\tdo { ... } until " << expr.deskribapena << endl;
 			break;
 
 		case ERR_SKIP:
-			stream << "adierazpen okerra 'skip if" << expr.izena << "' sententzian";
-			stream << "\n\t" << expr.izena << "ez da adierazpen erlazionala";
+			stream << COLOR_BLUE_BOLD << yylineno << " lerroan" << COLOR_RESET << " - " << COLOR_RED_BOLD << "errorea" COLOR_RESET << ": ";
+			stream << "sententzia kondizionalean adierazpen erlazional bat espero da" << endl;
+			stream << "\tskip if " << expr.deskribapena << " ;"<< endl;
 			break;
 
 		case ERR_PRINT:
-			stream << "adierazpen okerra 'print(" << expr.izena << ")' sententzian";
-			stream << "\n\t" << expr.izena << "adierazpen erlazionala da";
+			stream << COLOR_BLUE_BOLD << yylineno << " lerroan" << COLOR_RESET << " - " << COLOR_RED_BOLD << "errorea" COLOR_RESET << ": ";
+			stream << "inprimatu daitezkeen adierazpenak aritmetikoak izan dira, ezin da " << expr.mota << "bat inprimatu" << endl;
+			stream << "\tprint(" << expr.deskribapena << ")" << endl;
+			
 			break;
 	}
 	errors.push_front(stream.str());

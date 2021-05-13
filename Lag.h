@@ -33,7 +33,13 @@ using namespace std;
 #define PAR_VAL "val"
 #define PAR_REF "ref"
 
-
+#define COLOR_RED          "\x1b[0;31m"
+#define COLOR_RED_BOLD     "\x1b[1;31m"
+#define COLOR_BLUE         "\x1b[0;34m"
+#define COLOR_BLUE_BOLD    "\x1b[1;34m"
+#define COLOR_GREEN_BOLD   "\x1b[1;32m"
+#define COLOR_BOLD         "\x1b[1;37m"
+#define COLOR_RESET        "\x1b[0m"
 
 
 typedef list<int> ref_list;
@@ -56,6 +62,7 @@ struct expr_st {
   string   mota ;
   ref_list zatizero;
   message_list error;
+  string deskribapena;
 };
 
 struct var_st {

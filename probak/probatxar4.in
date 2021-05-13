@@ -1,0 +1,33 @@
+program adibidea 
+
+  int a, b, c;
+  float d, e; 
+
+
+  proc batu(int => x; int => y; int <=> emaitza)
+    int lag, bueltak;   
+  {  
+    lag = y; 
+    emaitza = x;
+    if 2+a {
+      bueltak = 0;
+      do { 
+          emaitza = emaitza < 1;
+          skip if emaitza + 100000;
+          lag = lag - (1 and 2);
+          bueltak = bueltak + (a < b);
+        } until c/b 
+      else {
+        if emaitza < 0 { exit; };
+        println(bueltak);
+      }; # do amaiera
+    }; # if amaiera
+  } # proc amaiera
+{ 
+  read(j); 
+  read(b);
+  d = 1.0/b;
+  [* batu(a,b,c); prozeduren deiak tratatzen dituzten praktiketan soilik *]
+  c = c*(c*d)+e;
+  println(c == d);
+}

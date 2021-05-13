@@ -25,7 +25,8 @@
   extern int yylineno;
   extern char *yytext;
   void yyerror (const char *msg) {
-    printf("line %d: %s at '%s'\n", yylineno, msg, yytext) ;
+    printErrorsPreamble();
+    printf(COLOR_BLUE_BOLD "%d lerroan" COLOR_RESET " - " COLOR_RED_BOLD "errorea" COLOR_RESET ": %s at '%s'\n", yylineno, msg, yytext) ;
   }
 
   // Definitutako abstrakzioen aurrerazagupena
@@ -107,11 +108,12 @@ programa :  RPROGRAM TID
             }
             erazagupenak azpiprogramen_erazagupena TLBRACE sententzia_zerrenda TRBRACE M
             {
-              if ( ! $<sent>7->error.empty() || $<azpi>5->error.empty() )
+              if ( ! $<sent>7->error.empty() || ! $<azpi>5->error.empty() )
               {
                 printErrorsPreamble();
                 printErrors($<sent>7->error);
                 printErrors($<azpi>5->error);
+                YYABORT;
               } 
               else
               {
@@ -330,12 +332,12 @@ sententzia :  aldagaia TASSIG adierazpena TSEMIC
                 $<sent>$ = new ref_list_st;
                 $<sent>$->zatizero.merge($<expr>3->zatizero);
 
-                if ($<var>1->mota == MOTA_ENT && $<expr>3->mota == MOTA_REAL){
+                if ($<var>1->mota.compare(MOTA_ENT) == 0 && $<expr>3->mota.compare(MOTA_REAL) == 0){
                   stPila.tontorra().ezabatuId($<var>1->izena);
                   stPila.tontorra().gehituAldagaia($<var>1->izena, MOTA_REAL);
                   kodea.agGehitu("implicit_conversion<real>(" + $<var>1->izena + ")");
 
-                } elsif ($<var>1->mota == MOTA_REAL && $<expr>3->mota == MOTA_ENT){
+                } else if ($<var>1->mota.compare(MOTA_ENT) == 0 && $<expr>3->mota.compare(MOTA_REAL) == 0){
                   kodea.agGehitu("implicit_conversion<ent>(" + $<expr>3->izena + ")");
                 }
 
@@ -344,7 +346,7 @@ sententzia :  aldagaia TASSIG adierazpena TSEMIC
                 $<sent>$->error.merge($<var>1->error);
                 $<sent>$->error.merge($<expr>3->error);
                 if ( $<expr>3->mota.compare(MOTA_ENT) != 0 && $<expr>3->mota.compare(MOTA_REAL) != 0)
-                  kalkulatuErroreak($<sent>$->error, *$<var>1, *$<expr>3); 
+                  kalkulatuErroreak($<sent>$->error, *$<var>1, *$<expr>3);
                 
                 delete $<var>1; 
                 delete $<expr>3; 
@@ -371,7 +373,7 @@ sententzia :  aldagaia TASSIG adierazpena TSEMIC
                 $<sent>$->zatizero.merge($<sent>9->zatizero);
 
                 
-                if ($<expr>2->mota.compare(MOTA_ERL) != 0 && $<expr>2->mota.compare(ADI_BOL) != 0  )
+                if ($<expr>2->mota.compare(MOTA_ERL) != 0 && $<expr>2->mota.compare(MOTA_BOL) != 0  )
                   kalkulatuErroreak($<sent>$->error, ERR_IF, *$<expr>2);
 
                 delete $<expr>2;
@@ -402,7 +404,7 @@ sententzia :  aldagaia TASSIG adierazpena TSEMIC
                 $<sent>$->zatizero.merge($<expr>8->zatizero);
                 $<sent>$->zatizero.merge($<sent>12->zatizero);                
 
-                if ($<expr>8->mota.compare(MOTA_ERL) != 0 && $<expr>8->mota.compare(ADI_BOL) != 0)
+                if ($<expr>8->mota.compare(MOTA_ERL) != 0 && $<expr>8->mota.compare(MOTA_BOL) != 0)
                   kalkulatuErroreak($<sent>$->error, ERR_DO, *$<expr>8);
 
                 $<sent>$->error.merge($<sent>4->error);
@@ -421,7 +423,7 @@ sententzia :  aldagaia TASSIG adierazpena TSEMIC
                 $<sent>$->zatizero.merge($<expr>3->zatizero);
                 $<sent>$->error.merge($<expr>3->error);
 
-                if ($<expr>3->mota.compare(MOTA_ERL) != 0 && $<expr>3->mota.compare(ADI_BOL) != 0)
+                if ($<expr>3->mota.compare(MOTA_ERL) != 0 && $<expr>3->mota.compare(MOTA_BOL) != 0)
                   kalkulatuErroreak($<sent>$->error, ERR_SKIP, *$<expr>3);
 
                 delete $<expr>3;
@@ -435,12 +437,7 @@ sententzia :  aldagaia TASSIG adierazpena TSEMIC
               {
                 kodea.agGehitu("read " + $<var>3->izena);
                 $<sent>$ = new ref_list_st;
-                $<sent>$->error.merge($<var>3->error);
-
-                if (!$<var>3->error.empty())
-                  for(auto v: $<var>3->error)
-                    $<sent>$->error.push_front(string("read(" + $<var>3->izena + "): " + v));
-                  
+                $<sent>$->error.merge($<var>3->error);                 
                 delete $<var>3;
               }
               | RPRINTLN TLPAREN adierazpena TRPAREN TSEMIC
@@ -451,7 +448,7 @@ sententzia :  aldagaia TASSIG adierazpena TSEMIC
                 $<sent>$->zatizero.merge($<expr>3->zatizero);
                 $<sent>$->error.merge($<expr>3->error);
 
-                if ($<expr>3->mota.compare(MOTA_ERL) == 0 || $<expr>3->mota.compare(ADI_BOL) == 0 )
+                if ($<expr>3->mota.compare(MOTA_ERL) == 0 || $<expr>3->mota.compare(MOTA_BOL) == 0 )
                   kalkulatuErroreak($<sent>$->error, ERR_PRINT, *$<expr>3);
 
                 delete $<expr>3; 
@@ -494,7 +491,7 @@ bestela : RELSIF adierazpena TLBRACE M sententzia_zerrenda TRBRACE N M bestela M
           $<sent>$->zatizero.merge($<sent>9->zatizero);
 
           
-          if ($<expr>2->mota.compare(MOTA_ERL) != 0 && $<expr>2->mota.compare(ADI_BOL) != 0 )
+          if ($<expr>2->mota.compare(MOTA_ERL) != 0 && $<expr>2->mota.compare(MOTA_BOL) != 0 )
             kalkulatuErroreak($<sent>$->error, ERR_ELSIF, *$<expr>2);
 
           delete $<expr>2;
@@ -520,7 +517,11 @@ aldagaia :  TID
               try{
                 $<var>$->mota = stPila.lortuMota(*$<izena>1);
               }catch (string error){
-                $<var>$->error.push_front(string(error));
+                //string line = to_string(yylineno);
+                stringstream stream;
+                stream << COLOR_BLUE_BOLD << yylineno << " lerroan" << COLOR_RESET << " - " << COLOR_RED_BOLD << "errorea" COLOR_RESET << ": ";
+                stream << COLOR_BOLD << "'" << *$<izena>1->data() << "'" << COLOR_RESET << " aldagaia erazagutu gabe erabiltzen saiatu zara" << endl;               
+                $<var>$->error.push_front(stream.str());
               }
               delete $<izena>1;
             }
@@ -530,6 +531,7 @@ adierazpena : adierazpena TADD adierazpena
               {
                 $<expr>$ = new expr_st;
                 $<expr>$->izena = kodea.idBerria();
+                $<expr>$->deskribapena = $<expr>1->deskribapena + " + " + $<expr>3->deskribapena;
                 $<expr>$->zatizero.merge($<expr>1->zatizero);
                 $<expr>$->zatizero.merge($<expr>3->zatizero);
                 $<expr>$->error.merge($<expr>1->error);
@@ -541,10 +543,10 @@ adierazpena : adierazpena TADD adierazpena
                 int mota_aldaketa = kalkulatuMota(*$<expr>$, *$<expr>1, *$<expr>3);
 
                 if (mota_aldaketa == 1)  // 1go adierazpena aldatu real motara
-                  ad1_converted = "implicit_conversion<real>(" + $<expr>1->izena  + ")";
+                  ad1_converted = "cast<real>(" + $<expr>1->izena  + ")";
                 
                 else if (mota_aldaketa == 2)  // 2go adierazpena aldatu real motara
-                  ad2_converted = "implicit_conversion<real>(" + $<expr>3->izena  + ")";
+                  ad2_converted = "cast<real>(" + $<expr>3->izena  + ")";
                 
                 kodea.agGehitu($<expr>$->izena + " := " + ad1_converted  + " + " + ad2_converted);
                 
@@ -555,6 +557,7 @@ adierazpena : adierazpena TADD adierazpena
               {
                 $<expr>$ = new expr_st;
                 $<expr>$->izena = kodea.idBerria();
+                $<expr>$->deskribapena = $<expr>1->deskribapena + " - " + $<expr>3->deskribapena;
                 $<expr>$->zatizero.merge($<expr>1->zatizero);
                 $<expr>$->zatizero.merge($<expr>3->zatizero);
                 $<expr>$->error.merge($<expr>1->error);
@@ -566,10 +569,10 @@ adierazpena : adierazpena TADD adierazpena
                 int mota_aldaketa = kalkulatuMota(*$<expr>$, *$<expr>1, *$<expr>3);
 
                 if (mota_aldaketa == 1)  // 1go adierazpena aldatu real motara
-                  ad1_converted = "implicit_conversion<real>(" + $<expr>1->izena  + ")";
+                  ad1_converted = "cast<real>(" + $<expr>1->izena  + ")";
                 
                 else if (mota_aldaketa == 2)  // 2go adierazpena aldatu real motara
-                  ad2_converted = "implicit_conversion<real>(" + $<expr>3->izena  + ")";
+                  ad2_converted = "cast<real>(" + $<expr>3->izena  + ")";
 
                 kodea.agGehitu($<expr>$->izena + " := " + ad1_converted  + " - " + ad2_converted);
                 
@@ -580,6 +583,7 @@ adierazpena : adierazpena TADD adierazpena
               {
                 $<expr>$ = new expr_st;
                 $<expr>$->izena = kodea.idBerria();
+                $<expr>$->deskribapena = $<expr>1->deskribapena + " * " + $<expr>3->deskribapena;
                 $<expr>$->zatizero.merge($<expr>1->zatizero);
                 $<expr>$->zatizero.merge($<expr>3->zatizero);
                 $<expr>$->error.merge($<expr>1->error);
@@ -591,10 +595,10 @@ adierazpena : adierazpena TADD adierazpena
                 int mota_aldaketa = kalkulatuMota(*$<expr>$, *$<expr>1, *$<expr>3);
 
                 if (mota_aldaketa == 1)  // 1go adierazpena aldatu real motara
-                  ad1_converted = "implicit_conversion<real>(" + $<expr>1->izena  + ")";
+                  ad1_converted = "cast<real>(" + $<expr>1->izena  + ")";
                 
                 else if (mota_aldaketa == 2)  // 2go adierazpena aldatu real motara
-                  ad2_converted = "implicit_conversion<real>(" + $<expr>3->izena  + ")";
+                  ad2_converted = "cast<real>(" + $<expr>3->izena  + ")";
 
                 kodea.agGehitu($<expr>$->izena + " := " + ad1_converted  + " * " + ad2_converted);
 
@@ -605,12 +609,30 @@ adierazpena : adierazpena TADD adierazpena
               {
                 $<expr>$ = new expr_st;
                 $<expr>$->izena = kodea.idBerria();
+                $<expr>$->deskribapena = $<expr>1->deskribapena + " / " + $<expr>3->deskribapena;
                 $<expr>$->mota = MOTA_REAL;   
                 $<expr>$->zatizero.push_front(kodea.lortuErref());
                 $<expr>$->zatizero.merge($<expr>1->zatizero);   
                 $<expr>$->zatizero.merge($<expr>3->zatizero);
                 $<expr>$->error.merge($<expr>1->error);
                 $<expr>$->error.merge($<expr>3->error);
+
+                string line = to_string(yylineno);
+                stringstream stream;
+
+                if ($<expr>1->mota.compare(MOTA_ERL) == 0 || $<expr>1->mota.compare(MOTA_BOL) == 0 ){
+                  stream << COLOR_BLUE_BOLD << line << " lerroan" << COLOR_RESET << " - " << COLOR_RED_BOLD << "errorea" COLOR_RESET << ": ";
+                  stream << COLOR_BOLD << "'" << $<expr>1->izena << "'" << COLOR_RESET << " ez da adierazpen aritmetiko bat" << endl;
+                  stream << "\t" << $<expr>$->deskribapena << endl;
+                  $<expr>$->error.push_front(stream.str());
+                }
+
+                if ($<expr>3->mota.compare(MOTA_ERL) == 0 || $<expr>3->mota.compare(MOTA_BOL) == 0 ){
+                  stream << COLOR_BLUE_BOLD << line << " lerroan" << COLOR_RESET << " - " << COLOR_RED_BOLD << "errorea" COLOR_RESET << ": ";
+                  stream << COLOR_BOLD << "'" << $<expr>3->izena << "'" << COLOR_RESET << " ez da adierazpen aritmetiko bat" << endl;
+                  stream << "\t" << $<expr>$->deskribapena << endl;
+                  $<expr>$->error.push_front(stream.str());
+                }
 
                 kodea.agGehitu("if " + $<expr>3->izena + " = 0 goto");      
                 kodea.agGehitu($<expr>$->izena + " := " + $<expr>1->izena  + " / " + $<expr>3->izena);
@@ -621,16 +643,28 @@ adierazpena : adierazpena TADD adierazpena
               | adierazpena TCEQ adierazpena
               {
                 $<expr>$ = new expr_st;
-                $<expr>$->izena = "";
+                $<expr>$->izena = $<expr>1->izena  + " = " + $<expr>3->izena;
+                $<expr>$->deskribapena = $<expr>1->deskribapena  + " = " + $<expr>3->deskribapena;
                 $<expr>$->true_list.push_front(kodea.lortuErref());
                 $<expr>$->false_list.push_front(kodea.lortuErref()+1); 
                 $<expr>$->mota = MOTA_ERL;
 
-                if ($<expr>1->mota.compare(MOTA_ERL) == 0 || $<expr>1->mota.compare(MOTA_BOL) == 0 )
-                  $<expr>$->error.push_front(string($<expr>1->izena + " ez da adierazpen aritmetiko bat"));
+                string line = to_string(yylineno);
+                stringstream stream;
 
-                if ($<expr>3->mota.compare(MOTA_ERL) == 0 || $<expr>3->mota.compare(MOTA_BOL) == 0 )
-                  $<expr>$->error.push_front(string($<expr>3->izena + " ez da adierazpen aritmetiko bat"));
+                if ($<expr>1->mota.compare(MOTA_ERL) == 0 || $<expr>1->mota.compare(MOTA_BOL) == 0 ){
+                  stream << COLOR_BLUE_BOLD << line << " lerroan" << COLOR_RESET << " - " << COLOR_RED_BOLD << "errorea" COLOR_RESET << ": ";
+                  stream << COLOR_BOLD << "'" << $<expr>1->izena << "'" << COLOR_RESET << " ez da adierazpen aritmetiko bat" << endl;
+                  stream << "\t" << $<expr>$->deskribapena << endl;
+                  $<expr>$->error.push_front(stream.str());
+                }
+
+                if ($<expr>3->mota.compare(MOTA_ERL) == 0 || $<expr>3->mota.compare(MOTA_BOL) == 0 ){
+                  stream << COLOR_BLUE_BOLD << line << " lerroan" << COLOR_RESET << " - " << COLOR_RED_BOLD << "errorea" COLOR_RESET << ": ";
+                  stream << COLOR_BOLD << "'" << $<expr>3->izena << "'" << COLOR_RESET << " ez da adierazpen aritmetiko bat" << endl;
+                  stream << "\t" << $<expr>$->deskribapena << endl;
+                  $<expr>$->error.push_front(stream.str());
+                }
 
                 $<expr>$->zatizero.merge($<expr>1->zatizero);
                 $<expr>$->zatizero.merge($<expr>3->zatizero);
@@ -642,16 +676,28 @@ adierazpena : adierazpena TADD adierazpena
               | adierazpena TCGT adierazpena
               {
                 $<expr>$ = new expr_st;
-                $<expr>$->izena = "";
+                $<expr>$->izena = $<expr>1->izena  + " > " + $<expr>3->izena;
+                $<expr>$->deskribapena = $<expr>1->deskribapena  + " > " + $<expr>3->deskribapena;
                 $<expr>$->true_list.push_front(kodea.lortuErref());
                 $<expr>$->false_list.push_front(kodea.lortuErref()+1); 
                 $<expr>$->mota = MOTA_ERL;
 
-                if ($<expr>1->mota.compare(MOTA_ERL) == 0 || $<expr>1->mota.compare(MOTA_BOL) == 0 )
-                  $<expr>$->error.push_front(string($<expr>1->izena + " ez da adierazpen aritmetiko bat"));
+                string line = to_string(yylineno);
+                stringstream stream;
 
-                if ($<expr>3->mota.compare(MOTA_ERL) == 0 || $<expr>3->mota.compare(MOTA_BOL) == 0 )
-                  $<expr>$->error.push_front(string($<expr>3->izena + " ez da adierazpen aritmetiko bat"));
+                if ($<expr>1->mota.compare(MOTA_ERL) == 0 || $<expr>1->mota.compare(MOTA_BOL) == 0 ){
+                  stream << COLOR_BLUE_BOLD << line << " lerroan" << COLOR_RESET << " - " << COLOR_RED_BOLD << "errorea" COLOR_RESET << ": ";
+                  stream << COLOR_BOLD << "'" << $<expr>1->izena << "'" << COLOR_RESET << " ez da adierazpen aritmetiko bat" << endl;
+                  stream << "\t" << $<expr>$->deskribapena << endl;
+                  $<expr>$->error.push_front(stream.str());
+                }
+
+                if ($<expr>3->mota.compare(MOTA_ERL) == 0 || $<expr>3->mota.compare(MOTA_BOL) == 0 ){
+                  stream << COLOR_BLUE_BOLD << line << " lerroan" << COLOR_RESET << " - " << COLOR_RED_BOLD << "errorea" COLOR_RESET << ": ";
+                  stream << COLOR_BOLD << "'" << $<expr>3->izena << "'" << COLOR_RESET << " ez da adierazpen aritmetiko bat" << endl;
+                  stream << "\t" << $<expr>$->deskribapena << endl;
+                  $<expr>$->error.push_front(stream.str());
+                }
 
                 $<expr>$->zatizero.merge($<expr>1->zatizero);
                 $<expr>$->zatizero.merge($<expr>3->zatizero);
@@ -663,16 +709,28 @@ adierazpena : adierazpena TADD adierazpena
               | adierazpena TCLT adierazpena
               {
                 $<expr>$ = new expr_st;
-                $<expr>$->izena = "";
+                $<expr>$->izena = $<expr>1->izena  + " < " + $<expr>3->izena;
+                $<expr>$->deskribapena = $<expr>1->deskribapena  + " < " + $<expr>3->deskribapena;
                 $<expr>$->true_list.push_front(kodea.lortuErref());
                 $<expr>$->false_list.push_front(kodea.lortuErref()+1); 
                 $<expr>$->mota = MOTA_ERL;
 
-                if ($<expr>1->mota.compare(MOTA_ERL) == 0 || $<expr>1->mota.compare(MOTA_BOL) == 0 )
-                  $<expr>$->error.push_front(string($<expr>1->izena + " ez da adierazpen aritmetiko bat"));
+                string line = to_string(yylineno);
+                stringstream stream;
 
-                if ($<expr>3->mota.compare(MOTA_ERL) == 0 || $<expr>3->mota.compare(MOTA_BOL) == 0 )
-                  $<expr>$->error.push_front(string($<expr>3->izena + " ez da adierazpen aritmetiko bat"));
+                if ($<expr>1->mota.compare(MOTA_ERL) == 0 || $<expr>1->mota.compare(MOTA_BOL) == 0 ){
+                  stream << COLOR_BLUE_BOLD << line << " lerroan" << COLOR_RESET << " - " << COLOR_RED_BOLD << "errorea" COLOR_RESET << ": ";
+                  stream << COLOR_BOLD << "'" << $<expr>1->izena << "'" << COLOR_RESET << " ez da adierazpen aritmetiko bat" << endl;
+                  stream << "\t" << $<expr>$->deskribapena << endl;
+                  $<expr>$->error.push_front(stream.str());
+                }
+
+                if ($<expr>3->mota.compare(MOTA_ERL) == 0 || $<expr>3->mota.compare(MOTA_BOL) == 0 ){
+                  stream << COLOR_BLUE_BOLD << line << " lerroan" << COLOR_RESET << " - " << COLOR_RED_BOLD << "errorea" COLOR_RESET << ": ";
+                  stream << COLOR_BOLD << "'" << $<expr>3->izena << "'" << COLOR_RESET << " ez da adierazpen aritmetiko bat" << endl;
+                  stream << "\t" << $<expr>$->deskribapena << endl;
+                  $<expr>$->error.push_front(stream.str());
+                }
 
                 $<expr>$->zatizero.merge($<expr>1->zatizero);
                 $<expr>$->zatizero.merge($<expr>3->zatizero);
@@ -684,16 +742,28 @@ adierazpena : adierazpena TADD adierazpena
               | adierazpena TCGE adierazpena
               {
                 $<expr>$ = new expr_st;
-                $<expr>$->izena = "";
+                $<expr>$->izena = $<expr>1->izena  + " >= " + $<expr>3->izena;
+                $<expr>$->deskribapena = $<expr>1->deskribapena  + " >= " + $<expr>3->deskribapena;
                 $<expr>$->true_list.push_front(kodea.lortuErref());
                 $<expr>$->false_list.push_front(kodea.lortuErref()+1); 
                 $<expr>$->mota = MOTA_ERL;
 
-                if ($<expr>1->mota.compare(MOTA_ERL) == 0 || $<expr>1->mota.compare(MOTA_BOL) == 0 )
-                  $<expr>$->error.push_front(string($<expr>1->izena + " ez da adierazpen aritmetiko bat"));
+                string line = to_string(yylineno);
+                stringstream stream;
 
-                if ($<expr>3->mota.compare(MOTA_ERL) == 0 || $<expr>3->mota.compare(MOTA_BOL) == 0 )
-                  $<expr>$->error.push_front(string($<expr>3->izena + " ez da adierazpen aritmetiko bat"));
+                if ($<expr>1->mota.compare(MOTA_ERL) == 0 || $<expr>1->mota.compare(MOTA_BOL) == 0 ){
+                  stream << COLOR_BLUE_BOLD << line << " lerroan" << COLOR_RESET << " - " << COLOR_RED_BOLD << "errorea" COLOR_RESET << ": ";
+                  stream << COLOR_BOLD << "'" << $<expr>1->izena << "'" << COLOR_RESET << " ez da adierazpen aritmetiko bat" << endl;
+                  stream << "\t" << $<expr>$->deskribapena << endl;
+                  $<expr>$->error.push_front(stream.str());
+                }
+
+                if ($<expr>3->mota.compare(MOTA_ERL) == 0 || $<expr>3->mota.compare(MOTA_BOL) == 0 ){
+                  stream << COLOR_BLUE_BOLD << line << " lerroan" << COLOR_RESET << " - " << COLOR_RED_BOLD << "errorea" COLOR_RESET << ": ";
+                  stream << COLOR_BOLD << "'" << $<expr>3->izena << "'" << COLOR_RESET << " ez da adierazpen aritmetiko bat" << endl;
+                  stream << "\t" << $<expr>$->deskribapena << endl;
+                  $<expr>$->error.push_front(stream.str());
+                }
 
                 $<expr>$->zatizero.merge($<expr>1->zatizero);
                 $<expr>$->zatizero.merge($<expr>3->zatizero);
@@ -705,16 +775,28 @@ adierazpena : adierazpena TADD adierazpena
               | adierazpena TCLE adierazpena
               {
                 $<expr>$ = new expr_st;
-                $<expr>$->izena = "";
+                $<expr>$->izena = $<expr>1->izena  + " <= " + $<expr>3->izena;
+                $<expr>$->deskribapena = $<expr>1->deskribapena  + " <= " + $<expr>3->deskribapena;
                 $<expr>$->true_list.push_front(kodea.lortuErref());
                 $<expr>$->false_list.push_front(kodea.lortuErref()+1); 
                 $<expr>$->mota = MOTA_ERL;
 
-                if ($<expr>1->mota.compare(MOTA_ERL) == 0 || $<expr>1->mota.compare(MOTA_BOL) == 0 )
-                  $<expr>$->error.push_front(string($<expr>1->izena + " ez da adierazpen aritmetiko bat"));
+                string line = to_string(yylineno);
+                stringstream stream;
 
-                if ($<expr>3->mota.compare(MOTA_ERL) == 0 || $<expr>3->mota.compare(MOTA_BOL) == 0 )
-                  $<expr>$->error.push_front(string($<expr>3->izena + " ez da adierazpen aritmetiko bat"));
+                if ($<expr>1->mota.compare(MOTA_ERL) == 0 || $<expr>1->mota.compare(MOTA_BOL) == 0 ){
+                  stream << COLOR_BLUE_BOLD << line << " lerroan" << COLOR_RESET << " - " << COLOR_RED_BOLD << "errorea" COLOR_RESET << ": ";
+                  stream << COLOR_BOLD << "'" << $<expr>1->izena << "'" << COLOR_RESET << " ez da adierazpen aritmetiko bat" << endl;
+                  stream << "\t" << $<expr>$->deskribapena << endl;
+                  $<expr>$->error.push_front(stream.str());
+                }
+
+                if ($<expr>3->mota.compare(MOTA_ERL) == 0 || $<expr>3->mota.compare(MOTA_BOL) == 0 ){
+                  stream << COLOR_BLUE_BOLD << line << " lerroan" << COLOR_RESET << " - " << COLOR_RED_BOLD << "errorea" COLOR_RESET << ": ";
+                  stream << COLOR_BOLD << "'" << $<expr>3->izena << "'" << COLOR_RESET << " ez da adierazpen aritmetiko bat" << endl;
+                  stream << "\t" << $<expr>$->deskribapena << endl;
+                  $<expr>$->error.push_front(stream.str());
+                }
 
                 $<expr>$->zatizero.merge($<expr>1->zatizero);
                 $<expr>$->zatizero.merge($<expr>3->zatizero);
@@ -726,16 +808,28 @@ adierazpena : adierazpena TADD adierazpena
               | adierazpena TCNE adierazpena
               {
                 $<expr>$ = new expr_st;
-                $<expr>$->izena = "";
+                $<expr>$->izena = $<expr>1->izena  + " != " + $<expr>3->izena;
+                $<expr>$->deskribapena = $<expr>1->deskribapena  + " != " + $<expr>3->deskribapena;
                 $<expr>$->true_list.push_front(kodea.lortuErref());
                 $<expr>$->false_list.push_front(kodea.lortuErref()+1); 
                 $<expr>$->mota = MOTA_ERL;
 
-                if ($<expr>1->mota.compare(MOTA_ERL) == 0 || $<expr>1->mota.compare(MOTA_BOL) == 0 )
-                  $<expr>$->error.push_front(string($<expr>1->izena + " ez da adierazpen aritmetiko bat"));
+                string line = to_string(yylineno);
+                stringstream stream;
 
-                if ($<expr>3->mota.compare(MOTA_ERL) == 0 || $<expr>3->mota.compare(MOTA_BOL) == 0 )
-                  $<expr>$->error.push_front(string($<expr>3->izena + " ez da adierazpen aritmetiko bat"));
+                if ($<expr>1->mota.compare(MOTA_ERL) == 0 || $<expr>1->mota.compare(MOTA_BOL) == 0 ){
+                  stream << COLOR_BLUE_BOLD << line << " lerroan" << COLOR_RESET << " - " << COLOR_RED_BOLD << "errorea" COLOR_RESET << ": ";
+                  stream << COLOR_BOLD << "'" << $<expr>1->izena << "'" << COLOR_RESET << " ez da adierazpen aritmetiko bat" << endl;
+                  stream << "\t" << $<expr>$->deskribapena << endl;
+                  $<expr>$->error.push_front(stream.str());
+                }
+
+                if ($<expr>3->mota.compare(MOTA_ERL) == 0 || $<expr>3->mota.compare(MOTA_BOL) == 0 ){
+                  stream << COLOR_BLUE_BOLD << line << " lerroan" << COLOR_RESET << " - " << COLOR_RED_BOLD << "errorea" COLOR_RESET << ": ";
+                  stream << COLOR_BOLD << "'" << $<expr>3->izena << "'" << COLOR_RESET << " ez da adierazpen aritmetiko bat" << endl;
+                  stream << "\t" << $<expr>$->deskribapena << endl;
+                  $<expr>$->error.push_front(stream.str());
+                }
 
                 $<expr>$->zatizero.merge($<expr>1->zatizero);
                 $<expr>$->zatizero.merge($<expr>3->zatizero);
@@ -748,60 +842,94 @@ adierazpena : adierazpena TADD adierazpena
               { 
                 kodea.agOsatu($<expr>1->true_list, $<ref>3);
                 $<expr>$ = new expr_st;
-                $<expr>$->izena = "";
+                $<expr>$->izena = $<expr>1->izena  + " and " + $<expr>4->izena;
+                $<expr>$->deskribapena = $<expr>1->deskribapena  + " and " + $<expr>4->deskribapena;
                 $<expr>$->true_list.merge($<expr>4->true_list);
                 $<expr>$->false_list.merge($<expr>1->false_list);
                 $<expr>$->false_list.merge($<expr>4->false_list); 
-                $<expr>$->mota = MOTA_BOL;
+                $<expr>$->mota = MOTA_BOL; 
 
-                if ($<expr>1->mota.compare(MOTA_ENT) == 0 || $<expr>1->mota.compare(MOTA_REAL) == 0 )
-                  $<expr>$->error.push_front(string($<expr>1->izena + " ez da adierazpen boolear edo erlazional bat"));
+                string line = to_string(yylineno);
+                stringstream stream;
 
-                if ($<expr>3->mota.compare(MOTA_ENT) == 0 || $<expr>3->mota.compare(MOTA_REAL) == 0 )
-                  $<expr>$->error.push_front(string($<expr>3->izena + " ez da adierazpen boolear edo erlazional bat"));
+                if ($<expr>1->mota.compare(MOTA_ENT) == 0 || $<expr>1->mota.compare(MOTA_REAL) == 0 ){
+                  stream << COLOR_BLUE_BOLD << line << " lerroan" << COLOR_RESET << " - " << COLOR_RED_BOLD << "errorea" COLOR_RESET << ": ";
+                  stream << COLOR_BOLD << "'" << $<expr>1->izena << "'" << COLOR_RESET << " ez da adierazpen boolear edo erlazional bat" << endl;
+                  stream << "\t" << $<expr>$->deskribapena << endl;
+                  $<expr>$->error.push_front(stream.str());
+                }
+
+                if ($<expr>4->mota.compare(MOTA_ENT) == 0 || $<expr>4->mota.compare(MOTA_REAL) == 0 ){
+                  stream << COLOR_BLUE_BOLD << line << " lerroan" << COLOR_RESET << " - " << COLOR_RED_BOLD << "errorea" COLOR_RESET << ": ";
+                  stream << COLOR_BOLD << "'" << $<expr>4->izena << "'" << COLOR_RESET << " ez da adierazpen boolear edo erlazional bat" << endl;
+                  stream << "\t" << $<expr>$->deskribapena << endl;
+                  $<expr>$->error.push_front(stream.str());
+                }
+                
 
                 $<expr>$->zatizero.merge($<expr>1->zatizero);
                 $<expr>$->zatizero.merge($<expr>4->zatizero);
                 $<expr>$->error.merge($<expr>1->error);
-                $<expr>$->error.merge($<expr>3->error);
+                $<expr>$->error.merge($<expr>4->error);
 
                 delete $<expr>1;
-                delete $<expr>3;
+                delete $<expr>4;
               }
               | adierazpena ROR M adierazpena
               {
                 kodea.agOsatu($<expr>1->false_list, $<ref>3);
                 $<expr>$ = new expr_st;
-                $<expr>$->izena = "";
+                $<expr>$->izena = $<expr>1->izena  + " or " + $<expr>4->izena;
+                $<expr>$->deskribapena = $<expr>1->deskribapena  + " or " + $<expr>4->deskribapena;
                 $<expr>$->true_list.merge($<expr>1->true_list);
                 $<expr>$->true_list.merge($<expr>4->true_list);
                 $<expr>$->false_list.merge($<expr>4->false_list); 
                 $<expr>$->mota = MOTA_ERL;
 
-                if ($<expr>1->mota.compare(MOTA_ENT) == 0 || $<expr>1->mota.compare(MOTA_REAL) == 0 )
-                  $<expr>$->error.push_front(string($<expr>1->izena + " ez da adierazpen boolear edo erlazional bat"));
+                string line = to_string(yylineno);
+                stringstream stream;
 
-                if ($<expr>3->mota.compare(MOTA_ENT) == 0 || $<expr>3->mota.compare(MOTA_REAL) == 0 )
-                  $<expr>$->error.push_front(string($<expr>3->izena + " ez da adierazpen boolear edo erlazional bat"));
+                if ($<expr>1->mota.compare(MOTA_ENT) == 0 || $<expr>1->mota.compare(MOTA_REAL) == 0 ){
+                  stream << COLOR_BLUE_BOLD << line << " lerroan" << COLOR_RESET << " - " << COLOR_RED_BOLD << "errorea" COLOR_RESET << ": ";
+                  stream << COLOR_BOLD << "'" << $<expr>1->izena << "'" << COLOR_RESET << " ez da adierazpen boolear edo erlazional bat" << endl;
+                  stream << "\t" << $<expr>$->deskribapena << endl;
+                  $<expr>$->error.push_front(stream.str());
+                }
+
+                if ($<expr>4->mota.compare(MOTA_ENT) == 0 || $<expr>4->mota.compare(MOTA_REAL) == 0 ){
+                  stream << COLOR_BLUE_BOLD << line << " lerroan" << COLOR_RESET << " - " << COLOR_RED_BOLD << "errorea" COLOR_RESET << ": ";
+                  stream << COLOR_BOLD << "'" << $<expr>4->izena << "'" << COLOR_RESET << " ez da adierazpen boolear edo erlazional bat" << endl;
+                  stream << "\t" << $<expr>$->deskribapena << endl;
+                  $<expr>$->error.push_front(stream.str());
+                }
 
                 $<expr>$->zatizero.merge($<expr>1->zatizero);
                 $<expr>$->zatizero.merge($<expr>4->zatizero);
+
                 $<expr>$->error.merge($<expr>1->error);
-                $<expr>$->error.merge($<expr>3->error);
+                $<expr>$->error.merge($<expr>4->error);
 
                 delete $<expr>1;
-                delete $<expr>3;
+                delete $<expr>4;
               }
               | RNOT adierazpena
               {
                 $<expr>$ = new expr_st;
-                $<expr>$->izena = "";
+                $<expr>$->izena = "not " + $<expr>2->izena;
+                $<expr>$->deskribapena = "not " + $<expr>2->deskribapena;
                 $<expr>$->true_list.merge($<expr>2->false_list);
                 $<expr>$->false_list.merge($<expr>2->true_list); 
                 $<expr>$->mota = MOTA_ERL;
 
-                if ($<expr>2->mota.compare(MOTA_ENT) == 0 || $<expr>2->mota.compare(MOTA_REAL) == 0 )
-                  $<expr>$->error.push_front(string($<expr>2->izena + " ez da adierazpen boolear edo erlazional bat"));
+                string line = to_string(yylineno);
+                stringstream stream;
+
+                if ($<expr>2->mota.compare(MOTA_ENT) == 0 || $<expr>2->mota.compare(MOTA_REAL) == 0 ){
+                  stream << COLOR_BLUE_BOLD << line << " lerroan" << COLOR_RESET << " - " << COLOR_RED_BOLD << "errorea" COLOR_RESET << ": ";
+                  stream << COLOR_BOLD << "'" << $<expr>2->izena << "'" << COLOR_RESET << " ez da adierazpen boolear edo erlazional bat" << endl;
+                  stream << "\t" << $<expr>$->deskribapena << endl;
+                  $<expr>$->error.push_front(stream.str());
+                }
 
                 $<expr>$->zatizero.merge($<expr>2->zatizero);
                 $<expr>$->error.merge($<expr>2->error);
@@ -812,6 +940,7 @@ adierazpena : adierazpena TADD adierazpena
               {
                 $<expr>$ = new expr_st;
                 $<expr>$->izena = $<var>1->izena.data();
+                $<expr>$->deskribapena = $<var>1->izena.data();
                 $<expr>$->mota = $<var>1->mota;
                 $<expr>$->error.merge($<var>1->error);
                 delete $<var>1;
@@ -820,6 +949,7 @@ adierazpena : adierazpena TADD adierazpena
               {
                 $<expr>$ = new expr_st;
                 $<expr>$->izena = string(*$<izena>1);
+                $<expr>$->deskribapena = string(*$<izena>1);
                 $<expr>$->mota = string(MOTA_ENT);
                 delete $<izena>1;
               }
@@ -827,6 +957,7 @@ adierazpena : adierazpena TADD adierazpena
               {
                 $<expr>$ = new expr_st;
                 $<expr>$->izena = string(*$<izena>1);
+                $<expr>$->deskribapena = string(*$<izena>1);
                 $<expr>$->mota = string(MOTA_REAL);
                 delete $<izena>1;
               }
@@ -834,6 +965,7 @@ adierazpena : adierazpena TADD adierazpena
               {
                 $<expr>$ = new expr_st;
                 $<expr>$->izena = string($<expr>2->izena);
+                $<expr>$->deskribapena = "(" + string($<expr>2->izena) + ")";
                 $<expr>$->true_list.merge($<expr>2->true_list);
                 $<expr>$->false_list.merge($<expr>2->false_list); 
                 $<expr>$->mota = $<expr>2->mota;

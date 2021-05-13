@@ -9,8 +9,8 @@ program adibidea
   c = 6;
 
   
-  if a < c and a > b {
-  	d = 1.0;
+  if (a < c) and (a > c) {
+  	d = 1.0 + 1;
   };
   println(d);
 
@@ -22,7 +22,7 @@ program adibidea
 
 
   read(a);
-  if  (a < c or a > b) {
+  if not (a < c or a > b) {
   	d = 2.0;
   }; 
   println(d);
